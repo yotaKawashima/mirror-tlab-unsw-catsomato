@@ -1,10 +1,7 @@
-% Adapted from /media/rannee/UNSW_Cat_Somatos/scripts/archival/16May2017_EPS/figure_producer_23May2017b.m
-
-% Change log:
-% 16/05/2017 - finished figure 1c
-% 23/05/2017 - plotting figure 1b experiments
-
 %% Set overall variables
+
+% PREREQUISITES:
+% Add the git repo to path.
 
 % directory where the drive is mounted. 
 disk_path = '/media/rannee/UNSW_Cat_Somatos/';
@@ -12,7 +9,7 @@ disk_path = '/media/rannee/UNSW_Cat_Somatos/';
 % set figure path to be this temporary directory that is not on the main
 % script or figure paths (this is a directory where the old and broken
 % scripts are kept).
-fig_path = [];%[disk_path 'scripts/archival/16May2017_EPS/'];
+fig_path = [];
 
 % highest level directory of data
 data_path = [disk_path 'data/'];
@@ -20,11 +17,12 @@ data_path = [disk_path 'data/'];
 % directory with the raw files
 raw_path = [data_path 'raw/'];
 
-% directory of utility m-files
-addpath(genpath([disk_path 'scripts/in_path/operational/general_funcs']))
+% path to third party toolboxes
+tool_path = [disk_path 'scripts/thirdparty_toolboxes/'];
+chron_dir = [tool_path 'chronux/'];
 
-%% ------- Figure 1 --------
-% Figure 1, part a: image of the cat brain. not implemented in matlab.
+%% Figure 1, part a
+% Image of the cat brain. not implemented in matlab.
 
 % Figure 1 common variables
 fig1_catname = 'C20110808_R03';
@@ -86,40 +84,7 @@ set(gca, 'FontSize', fsize)
 print(13, '-depsc', [fig_path 'figure1c_20110808R03chan256.eps'])
 
 %% Figure 1, part b
-% % A graph of the paradigm. Unfortunately, these change from cat to cat... 
-% % have checked, all protruded into the skin
-% 
-% % do this after part c because of reasons. mostly so that I have already
-% % loaded the file.
-% 
-% starttime = data.time{1}(1);
-% endtime = data.time{1}(end);
-% 
-% ramptop = 500;
-% A23 = 159;
-% A200 = 16;
-% 
-% rampupstart = 0;
-% rampupend = rampupstart + stimTime.rampup;
-% vibestart = rampupend + stimTime.presine;
-% vibeend = vibestart + stimTime.sine;
-% rampdwnstart = vibeend + stimTime.postsine;
-% rampdwnend = rampdwnstart + stimTime.rampdown;
-% 
-% st = linspace(0, vibeend - vibestart, 5000);
-% sa = ramptop+A23+A23*sin(2*pi*23*st-pi/2) + A200*sin(2*pi*200*st);
-% 
-% 
-% 
-% 
-% % preramp = 0
-% para_t = [starttime, rampupstart, rampupend, vibestart+st, vibeend, ...
-%     rampdwnstart, rampdwnend, endtime];
-% para_a = [0,         0,           ramptop,   sa,           ramptop, ...
-%     ramptop,      0,          0];
-% 
-% figure(12)
-% plot(para_t, para_a)
+% A graph of the paradigm. Not implemented in matlab.
 
 %% Figure 1, part d
 % max stim condition, same time, frequency
@@ -130,7 +95,13 @@ data_singchan = data;
 data_singchan.trial = data.trial(chan, :, :);
 data_singchan.custom.nsignals = 1;
 
+% add chronux to path for power calculation
+addpath(genpath(chron_dir))
+
 data_out = chronux_pwrspec_v2(data_singchan);
+
+% remove chronux as we don't need it any more
+rmpath(genpath(chron_dir))
 
 [~,fend] = find_closest(data_out.freq{1}, 250);
 
