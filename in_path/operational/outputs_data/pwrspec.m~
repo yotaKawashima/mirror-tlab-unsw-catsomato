@@ -1,0 +1,72 @@
+function data_out = pwrspec(data)
+
+% pwrspec: Finds the power spectrum across each trial and channel
+%   data_out = pwrspec(data) uses the inbuilt function pwelch to using its
+%   default settings. It calculates each trial and channel individually. 
+
+% Written by Rannee Li, Dec 2014. Last edited Jul 2015. 
+%   removed duplicates in data.freq, since it is copied in other functions
+%   anyway.
+
+fprintf('\nEntered function pwrspec.\n')
+
+% copy everything
+data_out = data;
+
+% rename the variables
+nChannels = data.custom.nsignals;
+nTrials = data.custom.ntrials;
+fsample = data.fsample;
+
+fprintf('Calculating power spectrum for %s.\n', data.custom.filename)
+% calculate by iteration
+for ch = 1:nChannels
+    for trial = 1:nTrials
+        % extract
+        timetrial = squeeze(data.trial(ch, :, trial));
+        
+        % calculate
+        if 0 
+        [p_part, f_part] = pwelch(timetrial,[],[],[],fsample) ;
+        else
+            params.Fs = data.fsample;
+            params.tapers = [1 1];
+            params.pad = 1; 
+            
+             [p_part,f_part] = mtspectrumc(timetrial,params);
+        end
+        
+        % store
+        powers(ch, :, trial) = 10*log10(p_part');  %#ok<AGROW> don't know how many freqs
+        
+        if ch==1 && trial==1
+            freq = f_part';
+        end
+        
+    end
+end
+fprintf('Calculating complete.\n')
+
+% place into struct, fix some vars
+data_out.trial = powers;
+data_out.custom.filename = [data.custom.filename '_pwrspec'];
+data_out.custom.datatype.ispwrspec = true;
+
+
+% copy freqs
+data_out = rmfield(data_out, 'time');
+
+
+    data_out.freq{1} = freq;
+
+
+
+
+
+if nargout < 1
+    clear data;
+    data = data_out; %#ok<NASGU> used in save below
+    save(data_out.custom.filename, 'data')
+    clear data_out
+end
+fprintf('Exited function pwrspec.\n')
