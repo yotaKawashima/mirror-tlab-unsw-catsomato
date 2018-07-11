@@ -1,7 +1,30 @@
-% adapted from /media/rannee/UNSW_Cat_Somatos/scripts/28Jul17/fstat_fig4_plotter.m
+% Plots the distribution of f-statistic from ANOVA over 0-250 Hz
+
+%% Set overall variables
+
+% PREREQUISITES:
+% Add the git repo to path.
+
+% directory where the drive is mounted. 
+disk_path = '/media/rannee/UNSW_Cat_Somatos/';
+
+% set figure path to be this temporary directory that is not on the main
+% script or figure paths (this is a directory where the old and broken
+% scripts are kept).
+fig_path = [];
+
+% highest level directory of data
+data_path = [disk_path 'data/'];
+
+% directory with the raw files
+raw_path = [data_path 'raw/'];
+
+% path to third party toolboxes
+tool_path = [disk_path 'scripts/thirdparty_toolboxes/'];
+chron_dir = [tool_path 'chronux/'];
 
 % data directory
-data_dir = '/media/rannee/UNSW_Cat_Somatos/data/collated_data/anoved_rsampsl_biprref_evkresp_cmtspwr_adatout_fstonly';
+data_dir = [data_path 'collated_data/anoved_rsampsl_biprref_evkresp_cmtspwr_adatout_fstonly'];
 
 
 %% by area
