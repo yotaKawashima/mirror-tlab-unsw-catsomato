@@ -28,3 +28,5 @@ path_list = regexp(path, pathsep, 'split');
 if ~any(ismember(repo_path, path_list))
     addpath(genpath(repo_path))
 end
+
+clear path_list
