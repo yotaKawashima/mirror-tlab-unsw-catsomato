@@ -26,8 +26,8 @@ end
 
 % find the right frequencies
 foi_23 = 23:23:250;
-foi_int = 200:-23:0;
-foi = sort([foi_23 foi_int]);% 200:23:250]);
+foi_int = [200:-23:0 200+23:23:250];
+foi = sort([foi_23 foi_int]);
 [~, ind] = parfind_closest(metavars.freq{1}, foi);
 
 % extract frequencies
