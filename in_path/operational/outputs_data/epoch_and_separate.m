@@ -1,4 +1,4 @@
-function data = epoch_and_separate(filename_in, tres, timestamp, lfp1_data, lfp2_data, stimFreqY, stimFreqX, stimMeshY, stimMeshX, output_dest, filename_out) %#ok - used in eval line 43
+function data = epoch_and_separate(filename_in, tres, timestamp, lfp1_data, lfp2_data, stimFreqY, stimFreqX, stimMeshY, stimMeshX, stimTime, output_dest, filename_out) %#ok - used in eval line 43
 
 % epoch_and_separate: Epochs the data from into 3D matrix.
 %    epoch_and_separate(...) epochs the data (for this format) into a
@@ -9,7 +9,7 @@ function data = epoch_and_separate(filename_in, tres, timestamp, lfp1_data, lfp2
 %    workspace.
 %   
 %    The argument list: filename_in, tres, timestamp, lfp1_data, lfp2_data, 
-%       stimFreqY, stimFreqX, stimMeshY, stimMeshX, output_dest
+%       stimFreqY, stimFreqX, stimMeshY, stimMeshX, stimTime, output_dest
 %       
 %    Due to the different types of filenames, an additional argument,
 %    filename_out can be added to the end of the list to define the start 
@@ -116,7 +116,8 @@ for S = [1, 2];
         data.custom.filename        = fileName;                     % string
         
         % create time
-        data.time{1} = timestamp;  % EDIT 06/07: changed this to a 1x1 cell. See documentation
+        stimStart = stimTime.rampup + stimTime.presine; % so that t=0 is the onset of vibration
+        data.time{1} = timestamp-stimStart;  % EDIT 06/07: changed this to a 1x1 cell. See documentation
         
         data.label = chlabels;                                      % 1xnChannels cell (string)
         data.custom.conditions(1) = cond;
