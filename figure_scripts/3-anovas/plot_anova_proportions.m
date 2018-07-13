@@ -71,10 +71,9 @@ xlabel('response frequency: f [Hz]','interpret','none')
 ylabel('2-way ANOVA significance')
 
 print(gcf,imgtype,['Figure3a_' dt])
+
 %% Plot figure part B
 figure(2); clf
-
-% plot proportion lines
 hold on
 
 % plot propotion lines
@@ -114,3 +113,57 @@ ylabel('% of channel with 2-way ANOVA (q = 0.05)')
 xlabel('response frequency: f [Hz]','interpret','none')
 
 print(gcf,imgtype,['Figure3b_' dt])
+
+%% Plot alternative figure B
+
+% extract proportions at all frequencies
+prop_all = zeros(7, size(allcat_p_class, 2));
+for k = 1:7
+    prop_all(k, :) = sum(allcat_p_class == k, 1);
+end
+prop_all = prop_all / size(allcat_p_class, 1) * 100;
+
+figure(3); clf
+hold on
+
+% plot proportion at all frequencies
+%   same format as proportion at foi lines
+q(1) = plot(metavars.freq{1}, prop_all(1, :), 'r'); % 23
+q(2) = plot(metavars.freq{1}, prop_all(2, :), 'g'); % 200
+q(3) = plot(metavars.freq{1}, prop_all(7, :), 'b'); % int
+q(4) = plot(metavars.freq{1}, sum(prop_all, 1), 'k');
+set(q, 'LineWidth', 0.5, 'LineStyle', '-')
+
+% plot vertical lines at foi
+%   grab axis variables
+ylim = get(gca, 'YLim');
+v1 = numel(foi_23);
+v2 = numel(foi_int)-1;
+v = zeros(1, numel(foi));
+
+%   plot vertical lines
+v(1:v1) = plot([foi_23', foi_23'], ylim, 'r'); % 23 + harmonics
+v(v1+1) = plot([200, 200], ylim, 'g'); % 200
+v(v1+2:v1+v2+1) = plot([foi_int(2:end)', foi_int(2:end)'], ylim, 'b'); % intermodulation
+
+%   format vertical lines
+set(v, 'LineWidth', 1, 'LineStyle', '--')
+
+% plot propotion lines
+p(1) = plot(foi, prop_at_foi(1, :), 'r'); % 23
+p(2) = plot(foi, prop_at_foi(2, :), 'g'); % 200
+p(3) = plot(foi, prop_at_foi(7, :), 'b'); % int
+p(4) = plot(foi, sum(prop_at_foi, 1), 'k');
+
+%   format proportion lines
+set(p, 'LineWidth', 3 ,'LineStyle', 'none', 'Marker', 'o')
+
+
+hold off
+
+% format plot area
+axis tight
+ylabel('% of channel with 2-way ANOVA (q = 0.05)') 
+xlabel('response frequency: f [Hz]','interpret','none')
+
+print(gcf,imgtype,['Figure3b_alt_' dt])
