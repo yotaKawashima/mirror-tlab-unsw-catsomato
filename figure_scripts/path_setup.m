@@ -21,7 +21,7 @@ chron_dir = [tool_path 'chronux/'];
 
 %% Add repository to path
 
-repo_path = fullfile(pwd, '../');
+repo_path = fullfile(mfilename('fullpath'), '../../');
 
 % check if already on path
 path_list = regexp(path, pathsep, 'split');
