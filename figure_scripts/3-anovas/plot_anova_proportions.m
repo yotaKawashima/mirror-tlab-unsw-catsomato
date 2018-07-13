@@ -1,11 +1,18 @@
 % Reads data and plots the results of the anova2. 
-%% Setup
-dir_sec = ['/media/rannee/UNSW_Cat_Somatos/data/collated_data/' ...
-    'anoved_rsampsl_biprref_cmtspwr'];
 
+%% Set overall variables
+run('../path_setup.m')
+
+%% Setup
+% file path
+dir_sec = fullfile(data_path, 'collated_data', 'pooled_pthresh');%'anoved_rsampsl_biprref_cmtspwr'
+
+% output image type
 imgtype = '-depsc';
 
+% Current date and time for output image
 dt = datestr(now, 'yyyymmdd');
+
 %% Load data to create the matrix of channel proportions
 
 % find filenames
@@ -22,7 +29,6 @@ for c = 1:numel(fname)
     % just truss the new channels onto the end of the old ones
     allcat_p_class = [allcat_p_class; p_class];
 end
-
 
 % find the right frequencies
 foi_23 = 23:23:250;
@@ -58,14 +64,11 @@ ytl = ytl_raw(ytl_order);
 ytl{8} = 'any';
 set(gca, 'yticklabel', ytl)
 
-
 h = colorbar; 
 title(h, '%')
 
 xlabel('response frequency: f [Hz]','interpret','none')
 ylabel('2-way ANOVA significance')
-
-
 
 print(gcf,imgtype,['Figure3a_' dt])
 %% Plot figure part B
@@ -73,34 +76,39 @@ figure(2); clf
 
 % plot proportion lines
 hold on
-% plot 4 lines
-% 1. red: 200
-% 2. green: 23
-% 3. blue: all
-% 4. black: any
+
+% plot propotion lines
+%    plot 4 lines
+%    1. red: 200
+%    2. green: 23
+%    3. blue: all
+%    4. black: any
 p(1) = plot(foi, prop_at_foi(1, :), 'r'); % 23
 p(2) = plot(foi, prop_at_foi(2, :), 'g'); % 200
 p(3) = plot(foi, prop_at_foi(7, :), 'b'); % int
 p(4) = plot(foi, sum(prop_at_foi, 1), 'k');
+
+%   format proportion lines
 set(p, 'LineWidth', 2)
 
-hold off
-
 % plot vertical lines at foi
-hold on
-% grab some  variables
+%   grab axis variables
 ylim = get(gca, 'YLim');
 v1 = numel(foi_23);
 v2 = numel(foi_int)-1;
 v = zeros(1, numel(foi));
 
-v(1:v1) = plot([foi_23', foi_23'], ylim, 'r');
-v(v1+1) = plot([200, 200], ylim, 'g');
-v(v1+2:v1+v2+1) = plot([foi_int(2:end)', foi_int(2:end)'], ylim, 'b');
+%   plot vertical lines
+v(1:v1) = plot([foi_23', foi_23'], ylim, 'r'); % 23 + harmonics
+v(v1+1) = plot([200, 200], ylim, 'g'); % 200
+v(v1+2:v1+v2+1) = plot([foi_int(2:end)', foi_int(2:end)'], ylim, 'b'); % intermodulation
+
+%   format vertical lines
 set(v, 'LineWidth', 1, 'LineStyle', '--')
 
 hold off
 
+% format plot area
 axis tight
 ylabel('% of channel with 2-way ANOVA (q = 0.05)') 
 xlabel('response frequency: f [Hz]','interpret','none')
