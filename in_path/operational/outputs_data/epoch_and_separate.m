@@ -130,7 +130,7 @@ for S = [1, 2];
     end
     
     % move everything
-    system(['mv ' AreaName '* ' output_dest]);
+    eas_filemover(AreaName, output_dest)
     
 
 end
@@ -141,3 +141,26 @@ end
 
 fprintf('Epoching data complete.\n')
 fprintf('Exited function epoch_and_separate.\n')
+
+function eas_filemover(files_to_move, output_dest)
+% adapted from afpc_filemover
+
+% deal with spaces in file path
+k = strfind(output_dest, ' ');
+
+if ~isempty(k)
+    warning('Spaces detected in path name')
+    for a = 1:numel(k)
+        output_dest(k(a):end+1) = ['\' output_dest(k(a):end)];
+    end
+end
+
+% find out if the folder exists.
+if exist(output_dest, 'dir')~=7
+    % directory does not exist, so make it. 
+    warning('Destination directory not found. Making directory.')
+    system(['mkdir ' output_dest]);
+end
+
+% move the files
+system(['mv ' files_to_move '* ' output_dest]);
