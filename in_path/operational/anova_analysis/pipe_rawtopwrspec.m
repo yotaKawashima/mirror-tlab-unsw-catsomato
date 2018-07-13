@@ -4,30 +4,21 @@
 % Edit the first section to select the cat. You may need to run this
 % section even if you do not intend to run all other sections.
 
-% Last edited by Rannee Li, Jul 2015
-
 %% options and selections - EDIT THIS SECTION
 % filename of the RAW data that is to be used. 
 filename_in = 'Cat20090505_Utah-21_LFPStimSegs';
+
 % filename to be saved. 
-%filename_out = 'C20090505_R21_TStim';
 filename_out = 'C20110511_R02';
 
-%
-dir_head = '/media/phoebeyou/My Passport/Spencers_Cat_Data/';
-
-% the directory where the auxiliary functions can be found
-% generally does not beed to be edited.
-func_dir = [dir_head 'functions__/aux_files/'];
+run('../../../figure_scripts/path_setup.m')
 
 % do you wish to use chronux to calculate power spectrum?
 chronspec = true;
-% if so, where might I find it?
-chron_dir = [dir_head 'functions__/thirdparty_toolboxes/chronux'];
 
 % the directory where the data can be found
 % generally does not beed to be edited.
-data_dir = [dir_head filename_out '/'];
+data_dir = fullfile(data_path, 'included_datasets', filename_out, '/');
 
 % type of z-scoring
 % 1 = zscore, 2 = new_zscore, 0 = none
@@ -41,8 +32,6 @@ sys = 1; % if on mac, this should be 64
 
 
 % and onto other orders of business
-% add the functions to path - do not edit
-addpath(genpath(func_dir))
 
 % assign the z-score directory - do not edit
 if z_type == 1
@@ -61,7 +50,7 @@ end
 
 %% preprocessing - 1: epoch the data.
 % call epoch_and_separate
-load([data_dir 'raw/' filename_in '.mat'])
+load([data_dir '../raw/' filename_in '.mat'])
 
 output_dest = [data_dir 'epoched/'];
 
