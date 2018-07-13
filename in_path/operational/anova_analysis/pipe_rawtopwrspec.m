@@ -51,7 +51,7 @@ end
 
 %% preprocessing - 1: epoch the data.
 % call epoch_and_separate
-load([data_dir '../raw/' filename_in '.mat'])
+load(fullfile(data_dir, '../../raw/', [filename_in '.mat']))
 
 output_dest = [data_dir 'epoched/'];
 
