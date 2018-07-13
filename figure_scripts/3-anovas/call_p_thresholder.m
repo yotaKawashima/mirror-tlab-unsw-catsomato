@@ -1,11 +1,38 @@
+% Calls the p_thresholder function
 
-loadme = '/media/rannee/UNSW_Cat_Somatos/data/included_datasets/C20110510_R05_S1_F023A1F000to250_P2_anoved_rsampsl_biprref_evkresp_cmtspwr_adatout.mat';
+%% Set your selection here
+% Put a string with cat name. Leave empty to grab all files. 
+cats = []; 
 
-data_dir = '/media/rannee/UNSW_Cat_Somatos/data/collated_data/anoved_rsampsl_biprref_cmtspwr';
-a = 1; 
-cat_name = 'C20110510_R05';
+% Put an int for area. Leave empty for all areas.
+areas = [];
 
-filename_out = [cat_name '*S' num2str(a)];
-q=0.05;
+% Set q here
+q = 0.05;
 
-p_thresholder(data_dir, 'C20110808_R03', q, false)
+% Run per file? false = run for all files together.
+ifperfile = false;
+
+%% Set overall variables
+run('../path_setup.m')
+
+%% Find list of files
+
+data_dir = fullfile(data_path, 'collated_data/anoved_rsampsl_biprref_cmtspwr');
+
+if isempty(cats)
+    fname_cat = 'C';
+else
+    fname_cat = cats;
+end
+
+if isempty(areas)
+    fname_area = '*';
+else
+    fname_area = num2str(areas);
+end
+
+fname_out = [fname_cat, '*S' fname_area];
+
+%% Call function
+p_thresholder(data_dir, fname_out, q, ifperfile);
