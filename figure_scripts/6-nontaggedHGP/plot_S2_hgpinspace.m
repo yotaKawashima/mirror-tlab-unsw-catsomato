@@ -1,37 +1,17 @@
 % Plots spacial distribution of channels with mean high gamma power
 
 %% Set overall variables
-
-% PREREQUISITES:
-% Add the git repo to path.
-
-% directory where the drive is mounted. 
-disk_path = '/media/rannee/UNSW_Cat_Somatos/';
-
-% set figure path to be this temporary directory that is not on the main
-% script or figure paths (this is a directory where the old and broken
-% scripts are kept).
-fig_path = [];
-
-% highest level directory of data
-data_path = [disk_path 'data/'];
-
-% directory with the raw files
-raw_path = [data_path 'raw/'];
-
-% path to third party toolboxes
-tool_path = [disk_path 'scripts/thirdparty_toolboxes/'];
-chron_dir = [tool_path 'chronux/'];
+run('../path_setup.m')
 
 %% Script specific variables
 cat_name = 'C20110808_R03';
-data_dir = [data_path 'included_datasets/' cat_name '/epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp'];
+data_dir = [data_path 'included_datasets/' cat_name '/epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp/'];
 
 filename = [cat_name '_S2_FxxxAxxx_FxxxAxxx_epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp.mat'];
 
 %% load
 a = 2;
-load(filename)
+load([data_dir, filename])
 
 %% preproc
 % work out which channels to keep (the bipolar ones)
