@@ -6,12 +6,13 @@
 
 %% options and selections - EDIT THIS SECTION
 % filename of the RAW data that is to be used. 
-filename_in = 'Cat20090505_Utah-21_LFPStimSegs';
+filename_in = 'Cat20110808_UtahRight-3_LFPStimSegs';
 
 % filename to be saved. 
-filename_out = 'C20110511_R02';
+filename_out = 'C20110808_R03';
 
-run('../../../figure_scripts/path_setup.m')
+% add directories to path
+run(fullfile(mfilename('fullpath'), '../../../../figure_scripts/path_setup.m'))
 
 % do you wish to use chronux to calculate power spectrum?
 chronspec = true;
