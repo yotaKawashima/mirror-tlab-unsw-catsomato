@@ -29,14 +29,6 @@ fnames = dir(fullfile(data_dir, [fig1_catname, '*', fig1_area, '*.mat']));
 nConds = length(fnames);
 load(fullfile(data_dir, fnames(nConds).name)) % load the last one
 
-% need to reset the 0 timepoint. To do this, need to load (part of) the raw. 
-load([raw_path fig1_rawfile], 'stimTime')
-
-% originally, the time is set to 0 when the ramp starts. so to set 0 where
-% the vibration starts, need to subtract rampup and presine
-offset = stimTime.rampup + stimTime.presine;
-offset_time = data.time{1} - offset;
-
 % find the domain of the plot
 [~, minind] = find_closest(offset_time, timeran(1));
 [~, maxind] = find_closest(offset_time, timeran(2));
