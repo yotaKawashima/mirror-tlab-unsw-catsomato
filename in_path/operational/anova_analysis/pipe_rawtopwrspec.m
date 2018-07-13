@@ -56,7 +56,7 @@ output_dest = [data_dir 'epoched/'];
 
 system(['mkdir ' output_dest]);
 
-epoch_and_separate(filename_in, tres, timestamp, lfp1_data, lfp2_data, stimFreqY, stimFreqX, stimMeshY, stimMeshX, output_dest, filename_out)
+epoch_and_separate(filename_in, tres, timestamp, lfp1_data, lfp2_data, stimFreqY, stimFreqX, stimMeshY, stimMeshX, stimTime, output_dest, filename_out)
 
 clear tres timestamp lfp1_data lfp2_data stimFreqY stimFreqX stimMeshY stimMeshX
 %% preprocessing - 2: resample
@@ -65,7 +65,9 @@ dir_sec = [data_dir 'epoched/'];
 
 loadname = dir(fullfile(dir_sec, [filename_out, '*.mat']));
 
-target = -0.5:0.0001:3.9;
+stimDur = stimTime.rampup + stimTime.presine + stimTime.sine + stimTime.postsine + stimTime.rampdown;
+target = -0.5:0.0001:stimDur+0.5; % this is the target in terms of the original timestamp
+target = target - stimTime.rampup - stimTime.presine;
 
 for i = 1:numel(loadname)
     load(fullfile(dir_sec, loadname(i).name))
