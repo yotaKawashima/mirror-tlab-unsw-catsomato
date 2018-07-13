@@ -1,14 +1,16 @@
 function p_thresholder(data_dir, filename_out, q, ifperfile)
 
-%loadme = '/media/rannee/UNSW_Cat_Somatos/data/included_datasets/C20110510_R05_S1_F023A1F000to250_P2_anoved_rsampsl_biprref_evkresp_cmtspwr_adatout.mat';
-
-% data_dir = '/media/rannee/UNSW_Cat_Somatos/data/included_datasets/';
-% a = 1; cat_name = 'C20110510_R05';
-% filename_out = [cat_name '*S' num2str(a)];
-% q=0.05;
-
-
-
+% P_THRESHOLDER: calculates a p value threshold and returns classes
+%
+% p_thresholder(data_dir, filename_out, q) loads each file pointed to by
+%   filename_out in data_dir. It then calculates a p-value threshold for
+%   significance using FDR. It thresholds the given p-values and then saves
+%   a file with the 'classes'. 
+%
+% p_thresholder(..., ifperfile) finds the p-value threshold individually
+%   for each file when ifperfile is true. It loads all p-values and
+%   determines the threshold for all files simultaneously when ifperfile is
+%   false. 
 
 if nargin < 4
     ifperfile = true;
@@ -19,8 +21,12 @@ loadname = dir(fullfile(data_dir, [filename_out '*adatout.mat']));
 
 pval_pool=[];
 
+n_files = numel(loadname);
 
-for f = 1:numel(loadname)
+
+for f = 1:n_files
+    fprintf('Processing file %2i of %2i\n', f, n_files)
+    
     load(fullfile(data_dir, loadname(f).name))
 
     
@@ -46,6 +52,8 @@ for f = 1:numel(loadname)
     
 
 end
+
+fprintf('Processing complete\n')
 
 if ~ifperfile
     [pID, ~] = eeglab_fdr(pval_pool, q, 'parametric');
