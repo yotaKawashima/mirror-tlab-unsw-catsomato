@@ -55,6 +55,7 @@ load(fullfile(data_dir, '../../raw/', [filename_in '.mat']))
 
 output_dest = [data_dir 'epoched/'];
 
+system(['mkdir ' data_dir]);
 system(['mkdir ' output_dest]);
 
 epoch_and_separate(filename_in, tres, timestamp, lfp1_data, lfp2_data, stimFreqY, stimFreqX, stimMeshY, stimMeshX, stimTime, output_dest, filename_out)
