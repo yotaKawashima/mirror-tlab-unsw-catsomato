@@ -10,7 +10,7 @@ data_dir = [data_path 'included_datasets/' cat_name '/epoched_rsampsl_biprref_ev
 filename = [cat_name '_S2_FxxxAxxx_FxxxAxxx_epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp.mat'];
 
 %% load
-a = 2;
+
 load([data_dir, filename])
 
 %% preproc
