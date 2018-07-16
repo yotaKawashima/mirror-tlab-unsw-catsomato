@@ -2,8 +2,8 @@ function [mask, maskedf] = makefreqmask(fs, foi, fband, hbw)
 
 % makefreqmask: makes a mask to remove tagged frequencies.
 %
-% mask = makefreqmask(fs, foi) returns a vector the same length as fs where
-% values equal to foi are equal to zero. All other vallues are 1.
+% mask = makefreqmask(fs, foi) returns a logical the same length as fs
+% where values equal to foi are equal to zero. All other vallues are 1.
 %
 % mask = makefreqmask(fs, foi, fband) also sets values less than fband(1)
 % and greater than fband(end) equal to 0.
@@ -43,8 +43,8 @@ for k = 1:numel(foi)
     mask(m-hbwS:m+hbwS) = 0;
 end
 
-
+mask = logical(mask);
 
 if nargout > 1
-    maskedf = fs(logical(mask));
+    maskedf = fs(mask);
 end
