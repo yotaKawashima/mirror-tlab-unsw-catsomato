@@ -1,5 +1,20 @@
 function timecourse(data_dir, cat_name, area, winsize, params)
 
+% timecourse: calculates the spectrogram using chronux toolbox.
+%
+% timecourse(data_dir, cat_name) calculates the spectrogram for the data
+%   pointed to by cat_name in the directory data_dir. It uses default
+%   settings.
+%
+% timecourse(data_dir, cat_name, area) takes a string that identifies the
+%   area. The default value of area is 'S2'. Set to '*' for all areas.
+%   
+% timecourse(data_dir, cat_name, area, winsize) takes a double to set the
+%   window size. By default, winsize is set to 0.5.
+%
+% timecourse(data_dir, cat_name, area, winsize, params) takes a params
+%   struct to pass into mtspecgramc. For details, see chronux help. By
+%   default, params.tapers is set to [1,1] and params.pad is set to 1.
 
 % Partially adapted from chronux_pwrspec_v2, 13 Nov 2017
 
