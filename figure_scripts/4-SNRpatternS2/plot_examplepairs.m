@@ -9,14 +9,23 @@ plotpair{2} = [1, 51, 23];
 plotpair{3} = [1, 33, 200];
 
 %% Set overall variables
-run(fullfile(mfilepath('fullpath'), '../../path_setup.m'))
+run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% Set script specific variables
 data_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr_snrsurr';
 
 %% Find files
+
 % find list of names
-loadnames = dir(fullfile(data_path, cat, data_type, '*.mat'));
+data_dir = fullfile(data_path, 'included_datasets');
+loadnames = dir(fullfile(data_dir, cat_name, data_type, '*.mat'));
+
+% check if the data files exist! if not, make them.
+if isempty(loadnames)
+    call_snrtosurrounds(data_path, data_type(1:end-8), cat_name)
+    
+    loadnames = dir(fullfile(data_path, cat_name, data_type, '*.mat'));
+end
 
 % find some numbers
 nCond = numel(loadnames)/2;
@@ -28,7 +37,7 @@ meansnrs = cell(1, 2);
 FOIs = cell(2,1);
 for p = 1:numel(plotpair)
     % extract the frequencies of interest
-    FOIs(plotpair{p}(1)) = [FOIs(plotpair{p}(1)), plotpair{p}(3)];
+    FOIs{plotpair{p}(1)} = [FOIs{plotpair{p}(1)}, plotpair{p}(3)];
 end
 
 %% Get data
@@ -40,7 +49,7 @@ for a = 1:2
     for c = 1:nCond
         
         % load
-        load(fullfile(data_dir, cat, data_type, loadnames((a-1)*nCond + c).name))
+        load(fullfile(data_dir, cat_name, data_type, loadnames((a-1)*nCond + c).name))
         
         % if it's the first, preallocate some things
         if c==1
