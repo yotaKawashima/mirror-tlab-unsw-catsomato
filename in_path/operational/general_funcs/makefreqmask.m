@@ -13,10 +13,16 @@ function [mask, maskedf] = makefreqmask(fs, foi, fband, hbw)
 %
 % [mask, maskedf] = makefreqmask(...) returns the masked values of fs
 
-
+% set defaults
+if nargin < 3
+    fband(1) = fs(1);
+    fband(2) = fs(end);
+end
+if nargin < 4
+    hbw = 0;
+end
 
 % create problem band mask
-
 mask = ones(size(fs));
 
 % mask upper and lower
