@@ -1,7 +1,7 @@
 % Reads data and plots the results of the anova2. 
 
 %% Set overall variables
-run('../path_setup.m')
+run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% Setup
 % file path

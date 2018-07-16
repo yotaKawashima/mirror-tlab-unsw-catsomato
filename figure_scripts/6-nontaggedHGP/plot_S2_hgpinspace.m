@@ -1,7 +1,7 @@
 % Plots spacial distribution of channels with mean high gamma power
 
 %% Set overall variables
-run('../path_setup.m')
+run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% Script specific variables
 cat_name = 'C20110808_R03';
