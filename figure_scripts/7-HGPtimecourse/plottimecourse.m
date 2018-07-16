@@ -25,7 +25,7 @@ if ~exist(loadname, 'file')
     addpath(genpath(chron_dir))
     
     % call function
-    timecourse(data_dir(1:end-8), cat_name, S)
+    timecourse(data_dir(1:end-8), cat_naclme, S)
     
     % remove the chronux toolbox
     rmpath(genpath(chron_dir))
@@ -37,7 +37,7 @@ load(loadname)
 % get date for saving the output files
 dt = datestr(now, 'yyyymmdd');
 
-%%
+%% Plot colour images
 % grab power data, mean across trials
 p_tmp = data.trial;
 p_tmp = mean(p_tmp, 3); % channels x frequency x trials x timesteps
@@ -78,3 +78,19 @@ for k = 1:numel(chs)
     %pause() % Wait for manual verification
 end
 
+%% Plot line timecourse
+% Remove harmonics and intermodulation
+f1 = 23;
+f2 = 200;
+f_lo = 0;
+f_hi = 250;
+foi = sort(unique([f1:f1:f_hi f2:-f1:f_lo f2:f1:f_hi]));
+[mask, maskedf] = makefreqmask(data.freq{1}, foi, [50.5 149.5], 0.5);
+
+[mask2, ~] = makefreqmask(data.freq{1}, foi, [0.5 49.5], 0.5);
+[mask3, ~] = makefreqmask(data.freq{1}, foi, [150.5 250], 0.5);
+
+figure(3)
+plot(data.freq_t+data.custom.time(1), permute(mean(p_tmp(chs, mask, :, :), 2), [4,3,2,1]), 'b',...
+    data.freq_t+data.custom.time(1), permute(mean(p_tmp(chs, or(mask2,mask3), :, :), 2), [4,3,2,1]), 'r')
+legend({'High gamma band', 'outside HGB'})
