@@ -1,7 +1,7 @@
 % Plots items for summary figure
 
 %% Set overall variables
-run('../path_setup.m')
+run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% Figure 1, part a
 % Image of the cat brain. not implemented in matlab.

@@ -1,7 +1,7 @@
 % Plots the evoked power in each condition across 50-150 Hz
 
 %% Set overall variables
-run('../path_setup.m')
+run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% File specific variables
 cat_name = 'C20110808_R03';

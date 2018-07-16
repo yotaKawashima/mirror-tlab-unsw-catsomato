@@ -1,7 +1,7 @@
 % Plots the distribution of f-statistic from ANOVA over 0-250 Hz
 
 %% Set overall variables
-run('../path_setup.m')
+run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% by area
 
