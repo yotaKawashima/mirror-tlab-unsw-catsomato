@@ -19,6 +19,18 @@ filename = [cat_name '_' S '_' cond '_' data_type '.mat'];
 data_dir = fullfile(data_path, 'included_datasets', cat_name, data_type);
 loadname = fullfile(data_dir, filename);
 
+% find out if the data is already produced. if not, produce it.
+if ~exist(loadname, 'file')
+    % add the chronux toolbox
+    addpath(genpath(chron_dir))
+    
+    % call function
+    timecourse(data_dir(1:end-8), cat_name, S)
+    
+    % remove the chronux toolbox
+    rmpath(genpath(chron_dir))
+end
+
 % load data
 load(loadname)
 
