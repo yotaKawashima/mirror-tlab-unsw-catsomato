@@ -55,9 +55,9 @@ dontsave    = p.Results.dontsave;
 %% load, collate and save
 if numel(fromfile)>0
     % load existing file
-    load(fullfile(data_dir, data_type, fromfile))
+    load(fullfile(data_dir, fromfile))
     
-else
+elseif strcmp(data_type(end-6:end), 'avtrcon')
     % make file
     
     % find cats
@@ -83,7 +83,40 @@ else
         % save this data
         save(data.custom.filename, 'data')
     end
+else % generic condition
+    
+    data_out = [];
+    
+    cat_names = dirsinside(data_dir);
+    
+    for c = 1:numel(cat_names)
+        
+        loadnames = dir(fullfile(data_dir, cat_names{c}, data_type, '*.mat'));
+        
+        for k = 1:numel(loadnames)
+            % load
+            load(fullfile(data_dir, cat_names{c}, data_type, loadnames(k).name))
+
+            % get it into the avtrcon format
+            data_tmp = data.trial;
+            data_tmp = mean(data.trial, 3);
+
+            % smush
+            data_out = [data_out;data_tmp];
+        end
+    end
+        
+    data_out(isinf(data_out)) = NaN;
+    data.trial = data_out;
+    data.custom.filename(2:13) = 'xxxxxxxx_Rxx';
+    
+    if nargout < 1 && ~dontsave
+        % save this data
+        save(data.custom.filename, 'data')
+    end
 end
+
+%% plot mean
 
 if plotmean
     if islogical(plotmean)
