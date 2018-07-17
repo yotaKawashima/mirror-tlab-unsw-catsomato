@@ -187,7 +187,7 @@ if ifttest || (~ifttest&&plotttest)
         tstats(f) = stats.tstat;
     end
     
-    if nargout < 1
+    if nargout < 1 && ~dontsave
         save([data.custom.filename '_ttested'], 'hs', 'ps', 'cis', 'stats', 'tstats')
     end
 end
