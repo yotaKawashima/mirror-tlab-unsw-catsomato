@@ -17,6 +17,7 @@ function data = collectallcats(data_dir, data_type, varargin)
 %   	channels. Default false.
 %   dontsave: logical or numeric. overwrites default save behaviour. When
 %       true, does not save the data. 
+%   domain
 %
 % data = collectallcats(...) does not save the data to a file and instead
 % outputs it to the workspace in the struct data.
@@ -42,6 +43,7 @@ addParameter(p, 'plotttest', false, numorlog);
 addParameter(p, 'plotmean', false, numorlog);
 addParameter(p, 'trials', false, numorlog);
 addParameter(p, 'dontsave', false, numorlog);
+addParameter(p, 'domain', [], @isnumeric);
 
 parse(p, data_dir, data_type, varargin{:})
 
@@ -51,6 +53,7 @@ plotmean    = p.Results.plotmean;
 plotttest   = p.Results.plotttest;
 trials      = p.Results.trials;
 dontsave    = p.Results.dontsave;
+domain      = p.Results.domain;
 
 %% load, collate and save
 if numel(fromfile)>0
@@ -125,13 +128,18 @@ if plotmean
         figure(plotmean)
     end
     
-    plot(data.freq{1}, nanmean(data.trial, 1))
+    if isempty(domain)
+        plot(data.freq{1}, nanmean(data.trial, 1))
+    else
+        [~, a] = find_closest(data.freq{1}, domain(1));
+        [~, b] = find_closest(data.freq{1}, domain(end));
+        plot(data.freq{1}(a:b), nanmean(data.trial(:,a:b,:), 1))
+    end
     
     xlabel('frequency')
     ylabel('power')
     
 end
-
 
 %% do the t-test, if required.
 if ifttest || (~ifttest&&plotttest)
