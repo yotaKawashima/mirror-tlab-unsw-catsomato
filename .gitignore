@@ -1,2 +1,7 @@
 # ignore auto-generated backup files from matlab
 *.*~
+
+# ignore outputs from processing
+*.mat
+*.png
+*.eps
