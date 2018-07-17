@@ -15,6 +15,8 @@ function data = collectallcats(data_dir, data_type, varargin)
 %       figure. If numeric, plots on that figure. Default false.
 %   plotmean: logical or numeric. Same as plotttest, but for mean across
 %   	channels. Default false.
+%   dontsave: logical or numeric. overwrites default save behaviour. When
+%       true, does not save the data. 
 %
 % data = collectallcats(...) does not save the data to a file and instead
 % outputs it to the workspace in the struct data.
@@ -39,6 +41,7 @@ addParameter(p, 'ifttest', false, numorlog);
 addParameter(p, 'plotttest', false, numorlog);
 addParameter(p, 'plotmean', false, numorlog);
 addParameter(p, 'trials', false, numorlog);
+addParameter(p, 'dontsave', false, numorlog);
 
 parse(p, data_dir, data_type, varargin{:})
 
@@ -47,6 +50,7 @@ ifttest     = p.Results.ifttest;
 plotmean    = p.Results.plotmean;
 plotttest   = p.Results.plotttest;
 trials      = p.Results.trials;
+dontsave    = p.Results.dontsave;
 
 %% load, collate and save
 if numel(fromfile)>0
@@ -75,7 +79,7 @@ else
     data.trial = data_out;
     data.custom.filename(2:13) = 'xxxxxxxx_Rxx';
     
-    if nargout < 1
+    if nargout < 1 && ~dontsave
         % save this data
         save(data.custom.filename, 'data')
     end
