@@ -87,9 +87,11 @@ f_hi = 250;
 foi = sort(unique([f1:f1:f_hi f2:-f1:f_lo f2:f1:f_hi]));
 [mask, maskedf] = makefreqmask(data.freq{1}, foi, [50.5 149.5], 0.5);
 
+% find power outside of HGB
 [mask2, ~] = makefreqmask(data.freq{1}, foi, [0.5 49.5], 0.5);
 [mask3, ~] = makefreqmask(data.freq{1}, foi, [150.5 250], 0.5);
 
+% plot
 figure(3)
 plot(data.freq_t+data.custom.time(1), permute(mean(p_tmp(chs, mask, :, :), 2), [4,3,2,1]), 'b',...
     data.freq_t+data.custom.time(1), permute(mean(p_tmp(chs, or(mask2,mask3), :, :), 2), [4,3,2,1]), 'r')
