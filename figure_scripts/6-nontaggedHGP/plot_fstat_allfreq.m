@@ -3,6 +3,12 @@
 %% Set overall variables
 run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
+%% Set script specific variables
+data_dir = fullfile(data_path, 'included_datasets');
+datatype = 'epoched_rsampsl_biprref_evkresp_cmtspwr_adatain_adatout_fstonly';
+%data_dir = fullfile(data_path, '/collated_data/anoved_rsampsl_biprref_evkresp_cmtspwr_adatout_fstonly');
+
+
 %% by area
 
 ylimits = zeros(2, 2);
@@ -15,13 +21,15 @@ for a = 1:2
     area = ['_S' num2str(a) '_'];
     
     % find names
-    
-    loadname = dir(fullfile(data_dir, ['*' area '*.mat']));
+    cat_names = dirsinside(data_dir);
+    for k = 1:numel(cat_names)
+        loadname(k) = dir(fullfile(data_dir, cat_names{k}, datatype, ['*' area '*.mat']));
+    end
     
     allf = [];
     
     for k = 1:numel(loadname)
-        load(fullfile(data_dir, loadname(k).name))
+        load(fullfile(data_dir, cat_names{k}, datatype, loadname(k).name))
         
         allf = [allf; fstats];
         
