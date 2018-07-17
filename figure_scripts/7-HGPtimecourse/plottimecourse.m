@@ -94,3 +94,5 @@ figure(3)
 plot(data.freq_t+data.custom.time(1), permute(mean(p_tmp(chs, mask, :, :), 2), [4,3,2,1]), 'b',...
     data.freq_t+data.custom.time(1), permute(mean(p_tmp(chs, or(mask2,mask3), :, :), 2), [4,3,2,1]), 'r')
 legend({'High gamma band', 'outside HGB'})
+
+print(gcf, '-depsc', ['HGPtimecourseline_' cat_name '_S' S '_Ch' num2str(chs(k), '%03i') '_' dt])
