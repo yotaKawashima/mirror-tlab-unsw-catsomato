@@ -40,7 +40,7 @@ hbwS = floor(hbw/spacing)+1;
 for k = 1:numel(foi)
     [~, m] = find_closest(fs, foi(k));
     
-    mask(m-hbwS:m+hbwS) = 0;
+    mask(max([m-hbwS,0]):min([m+hbwS, numel(fs)])) = 0;
 end
 
 mask = logical(mask);
