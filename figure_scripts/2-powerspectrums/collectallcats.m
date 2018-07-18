@@ -110,7 +110,7 @@ else % generic condition
     end
         
     data_out(isinf(data_out)) = NaN;
-    data.trial = data_out;
+    data.trial = nanmean(data_out, 1);
     data.custom.filename(2:13) = 'xxxxxxxx_Rxx';
     
     if nargout < 1 && ~dontsave
