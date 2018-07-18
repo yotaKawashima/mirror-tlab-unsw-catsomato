@@ -91,10 +91,18 @@ foi = sort(unique([f1:f1:f_hi f2:-f1:f_lo f2:f1:f_hi]));
 [mask2, ~] = makefreqmask(data.freq{1}, foi, [0.5 49.5], 0.5);
 [mask3, ~] = makefreqmask(data.freq{1}, foi, [150.5 250], 0.5);
 
+% find the baseline (from -0.7 to -0.2)
+timeaxis = data.freq_t+data.custom.time(1);
+[~, t1] = find_closest(timeaxis, -0.7);
+[~, t2] = find_closest(timeaxis, -0.2);
+p_tcf = permute(p_tmp, [4, 1, 2, 3]); % time x chan x freq
+basefreq = mean(p_tcf(t1:t2, :, :), 1);
+p_norm = p_tcf - repmat(basefreq, [size(p_tcf, 1),1,1]);
+
 % plot
 figure(3)
-plot(data.freq_t+data.custom.time(1), permute(mean(p_tmp(chs, mask, :, :), 2), [4,3,2,1]), 'b',...
-    data.freq_t+data.custom.time(1), permute(mean(p_tmp(chs, or(mask2,mask3), :, :), 2), [4,3,2,1]), 'r')
+plot(timeaxis, mean(p_norm(:, chs, mask),3), 'b', timeaxis, mean(p_norm(:, chs, or(mask2,mask3)),3), 'r')
 legend({'High gamma band', 'outside HGB'})
-
-print(gcf, '-depsc', ['HGPtimecourseline_' cat_name '_S' S '_Ch' num2str(chs(k), '%03i') '_' dt])
+xlabel('time (s)')
+ylabel('normalised power (dB)')
+print(gcf, '-dpng', ['HGPtimecourseline_' cat_name '_S' S '_Ch' num2str(chs(k), '%03i') '_' dt])
