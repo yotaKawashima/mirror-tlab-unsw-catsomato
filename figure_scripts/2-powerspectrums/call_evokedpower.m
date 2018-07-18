@@ -1,7 +1,7 @@
 function call_evokedpower(data_path, datatype_in, cat_name)
 
 data_dir = fullfile(data_path, 'included_datasets', cat_name, '/');
-dir_sec = fullfile(data_dir, datatype_in);
+dir_sec = fullfile(data_dir, datatype_in, '/');
 
 for a = 1:2
 
