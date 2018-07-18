@@ -29,6 +29,7 @@ else
 
         % check if the data files exist! if not, make them.
         if isempty(loadnames)
+            fprint('Creating SNR files\n')
             call_snrtosurrounds(data_path, data_type(1:end-8), cat_names{c})
         end
     end
@@ -45,12 +46,13 @@ if ~isempty(fname)
     collectallcats(premade_data, data_type, 'plotmean', 3, 'plotttest', 5, 'fromfile', fname.name)
 else
     
-    % check if snrsurr files exist
+    % check if files exist
     for c = 1:numel(cat_names)
         loadnames = dir(fullfile(data_dir, cat_names{c}, data_type, '*.mat'));
 
         % check if the data files exist! if not, make them.
         if isempty(loadnames)
+            fprint('Creating evoked power files\n')
             call_evokedpower(data_path, data_type(1:end-8), cat_names{c})
         end
     end
