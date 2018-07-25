@@ -75,13 +75,13 @@ for k = 1:nchans
 end
 end
 metavars = rmfield(data, 'y');
-metavars.custom.filename = [fname.name(1:end-11) 'adatout.mat'];
+metavars.custom.filename = [metavars.custom.filename(1:end-8) '_adatout'];
 
 clear data
 
 save(metavars.custom.filename, 'metavars', 'tables', 'pvals', 'stats')
 
-afpc_filemover(data.custom.filename(1:13), [datain_dir(1:end-1), '_adatain/'], 'adatout')
+afpc_filemover(metavars.custom.filename(1:13), [datain_dir(1:end-1), '_adatain/'], 'adatout')
 
 if nargout < 1
     clear pvals tables stats
