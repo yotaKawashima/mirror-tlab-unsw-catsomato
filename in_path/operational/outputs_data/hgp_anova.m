@@ -75,7 +75,7 @@ for k = 1:nchans
 end
 end
 metavars = rmfield(data, 'y');
-metavars.custom.filename = [metavars.custom.filename(1:end-8) '_adatout'];
+metavars.custom.filename = [metavars.custom.filename(1:end-8) '_adatout.mat'];
 
 clear data
 
