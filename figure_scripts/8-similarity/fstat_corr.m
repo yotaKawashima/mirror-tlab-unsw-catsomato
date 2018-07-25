@@ -5,43 +5,81 @@ run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 % find filenames
 data_dir = fullfile(data_path, 'included_datasets'); 
 data_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr_adatain_adatout_fstonly';
+hgp_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp_adatain_adatout_fstonly';
 
-%% Get data filenames
-% find out if the data exists, where it is, and if it doesn't exist, make
-% it.
-
-% Since the names follow a known pattern, generate one and then generate
-% the rest by repeating it.
-
+%% Load all of the data 
 % Find name for a single cat
 cat_names = dirsinside(data_dir);
-dir_sec = fullfile(data_dir, cat_names{1}, data_type, '/');
-loadname = dir(fullfile(dir_sec, '*.mat'));
 
-% Check if the files exist. If not, make them
-if isempty(loadname)
-    extract_fstat(data_path, data_type(1:end-8))
+% preallocate
+allcat_fstats = cell(2,1); % holds all of the f-statistics
+
+% frequencies of interest
+foi = [23:23:250 200:-23:0];
+
+for c = 1:numel(cat_names)
+    % find names
+    dir_sec = fullfile(data_dir, cat_names{c}, data_type, '/');
     loadname = dir(fullfile(dir_sec, '*.mat'));
-end
+    dir_hgp = fullfile(data_dir, cat_names{c}, hgp_type, '/');
+    hgpname = dir(fullfile(dir_hgp, '*.mat'));
+    
+    for a = 1:2
+        % load frequency data
+        load(fullfile(dir_sec, loadname(a).name))
 
-% Make the struct name into a matrix
-nFiles = numel(loadname);
-loadname = struct2cell(loadname);
-loadname = cell2mat(loadname(1, :)');
-loadname = horzcat(repmat(dir_sec, [nFiles, 1]), loadname);
-
-% duplicate for the rest of the cats
-nCats = numel(cat_names);
-all_names = repmat(loadname, [nCats,1]);
-data_dir_ind = length(data_dir) + 2;
-dir_sec_ind = length(dir_sec) + 1;
-cat_length = length(cat_names{1});
-for k = 2:nCats
-    for m = 1:nFiles
-        all_names((k-1)*nFiles+m, data_dir_ind:data_dir_ind+cat_length-1) = cat_names{k};
-        all_names((k-1)*nFiles+m, dir_sec_ind:dir_sec_ind+cat_length-1) = cat_names{k};
+        % get fois if needed
+        if c == 1 && a == 1
+            [~, ind] = find_closest(metavars.freq{1}, foi);
+        end
+        
+        % main fstats
+        f_tmp = fstats(:, ind, :);
+        
+        % load HGP data
+        load(fullfile(dir_hgp, loadname(a).name))
+        
+        % stick it on the end
+        f_tmp = [f_tmp, fstats];
+        
+        % deal with any NaNs
+        f_nan = mean(mean(f_tmp, 2), 3); % any NaNs will propogate
+        nonnans = find(~isnan(f_nan));
+        f_tmp = f_tmp(nonnans, :, :);
+        
+        % truss
+        allcat_fstats{a} = [allcat_fstats{a}; f_tmp];
     end
+    
 end
 
-%% Load files and pre-process
+%% Plot and save
+for a = 1:2
+    % plot corr
+    figure((a-1)*4+1)
+    tmp = horzcat(allcat_fstats{a}(:, :, 1),allcat_fstats{a}(:, :, 2),allcat_fstats{a}(:, :, 3));
+    
+    tmp1 = corrcoef(tmp);
+    
+    imagesc(tmp1)
+    clim = get(gca, 'CLim');
+    ytl = [foi, 0, foi, 0, foi, 0];
+    set(gca, 'clim', [-0.06, 1])
+    set(gca, 'yticklabel', ytl)
+    set(gca, 'ytick', 1:length(ytl))
+    set(gca, 'xticklabel', ytl)
+    set(gca, 'xtick', 1:length(ytl))
+    colorbar
 
+    print(gcf, imgtype, ['correlationmatrix_S' num2str(a)])
+    
+    % save
+    %corrdata = tmp;
+    %save(['S' num2str(a) '_corrdata_withNaNs'], 'corrdata')
+    
+end
+
+%% Save
+for a = 1:2
+    
+end
