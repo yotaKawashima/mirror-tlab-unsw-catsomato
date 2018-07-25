@@ -208,7 +208,7 @@ call_hgpanova(data_path, dir_sec, filename_out)
 %% HGP: anova - grab the fstats only
 % this calculates it for all known cats, skipping those that have already
 % been done.
-data_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '_adatain_adatout/'];
+data_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '_evkdpwr_hgpcomp_adatain_adatout/'];
 
 extract_fstat(data_path, data_sec)
 
