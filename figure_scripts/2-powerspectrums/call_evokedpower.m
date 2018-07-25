@@ -9,10 +9,13 @@ for a = 1:2
 
     load(fullfile(dir_sec, loadname(1).name))
     baseline = data;
+    
+    baseline = calc_evoked_power(baseline, baseline, 1);
+    save(data.custom.filename, 'data')
 
     for i = 2:numel(loadname)
         load(fullfile(dir_sec, loadname(i).name))
-        data = calc_evoked_power(data, baseline, []);
+        data = calc_evoked_power(data, baseline, 0);
 
         save(data.custom.filename, 'data')
 
