@@ -43,8 +43,13 @@ for k = 1:numel(cat_names)
         
         for ch = 1:nChan
             for f = 1:nFreq
-                fstats(ch, f, :) = cell2mat(tables{ch, f}(2:4, 5));
-                
+                if isempty(tables{ch, f})
+                    % table will be empty is invalid, so need to handle
+                    % this error.
+                    fstats(ch, f, :) = [NaN NaN NaN];
+                else
+                    fstats(ch, f, :) = cell2mat(tables{ch, f}(2:4, 5));
+                end
             end
         end
         
