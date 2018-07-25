@@ -201,9 +201,9 @@ data_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '_evkdpwr/'];
 call_highgammapower(data_path, data_sec, filename_out)
 
 %% HGP: anova
-dir_sec = [data_dir 'epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '_evkdpwr_hgpcomp/'];
+dir_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '_evkdpwr_hgpcomp/'];
 
-hgp_anova(data, dir_sec)
+call_hgpanova(data_path, dir_sec, filename_out)
 
 %% HGP: anova - grab the fstats only
 % this calculates it for all known cats, skipping those that have already
