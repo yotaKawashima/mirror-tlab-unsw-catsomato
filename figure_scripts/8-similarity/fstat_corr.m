@@ -32,7 +32,7 @@ for c = 1:numel(cat_names)
 
         % get fois if needed
         if c == 1 && a == 1
-            [~, ind] = find_closest(metavars.freq{1}, foi);
+            [~, ind] = parfind_closest(metavars.freq{1}, foi);
         end
         
         % main fstats
