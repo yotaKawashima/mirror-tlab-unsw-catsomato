@@ -39,10 +39,10 @@ for c = 1:numel(cat_names)
         f_tmp = fstats(:, ind, :);
         
         % load HGP data
-        load(fullfile(dir_hgp, loadname(a).name))
+        load(fullfile(dir_hgp, hgpname(a).name))
         
         % stick it on the end
-        f_tmp = [f_tmp, fstats];
+        f_tmp = [f_tmp, permute(fstats, [2, 1, 3])];
         
         % deal with any NaNs
         f_nan = mean(mean(f_tmp, 2), 3); % any NaNs will propogate
