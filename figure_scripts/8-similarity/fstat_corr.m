@@ -7,6 +7,8 @@ data_dir = fullfile(data_path, 'included_datasets');
 data_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr_adatain_adatout_fstonly';
 hgp_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp_adatain_adatout_fstonly';
 
+imgtype = '-depsc';
+
 %% Load all of the data 
 % Find name for a single cat
 cat_names = dirsinside(data_dir);
