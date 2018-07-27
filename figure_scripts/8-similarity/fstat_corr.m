@@ -76,12 +76,7 @@ for a = 1:2
     print(gcf, imgtype, ['correlationmatrix_S' num2str(a)])
     
     % save
-    %corrdata = tmp;
-    %save(['S' num2str(a) '_corrdata_withNaNs'], 'corrdata')
-    
-end
-
-%% Save
-for a = 1:2
+    corrdata = tmp;
+    save(['S' num2str(a) '_corrdata_withNaNs'], 'corrdata')
     
 end
