@@ -125,7 +125,7 @@ for a = 1:2
     % plot
     img = NaN(15);
     for k = 1:3
-        tmp = eye(5);
+        tmp = zeros(5);
         tmp(1, 4) = x(k, 1);
         tmp(1, 2) = x(k, 2);
         tmp(1, 3) = x(k, 3);
@@ -137,7 +137,9 @@ for a = 1:2
         tmp(2, 5) = x(k, 9);
         tmp(3, 5) = x(k, 10);
         
-        tmp = (tmp+tmp') - eye(size(tmp,1)); % make symmetrical
+        tmp = tmp+tmp'; % make symmetrical
+        % tmp = tmp+eye(5); % include for 1s on the diagonal
+        tmp(1:6:end) = NaN; % include for NaNs on the diagonal
         
         s_ind = (k-1)*5+1;
         img(s_ind:s_ind+4, s_ind:s_ind+4) = tmp;
