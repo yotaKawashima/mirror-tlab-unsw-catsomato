@@ -123,22 +123,6 @@ for a = 1:2
     
     
     % plot
-    
-%     mark = 'os';
-%     col = 'rgb';
-%     hold on
-%     for k = 1:3
-%         h = errorbar(x(k, :), y(k, :), xl(k, :), xu(k, :), 'horizontal', mark(a));
-%         set(h, 'LineWidth', 2, 'Color', col(k))
-%     end
-%     legend({'Main Effect 23', 'Main Effect 200', 'Interaction'}, ...
-%         'Location', 'SouthOutside', 'Orientation', 'Horizontal')
-%     hold off
-    
-%     ax(a) = gca;
-%     
-%     xlim_tmp(a, :) = get(gca, 'XLim');
-
     img = NaN(15);
     for k = 1:3
         tmp = eye(5);
@@ -160,8 +144,6 @@ for a = 1:2
         
     end
     
-
-
     figure(a)
     
     %imagesc(img,'AlphaData',~isnan(img))
@@ -171,17 +153,3 @@ for a = 1:2
 
     print(gcf, imgformat, ['S' num2str(a) '_correlationbars']);
 end
-
-% title('S1 = circle, S2 = square')
-
-% xlim(1) = min(xlim_tmp(:, 1));
-% xlim(2) = max(xlim_tmp(:, 2));
-% 
-% 
-% for a = 1:2
-%     figure(a)
-%     set(ax(a), 'XLim', xlim);
-%     title(['S' num2str(a)])
-%     print(gcf, imgformat, ['S' num2str(a) '_correlationbars']);
-%     
-% end
