@@ -58,15 +58,15 @@ end
 %% Plot and save
 for a = 1:2
     % plot corr
-    figure((a-1)*4+1)
-    tmp = horzcat(allcat_fstats{a}(:, :, 1),allcat_fstats{a}(:, :, 2),allcat_fstats{a}(:, :, 3));
+    figure((a-1)*2+1)
+    corrdata = horzcat(allcat_fstats{a}(:, :, 1),allcat_fstats{a}(:, :, 2),allcat_fstats{a}(:, :, 3));
     
-    tmp1 = corrcoef(tmp);
+    [tmp1, P] = corrcoef(log(corrdata));
     
     imagesc(tmp1)
     clim = get(gca, 'CLim');
-    ytl = [foi, 0, foi, 0, foi, 0];
-    set(gca, 'clim', [-0.06, 1])
+    ytl = [foi, 0, foi, 0, foi, 0]; % 0 is HGP
+    set(gca, 'clim', [0, 1])
     set(gca, 'yticklabel', ytl)
     set(gca, 'ytick', 1:length(ytl))
     set(gca, 'xticklabel', ytl)
@@ -76,7 +76,18 @@ for a = 1:2
     print(gcf, imgtype, ['correlationmatrix_S' num2str(a)])
     
     % save
-    corrdata = tmp;
     save(['S' num2str(a) '_corrdata_withNaNs'], 'corrdata')
     
+    figure((a-1)*2+2)
+    imagesc(P)
+    clim = get(gca, 'CLim');
+    ytl = [foi, 0, foi, 0, foi, 0]; % 0 is HGP
+    set(gca, 'clim', [0, 1])
+    set(gca, 'yticklabel', ytl)
+    set(gca, 'ytick', 1:length(ytl))
+    set(gca, 'xticklabel', ytl)
+    set(gca, 'xtick', 1:length(ytl))
+    colorbar
+    
+    print(gcf, imgtype, ['correlationmatrix_S' num2str(a) '_pvals'])
 end
