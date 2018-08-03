@@ -148,10 +148,20 @@ for a = 1:2
     
     figure(a)
     
-    %imagesc(img,'AlphaData',~isnan(img))
     nanimage(img);
-    shading flat;
-    set(gca, 'ydir', 'reverse');
+    
+    ytl = {'f1', 'harmonics', 'intermodulation', 'f2', 'HGP'};
+    set(gca, 'YTick', 0.5:1:15.5)
+    set(gca, 'YTickLabel', cat(2, 0, repmat(ytl, [1,3]), 0))
+    set(gca, 'XTick', 0.5:1:15.5)
+    colorbar
+    
+    if ~verLessThan('matlab', '8.4')
+        set(gca, 'XTickLabel', cat(2, 0, repmat(ytl, [1,3]), 0))
+        set(gca, 'XTickAngle', 90)
+    else
+        set(gca, 'XTickLabel', [])
+    end
 
     print(gcf, imgformat, ['S' num2str(a) '_correlationbars']);
 end
