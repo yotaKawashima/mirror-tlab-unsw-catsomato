@@ -1,4 +1,4 @@
-function [p, FV] = draw_biprref(values, ch_label, spatial_cfg, clim)
+function [p, FV] = draw_biprref(values, ch_label, spatial_cfg, clim, nancolor)
 
 % draw_biprref: Calls the patch function to plot bipolar re-referenced data
 %   draw_biprref(values, ch_label, spatial_cfg) draws the image.
@@ -28,6 +28,10 @@ function [p, FV] = draw_biprref(values, ch_label, spatial_cfg, clim)
 %               updated clim in case of NaN (assigned min value) and +/-Inf
 %               (assigned max/min value)
 %   Jul 2017:   added NaN-ignoring versions of min/max for CLim property
+
+if nargin < 5
+    nancolor = false;
+end
 
 % call subfunctions
 vertices = make_vertices(spatial_cfg(2), spatial_cfg(1));
@@ -63,6 +67,11 @@ else % use limits of data if no limits provided (no arg or empty arg)
     
     set(gca,'CLim',[nanmin(values) nanmax(values)])
 end
+if nancolor
+    % then process the data so that NaNs can be differently colored
+    values(isnan(values)) = clim(1)-1;
+end
+
 cdata = values;
 set(p,'FaceColor','flat','FaceVertexCData',cdata,'CDataMapping','scaled')
 axis tight
