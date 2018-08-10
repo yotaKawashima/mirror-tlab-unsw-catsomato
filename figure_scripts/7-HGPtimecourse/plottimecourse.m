@@ -25,7 +25,7 @@ if ~exist(loadname, 'file')
     addpath(genpath(chron_dir))
     
     % call function
-    timecourse(data_dir(1:end-8), cat_naclme, S)
+    timecourse(data_dir(1:end-8), cat_name, S)
     
     % remove the chronux toolbox
     rmpath(genpath(chron_dir))
