@@ -28,12 +28,12 @@ if nargin < 4
     winsize = 0.5;
 end
 
-dir_sec = fullfile(data_dir, cat_name, 'epoched_rsampsl_biprref/');
+% dir_sec = fullfile(data_dir, cat_name, 'epoched_rsampsl_biprref/');
 
-loadname = dir(fullfile(dir_sec, ['*' area '*.mat']));
+loadname = dir(fullfile(data_dir, ['*' area '*.mat']));
 
 for k = 1:numel(loadname);
-    load(fullfile(dir_sec, loadname(k).name))
+    load(fullfile(data_dir, loadname(k).name))
    
     clear powers
     
