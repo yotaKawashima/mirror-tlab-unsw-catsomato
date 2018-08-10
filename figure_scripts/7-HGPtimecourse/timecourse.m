@@ -107,3 +107,5 @@ for k = 1:numel(loadname);
 end
 
 fprintf('Exited function timecourse.\n')
+
+afpc_filemover([cat_name '*.mat'], data_dir, 'cmtsgrm')
