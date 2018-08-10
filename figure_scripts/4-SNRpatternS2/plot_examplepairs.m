@@ -123,12 +123,13 @@ end
 
 %% Plot spatial map
 fnum=1; % first figure number
-cmap = 'hot';
+
 
 nAreas = numel(meansnrs);
 [nChans, nFOI, nConds] = size(meansnrs{1});
 
 clim = find_lims(meansnrs);
+cmap = [0.8275*[1 1 1]; hot(ceil(diff(clim))*10)];
 
 for a = 1:nAreas
     
@@ -151,7 +152,8 @@ for a = 1:nAreas
             subtightplot(condfig(1), condfig(2), co)
             % goes across rows
             
-            draw_biprref(meansnrs{a}(:,f,co), relabels, spatialconfigs{a}, clim)
+            values = meansnrs{a}(:,f,co);
+            [p, FV] = draw_biprref(values, relabels, spatialconfigs{a}, clim, true);
             colormap(cmap)
         end
         
@@ -174,3 +176,5 @@ caxis(clim)
 print(gcf, '-depsc', 'Figure5_colorbar')
 
 %% Plot single channels
+fnum = (a-1)*nAreas + (f-1) + fnum+2;
+
