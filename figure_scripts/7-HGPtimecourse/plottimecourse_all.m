@@ -94,9 +94,14 @@ p_norm = p_tcf - repmat(basefreq, [size(p_tcf, 1),1,1]);
 
 % plot
 figure(3)
-plot(timeaxis, mean(p_norm(:, :, mask),3), 'b', timeaxis, mean(p_norm(:, :, or(mask2,mask3)),3), 'r')
+p = plot(timeaxis, mean(p_norm(:, :, mask),3), 'b', ...
+    timeaxis, mean(p_norm(:, :, or(mask2,mask3)),3), 'r');
 legend({'High gamma band', 'outside HGB'})
 xlabel('time (s)')
 ylabel('normalised power (dB)')
+
+set(p(1), 'LineWidth', 3)
+set(p(2), 'LineWidth', 2)
+
 % TODO: re-enable printing
 % print(gcf, '-dpng', ['HGPtimecourseline_' cat_name '_S' S '_Ch' num2str(chs(k), '%03i') '_' dt])
