@@ -7,7 +7,7 @@ S = 'S2';
 
 % select datatype
 data_type = 'epoched_rsampsl_biprref_cmtsgrm';
-data_type_signif = 'epoched_rsampsl_biprref_evkresp_cmtspwr_adatain_adatout';
+data_type_signif = 'epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp_adatain_adatout';
 
 % select condition
 cond = 'F023A159_F200A016';
@@ -18,12 +18,17 @@ dt = datestr(now, 'yyyymmdd');
 % find all cat names
 cat_names = dirsinside(fullfile(data_path, 'included_datasets'));
 
+% significance level
+q = 0.05;
 %% Load data
 % load the p-values
-% TODO: ignoring the significance for now
-for c = 2:numel(cat_names)
+s_chans = [];
+for c = 1:numel(cat_names)
     c_path =  fullfile(data_path, 'included_datasets', cat_names{c}, data_type_signif);
     loadname = dir(fullfile(c_path, '*S2*.mat'));
+    
+    load(fullfile(c_path, loadname.name))
+    s_chans = [s_chans; pvals(:, 65:end, 2)']; % only get F2 channels
 end
 
 p_tmp = [];
@@ -45,6 +50,11 @@ for c = 1:numel(cat_names)
     load(fullfile(c_path, loadname.name))
     p_tmp = [p_tmp; data.trial];
 end
+
+%% Get only the significant channels
+[pID, ~] = eeglab_fdr(s_chans, q, 'parametric');
+iChans = find(s_chans < pID);
+p_tmp = p_tmp(iChans, :, :, :);
 
 %% Plot colour images
 % grab power data, mean across trials
