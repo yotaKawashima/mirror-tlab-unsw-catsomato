@@ -28,7 +28,7 @@ for c = 1:numel(cat_names)
     loadname = dir(fullfile(c_path, '*S2*.mat'));
     
     load(fullfile(c_path, loadname.name))
-    s_chans = [s_chans; pvals(:, 65:end, 2)']; % only get F2 channels
+    s_chans = [s_chans; permute(pvals(:, 65:end, 2), [2,3,1])]; % only get F2 channels
 end
 
 p_tmp = [];
