@@ -17,6 +17,7 @@ dt = datestr(now, 'yyyymmdd');
 
 % find all cat names
 cat_names = dirsinside(fullfile(data_path, 'included_datasets'));
+cat_names = cat_names(3);
 
 % significance level
 q = 0.05;
