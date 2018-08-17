@@ -13,6 +13,7 @@ run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% Set script specific variables
 data_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr_snrsurr';
+p_data_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr';
 
 %% Find files
 
@@ -32,12 +33,15 @@ nCond = numel(loadnames)/2;
 allps = cell(1, 2); % one for each area
 allhs = cell(1, 2);
 meansnrs = cell(1, 2);
+snrline = cell(1, 2);
 
 %% Parse input
 FOIs = cell(2,1);
+chans = cell(2,1);
 for p = 1:numel(plotpair)
     % extract the frequencies of interest
     FOIs{plotpair{p}(1)} = [FOIs{plotpair{p}(1)}, plotpair{p}(3)];
+    chans{plotpair{p}(1)} =[chans{plotpair{p}(1)}, plotpair{p}(2)];
 end
 
 %% Get data
@@ -66,7 +70,7 @@ for a = 1:2
             allps{a} = zeros(nChan, nFOI, nCond);
             allhs{a} = zeros(nChan, nFOI, nCond);
             meansnrs{a} = zeros(nChan, nFOI, nCond);
-            
+                        
             iFOI = zeros(1, nFOI);
             vFOI = zeros(1, nFOI);
             for k = 1:nFOI
@@ -97,11 +101,55 @@ for a = 1:2
         
         % find mean
         meansnrs{a}(:, :, c) = mean(snrs, 3);
+        
+        
+        % grab the raw data for plotting too
+        if strcmp(p_data_type, data_type)
+            if c==1
+                snrline{a} = zeros(nChan, size(data.trial, 2), nCond);
+            end
+            snrline{a}(:, :, c) = mean(data.trial(c1_ind:end, :, :), 3);
+        end
     end
     
     labels{a} = data.label(c1_ind:end);
     spatialconfigs{a} = data.custom.spatialconfig;
     condfigs{a} = data.custom.subplotconfig;
+end
+
+%% Load plot data id needed
+if ~strcmp(p_data_type, data_type)
+    % if the data type for the plot is not the same as the spatial
+    % distribution
+    
+    p_data_dir = fullfile(data_path, 'included_datasets');
+    p_loadnames = dir(fullfile(p_data_dir, cat_name, p_data_type, '*.mat'));
+    
+    for a = 1:2
+        FOI = FOIs{a};
+        nFOI = numel(FOI);
+        
+        for c = 1:nCond
+            
+            % load
+            load(fullfile(p_data_dir, cat_name, p_data_type, p_loadnames((a-1)*nCond + c).name))
+            
+            if c==1
+                % check if unipolar
+                if strcmp(data.label{1}(1:3), 'raw')
+                    c1_ind = 1 + prod(data.custom.spatialconfig);
+                    nChan = data.custom.nsignals - c1_ind + 1;
+                else
+                    nChan = data.custom.nsignals;
+                    c1_ind = 1;
+                end
+                snrline{a} = zeros(nChan, size(data.trial, 2), nCond);
+            end
+            
+            snrline{a}(:, :, c) = mean(data.trial(c1_ind:end, :, :), 3);
+        end
+    end
+    
 end
 
 %% Threshold SNRs
@@ -163,7 +211,7 @@ for a = 1:nAreas
             'topinds', 27:34, 'sideinds', 18:25, 'box', false)
         
         % save figure
-        print(gcf, '-depsc', ['Figure5_f' num2str(FOI(f)) '_S' num2str(a)])
+        print(gcf, '-depsc', ['Figure4-5_f' num2str(FOI(f)) '_S' num2str(a)])
     end
 end
 
@@ -177,4 +225,54 @@ print(gcf, '-depsc', 'Figure5_colorbar')
 
 %% Plot single channels
 fnum = (a-1)*nAreas + (f-1) + fnum+2;
+% plotpair{1} = [2, 49, 200];
 
+for a = 1:nAreas
+    
+    FOI = FOIs{a};
+    nFOI = numel(FOI);
+    
+    % relabel channels
+    relabels = draw_biprref_chlabfunction(labels{a});
+    condfig = condfigs{a};
+    
+    for f = 1:nFOI
+        fig = (a-1)*nAreas + (f-1) + fnum; % has bugs if too high but works for now
+        % make a figure
+        figure(fig)
+        clf
+        set(gcf, 'Name', ['f' num2str(FOI(f)) ' S' num2str(a)]) 
+        
+        % frequency constants
+        [~, f_i] = find_closest(data.freq{1}, FOI(f));
+        iss = mean(diff(data.freq{1}));
+        hbw_inds = floor(3/iss);
+        freqs = data.freq{1}(f_i-hbw_inds:f_i+hbw_inds);
+        
+        vals = snrline{a}(chans{a}(f),f_i-hbw_inds:f_i+hbw_inds,:);
+        lims = find_lims(vals);
+        lims(1) = lims(1) - 1;
+        lims(2) = lims(2) + 1;
+        
+        for co = 1:nConds
+            % make subplot
+            subtightplot(condfig(1), condfig(2), co)
+            % goes across rows
+            
+            values = vals(:, :, co);
+            plot(freqs, values)
+            
+            %[p, FV] = draw_biprref(values, relabels, spatialconfigs{a}, clim, true);
+            %colormap(cmap)
+        end
+        
+        % call function to clean up and label the plot
+        subtightplotcleaner(fig, condfig, 'cleanticks', true, ...
+            'catnames', {loadnames((a-1)*nConds+1:a*nConds).name}, ...
+            'topinds', 27:34, 'sideinds', 18:25, 'box', true, ...
+            'xaxisscale', [freqs(1), freqs(end)], 'yaxisscale', lims)
+        
+        % save figure
+        print(gcf, '-depsc', ['Figure4-5_f' num2str(FOI(f)) '_S' num2str(a) '_ch' num2str(chans{a}(f))])
+    end
+end
