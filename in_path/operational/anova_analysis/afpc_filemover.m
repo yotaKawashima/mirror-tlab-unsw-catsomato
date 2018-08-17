@@ -37,7 +37,7 @@ end
 % find out if the folder exists.
 if exist(out_dir, 'dir')~=7
     % directory does not exist, so make it. 
-    warning('Destination directory not found. Making directory.')
+    warning('Destination directory not found. Making directory %s.', out_dir)
     system(['mkdir ' out_dir]);
 end
 
