@@ -9,15 +9,12 @@ S = 'S2';
 data_type = 'epoched_rsampsl_biprref_cmtsgrm';
 data_type_signif = 'epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp_adatain_adatout';
 
-% select condition
-cond = 'F023A159_F200A016';
-
 % get date for saving the output files
 dt = datestr(now, 'yyyymmdd');
 
 % find all cat names
 cat_names = dirsinside(fullfile(data_path, 'included_datasets'));
-cat_names = cat_names(3); % TODO: remove this restriction
+cat_names = cat_names(2:4); % TODO: remove this restriction
 
 % significance level
 q = 0.05;
@@ -35,8 +32,9 @@ end
 p_tmp = [];
 for c = 1:numel(cat_names)
     c_path =  fullfile(data_path, 'included_datasets', cat_names{c}, data_type);
-    loadname = dir(fullfile(c_path, ['*S2*' cond '*.mat']));
-    if isempty(loadname) % TODO: not all cats have this data yet
+    loadname = dir(fullfile(c_path, '*S2*.mat'));
+    loadname = loadname(end); % get max condition only TODO check this
+    if isempty(loadname)
         % add the chronux toolbox
         addpath(genpath(chron_dir))
         
@@ -46,7 +44,8 @@ for c = 1:numel(cat_names)
         % remove the chronux toolbox
         rmpath(genpath(chron_dir))
         
-        loadname = dir(fullfile(c_path, ['*S2*' cond '*.mat']));
+        loadname = dir(fullfile(c_path, '*S2*.mat'));
+        loadname = loadname(end);
     end
     load(fullfile(c_path, loadname.name))
     p_tmp = [p_tmp; data.trial];
@@ -104,4 +103,4 @@ set(p(1), 'LineWidth', 3)
 set(p(2), 'LineWidth', 2)
 
 % TODO: re-enable printing
-% print(gcf, '-dpng', ['HGPtimecourseline_' cat_name '_S' S '_Ch' num2str(chs(k), '%03i') '_' dt])
+print(3, '-dpng', ['HGPtimecourseline_' S '_' dt])
