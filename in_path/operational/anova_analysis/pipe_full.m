@@ -213,7 +213,10 @@ data_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '_evkdpwr_hgpcomp_
 extract_fstat(data_path, data_sec)
 
 %% timecourse
-dir_sec = [data_dir 'epoched_rsampsl_biprref/'];
+dir_sec = fullfile(data_dir, '/epoched_rsampsl_biprref/');
+
+addpath(genpath(chron_dir))
 
 timecourse(dir_sec, filename_out)
 
+rmpath(genpath(chron_dir))
