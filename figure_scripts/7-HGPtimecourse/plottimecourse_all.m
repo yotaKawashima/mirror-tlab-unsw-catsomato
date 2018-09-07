@@ -18,6 +18,9 @@ cat_names = cat_names(2:4); % TODO: remove this restriction
 
 % significance level
 q = 0.05;
+
+% figure number
+fnum = 3;
 %% Load data
 % load the p-values
 s_chans = [];
@@ -92,7 +95,7 @@ basefreq = mean(p_tcf(t1:t2, :, :), 1);
 p_norm = p_tcf - repmat(basefreq, [size(p_tcf, 1),1,1]);
 
 % plot
-figure(3)
+figure(fnum)
 p = plot(timeaxis, mean(p_norm(:, :, mask),3), 'b', ...
     timeaxis, mean(p_norm(:, :, or(mask2,mask3)),3), 'r');
 legend({'High gamma band', 'outside HGB'})
@@ -102,5 +105,5 @@ ylabel('normalised power (dB)')
 set(p(1), 'LineWidth', 3)
 set(p(2), 'LineWidth', 2)
 
-% TODO: re-enable printing
-print(3, '-dpng', ['HGPtimecourseline_' S '_' dt])
+%% Print
+print(fnum, '-dpng', ['HGPtimecourseline_' S '_' dt])
