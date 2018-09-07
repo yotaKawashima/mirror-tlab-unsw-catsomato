@@ -30,14 +30,14 @@ nConds = length(fnames);
 load(fullfile(data_dir, fnames(nConds).name)) % load the last one
 
 % find the domain of the plot
-[~, minind] = find_closest(offset_time, timeran(1));
-[~, maxind] = find_closest(offset_time, timeran(2));
+[~, minind] = find_closest(data.time{1}, timeran(1));
+[~, maxind] = find_closest(data.time{1}, timeran(2));
 
 % find mean and standard deviation
 plot_mean = mean(data.trial(chan, minind:maxind, :)*10, 3);
 plot_std = std(data.trial(chan, minind:maxind, :)*10, 0, 3);
 
-plot_time = offset_time(minind:maxind);
+plot_time = data.time{1}(minind:maxind);
 
 
 % finally, time to plot.
