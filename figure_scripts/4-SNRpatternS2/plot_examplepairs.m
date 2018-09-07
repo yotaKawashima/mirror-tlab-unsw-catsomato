@@ -11,6 +11,8 @@ plotpair{3} = [1, 33, 200];
 %% Set overall variables
 run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
+img_fmt = '-depsc';
+
 %% Set script specific variables
 data_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr_snrsurr';
 p_data_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr';
@@ -211,7 +213,7 @@ for a = 1:nAreas
             'topinds', 27:34, 'sideinds', 18:25, 'box', false)
         
         % save figure
-        print(gcf, '-depsc', ['Figure4-5_f' num2str(FOI(f)) '_S' num2str(a)])
+        print(gcf, img_fmt, ['Fig4-5_f' num2str(FOI(f)) '_S' num2str(a)])
     end
 end
 
@@ -221,7 +223,7 @@ figure((a-1)*nAreas + (f-1) + fnum+1)
 colorbar
 colormap(cmap)
 caxis(clim)
-print(gcf, '-depsc', 'Figure5_colorbar')
+print(gcf, img_fmt, 'Fig4-5_colorbar')
 
 %% Plot single channels
 fnum = (a-1)*nAreas + (f-1) + fnum+2;
@@ -273,6 +275,6 @@ for a = 1:nAreas
             'xaxisscale', [freqs(1), freqs(end)], 'yaxisscale', lims)
         
         % save figure
-        print(gcf, '-depsc', ['Figure4-5_f' num2str(FOI(f)) '_S' num2str(a) '_ch' num2str(chans{a}(f))])
+        print(gcf, img_fmt, ['Fig4-5_f' num2str(FOI(f)) '_S' num2str(a) '_ch' num2str(chans{a}(f))])
     end
 end
