@@ -3,6 +3,12 @@
 %% Set overall variables
 run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
+% get date for saving the output files
+dt = datestr(now, 'yyyymmdd');
+
+% image format
+img_fmt = '-depsc';
+
 %% Figure 1, part a
 % Image of the cat brain. not implemented in matlab.
 
@@ -55,7 +61,7 @@ ylabel('amplitude (\muV)', 'FontSize', fsize)
 set(gca, 'FontSize', fsize)
 
 % and print
-print(13, '-depsc', [fig_path 'figure1c_20110808R03chan256.eps'])
+print(13, img_fmt, [fig_path 'Fig1c_20110808R03chan256_' dt])
 
 %% Figure 1, part b
 % A graph of the paradigm. Not implemented in matlab.
@@ -88,4 +94,4 @@ xlabel('frequency (Hz)', 'FontSize', fsize)
 ylabel('power (10log_{10}(\muV^s/s^2)', 'FontSize', fsize)
 set(gca, 'FontSize', fsize)
 
-print(14, '-depsc', [fig_path 'figure1d_20110808R03chan256.eps'])
+print(14, img_fmt, [fig_path 'Fig1d_20110808R03chan256_' dt])
