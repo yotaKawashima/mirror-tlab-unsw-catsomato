@@ -70,7 +70,7 @@ title(h, '%')
 xlabel('response frequency: f [Hz]','interpret','none')
 ylabel('2-way ANOVA significance')
 
-print(gcf,imgtype,['Figure3a_' dt])
+print(gcf,imgtype,['Fig3a_' dt])
 
 %% Plot figure part B
 figure(2); clf
@@ -112,7 +112,7 @@ axis tight
 ylabel('% of channel with 2-way ANOVA (q = 0.05)') 
 xlabel('response frequency: f [Hz]','interpret','none')
 
-print(gcf,imgtype,['Figure3b_' dt])
+print(gcf,imgtype,['Fig3b_' dt])
 
 %% Plot alternative figure B
 
@@ -166,4 +166,4 @@ axis tight
 ylabel('% of channel with 2-way ANOVA (q = 0.05)') 
 xlabel('response frequency: f [Hz]','interpret','none')
 
-print(gcf,imgtype,['Figure3b_alt_' dt])
+print(gcf,imgtype,['Fig3b_alt_' dt])
