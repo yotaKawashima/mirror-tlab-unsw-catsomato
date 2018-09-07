@@ -9,6 +9,7 @@ data_dir = [data_path 'included_datasets/' cat_name '/epoched_rsampsl_biprref_ev
 
 filename = [cat_name '_S2_FxxxAxxx_FxxxAxxx_epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp.mat'];
 
+img_fmt = '-depsc';
 %% load
 
 load([data_dir, filename])
@@ -99,7 +100,7 @@ clim(2) = clim(2);
         dt = datestr(now, 'yyyymmdd');
         
         % save figure
-         print(gcf, '-depsc', ['Figure7_S2_' dt])
+         print(gcf, img_fmt, ['Fig6d_S2_' dt])
 
 
 
@@ -108,4 +109,4 @@ figure(2)
 colorbar
 colormap(cmap)
 caxis(clim)
-print(gcf, '-depsc', ['Figure7_colorbar_' dt])
+print(gcf, img_fmt, ['Fig6d_colorbar_' dt])

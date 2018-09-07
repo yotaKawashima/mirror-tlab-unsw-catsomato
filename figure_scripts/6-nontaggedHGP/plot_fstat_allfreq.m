@@ -8,7 +8,7 @@ data_dir = fullfile(data_path, 'included_datasets');
 datatype = 'epoched_rsampsl_biprref_evkresp_cmtspwr_adatain_adatout_fstonly';
 %data_dir = fullfile(data_path, '/collated_data/anoved_rsampsl_biprref_evkresp_cmtspwr_adatout_fstonly');
 
-
+img_fmt = '-dpng';
 %% by area
 
 ylimits = zeros(2, 2);
@@ -105,7 +105,7 @@ for a = 1:2
         set(ax_mark(k, a), 'LineStyle', 'none')
     end
     
-    print(gcf, '-depsc', ['fig6_S' num2str(a) '_all'])
+    print(gcf, img_fmt, ['Fig6' char(96+a) '_S' num2str(a) '_all'])
 end
 
 % % set all on line on figure 3
