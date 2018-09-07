@@ -5,7 +5,7 @@ run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% Setup
 % file path
-dir_sec = fullfile(data_path, 'collated_data', 'pooled_pthresh');%'anoved_rsampsl_biprref_cmtspwr'
+dir_sec = fullfile(data_path, 'collated_data', 'anova_props');%'anoved_rsampsl_biprref_cmtspwr'
 
 % output image type
 imgtype = '-depsc';
