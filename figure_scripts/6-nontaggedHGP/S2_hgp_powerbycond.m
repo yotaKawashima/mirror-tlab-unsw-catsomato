@@ -11,6 +11,7 @@ data_dir = [data_path 'included_datasets/' cat_name '/epoched_rsampsl_biprref_ev
 
 filename = [cat_name '_S2_FxxxAxxx_FxxxAxxx_epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp.mat'];
 
+img_fmt = '-depsc';
 %% Load and pre-process
 
 load([data_dir, filename])
@@ -68,5 +69,5 @@ subtightplotcleaner(ch, [rows, cols], 'catnames', catnames, ...
     'sideinds', 1:8, 'topinds', 10:17)
 
 
-str = sprintf('%s_S2_Ch%03i_highgammapower', cat_name, ch);
-print(gcf, '-depsc', str);
+str = sprintf('Fig6c_%s_S2_Ch%03i_highgammapower', cat_name, ch);
+print(gcf, img_fmt, str);
