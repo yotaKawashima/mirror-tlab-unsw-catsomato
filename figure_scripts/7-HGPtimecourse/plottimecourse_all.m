@@ -56,6 +56,9 @@ p_tmp = [];
 ps_tmp = cell(1, numel(cat_names));
 
 %%
+
+cs = gen20colors();
+
 for c = 1:numel(cat_names)
     c_path =  fullfile(data_path, 'included_datasets', cat_names{c}, data_type);
     loadname = dir(fullfile(c_path, '*S2*.mat'));
@@ -112,11 +115,12 @@ f_inds = i50+5:i150-5; % only concerned with the high gamma band
     % plot
 
     hold on
-    p = plot(timeaxis, mean(p_norm(:, :, mask),3), 'b', ...
-        timeaxis, mean(p_norm(:, :, or(mask2,mask3)),3), 'r');
+    p = plot(timeaxis, mean(p_norm(:, :, mask),3), ...
+        timeaxis, mean(p_norm(:, :, or(mask2,mask3)),3), '.');
     hold off
-    set(p(1), 'LineWidth', 3)
-    set(p(2), 'LineWidth', 2)
+    thiscolor = cs(c, :);
+    set(p(1), 'LineWidth', 3, 'Color', thiscolor)
+    set(p(2), 'MarkerEdgeColor', thiscolor, 'MarkerFaceColor', thiscolor)
 
 end
 
