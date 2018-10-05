@@ -195,7 +195,11 @@ for a = 1:nAreas
         % make a figure
         figure(fig)
         clf
-        set(gcf, 'Name', ['f' num2str(FOI(f)) ' S' num2str(a)]) 
+        set(gcf, 'Name', ['f' num2str(FOI(f)) ' S' num2str(a)])
+        
+        % find channel of interest location
+        channo = chans{a}(f);
+        [x1, y1] = patch_helper(channo, relabels);
         
         for co = 1:nConds
             % make subplot
@@ -205,6 +209,10 @@ for a = 1:nAreas
             values = meansnrs{a}(:,f,co);
             [p, FV] = draw_biprref(values, relabels, spatialconfigs{a}, clim, true);
             colormap(cmap)
+            
+            % add patch to foi
+            p1 = patch(x1, y1, 12);
+            set(p1, 'EdgeColor', 'g', 'LineWidth', 2, 'FaceColor', 'none')
         end
         
         % call function to clean up and label the plot
