@@ -5,6 +5,7 @@ run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
 %% Script specific variables
 cat_name = 'C20110808_R03';
+ch = 102;
 data_dir = [data_path 'included_datasets/' cat_name '/epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp/'];
 
 filename = [cat_name '_S2_FxxxAxxx_FxxxAxxx_epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp.mat'];
@@ -73,34 +74,41 @@ nAreas = numel(mean_hgp);
 clim = find_lims(mean_hgp);
 clim(2) = clim(2);
 
-    % relabel channels
-    relabels = draw_biprref_chlabfunction(labels);
+% relabel channels
+relabels = draw_biprref_chlabfunction(labels);
+
+
+
+% make a figure
+figure(1)
+clf
+set(gcf, 'Name', 'mean HGP S2')
+
+[x1, y1] = patch_helper(ch, relabels);
+
+for co = 1:nConds
+    % make subplot
+    subtightplot(condfigs(1), condfigs(2), co+1)
+    % goes across rows
     
+    draw_biprref(mean_hgp(:,1,co), relabels, spatialconfigs, clim)
+    colormap(cmap)
+    
+    % add patch to foi
+    p1 = patch(x1, y1, 12);
+    set(p1, 'EdgeColor', 'g', 'LineWidth', 2, 'FaceColor', 'none')
+    
+end
 
+% call function to clean up and label the plot
+subtightplotcleaner(1, condfigs, 'cleanticks', false, ...
+    'catnames', [{'F023A000_F200A000'}, data.datalabels], ...
+    'topinds', 10:17, 'sideinds', 1:8, 'box', false)
 
-        % make a figure
-        figure(1)
-        clf
-        set(gcf, 'Name', 'mean HGP S2') 
-        
-        for co = 1:nConds
-            % make subplot
-            subtightplot(condfigs(1), condfigs(2), co+1)
-            % goes across rows
-            
-            draw_biprref(mean_hgp(:,1,co), relabels, spatialconfigs, clim)
-            colormap(cmap)
-        end
-        
-        % call function to clean up and label the plot
-        subtightplotcleaner(1, condfigs, 'cleanticks', false, ...
-            'catnames', [{'F023A000_F200A000'}, data.datalabels], ...
-            'topinds', 10:17, 'sideinds', 1:8, 'box', false)
-        
-        dt = datestr(now, 'yyyymmdd');
-        
-        % save figure
-         print(gcf, img_fmt, ['Fig6d_S2_' dt])
+dt = datestr(now, 'yyyymmdd');
+
+% save figure
+print(gcf, img_fmt, ['Fig6d_S2_' dt])
 
 
 
