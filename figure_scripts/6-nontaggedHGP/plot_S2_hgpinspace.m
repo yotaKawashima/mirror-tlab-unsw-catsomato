@@ -64,8 +64,7 @@ mean_hgp(:, 1, :) = tmp;
 
 %% plot
 
-cmap = hot(64);
-cmap = cmap(60:-1:1, :);
+cmap = [0.8275*[1 1 1]; hot(ceil(diff(clim))*10)];
 
 nAreas = numel(mean_hgp);
 [nChans, ~, nConds] = size(mean_hgp);
@@ -91,7 +90,7 @@ for co = 1:nConds
     subtightplot(condfigs(1), condfigs(2), co+1)
     % goes across rows
     
-    draw_biprref(mean_hgp(:,1,co), relabels, spatialconfigs, clim)
+    draw_biprref(mean_hgp(:,1,co), relabels, spatialconfigs, clim, true)
     colormap(cmap)
     
     % add patch to foi
