@@ -22,7 +22,9 @@ for a = 1:2
     
     % find names
     cat_names = dirsinside(data_dir);
-    for k = 1:numel(cat_names)
+    k=1;
+    loadname = dir(fullfile(data_dir, cat_names{k}, datatype, ['*' area '*.mat']));
+    for k = 2:numel(cat_names)
         loadname(k) = dir(fullfile(data_dir, cat_names{k}, datatype, ['*' area '*.mat']));
     end
     
@@ -88,7 +90,7 @@ ylimfinal(2) = max(ylimits(:, 2))+offset;
 % c(3, :) = [180 108 30]/255; % orange
 % c(2, :) = [153 204 153]/255; % green
 % c(1, :) = [33 131 157]/255; % blue
-c = [1,0,0; 0,1,0; 0,0,1];
+c = [0,1,0; 1,0,0; 0,0,1];
 
 m(1) = 'o';
 m(2) = 'd';
