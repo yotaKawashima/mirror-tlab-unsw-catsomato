@@ -44,6 +44,7 @@ end
 %% Plot line timecourse
 
 figure(fnum)
+clf
 
     % Remove harmonics and intermodulation
 f1 = 23;
