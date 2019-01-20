@@ -58,6 +58,7 @@ ps_tmp = cell(1, numel(cat_names));
 %%
 
 cs = gen20colors();
+hbw = 2; % half bandwidth
 
 for c = 1:numel(cat_names)
     c_path =  fullfile(data_path, 'included_datasets', cat_names{c}, data_type);
@@ -92,11 +93,11 @@ for c = 1:numel(cat_names)
 [~, i150] = find_closest(data.freq{1}, 150);
 f_inds = i50+5:i150-5; % only concerned with the high gamma band
 
-    [mask, maskedf] = makefreqmask(data.freq{1}, foi, [50.5 149.5], 0.5);
+    [mask, maskedf] = makefreqmask(data.freq{1}, foi, [50.5 149.5], hbw);
 
     % find power outside of HGB
-    [mask2, ~] = makefreqmask(data.freq{1}, foi, [0.5 49.5], 0.5);
-    [mask3, ~] = makefreqmask(data.freq{1}, foi, [150.5 250], 0.5);
+    [mask2, ~] = makefreqmask(data.freq{1}, foi, [0.5 49.5], hbw);
+    [mask3, ~] = makefreqmask(data.freq{1}, foi, [150.5 250], hbw);
 
     % find the baseline (from -0.7 to -0.2)
     timeaxis = data.freq_t+data.custom.time(1);
