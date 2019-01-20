@@ -1,16 +1,11 @@
 % collapses the fstat correlation into "bars"
 
-if verLessThan('matlab', '8.4')
-    error('Code does not work as errorbar cannot be plotted horizontally.')
-elseif verLessThan('matlab', '9.2')
-    warning('Code may not work if errorbar cannot be plotted horizontally/')
-end
 
 figure(1); clf;
 
 for a = 1:2
     area = num2str(a);
-    imgformat = '-dpng';
+    imgformat = '-depsc';
     
     
     load(['S' area '_corrdata_withNaNs.mat']);
@@ -128,7 +123,7 @@ for a = 1:2
     col = 'rgb';
     hold on
     for k = 1:3
-        h = errorbar(x(k, :), y(k, :), xl(k, :), xu(k, :), 'horizontal', mark(a));
+        h = errorbar(y(k, :), x(k, :),  xl(k, :), xu(k, :), mark(a));
         set(h, 'LineWidth', 2, 'Color', col(k))
     end
     legend({'Main Effect 23', 'Main Effect 200', 'Interaction'}, ...
@@ -148,7 +143,7 @@ ytl = {'1) f1-f2', '2) f1-harm' , '3) f1-IM', '4) f1-HGP', ...
     '5) f2-harm', '6) f2-IM', '7) f2-HGP', '8) harm-IM', '9) harm-HGP', ...
     '10) IM-HGP', ''};
 
-set(gca, 'YTick', 1.1:11.1, 'YTickLabel', ytl, 'YLim', [0.5, 10.7])
+set(gca, 'XTick', 1.1:11.1, 'XTickLabel', ytl, 'XLim', [0.5, 10.7])
 
 print(gcf, imgformat, ['S1and2_correlationbars']);
 % xlim(1) = min(xlim_tmp(:, 1));
