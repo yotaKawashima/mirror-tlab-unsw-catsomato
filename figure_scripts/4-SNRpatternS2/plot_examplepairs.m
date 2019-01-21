@@ -11,7 +11,7 @@ plotpair{3} = [1, 33, 200];
 %% Set overall variables
 run(fullfile(mfilename('fullpath'), '../../path_setup.m'))
 
-img_fmt = '-depsc';
+img_fmt = '-dpng';
 
 %% Set script specific variables
 data_type = 'epoched_rsampsl_biprref_evkresp_cmtspwr_snrsurr';
@@ -55,6 +55,7 @@ for a = 1:2
     for c = 1:nCond
         
         % load
+        fprintf('Loading area %i/%i, loading data %2i/%i\n', a, 2, c, nCond)
         load(fullfile(data_dir, cat_name, data_type, loadnames((a-1)*nCond + c).name))
         
         % if it's the first, preallocate some things
@@ -134,6 +135,7 @@ if ~strcmp(p_data_type, data_type)
         for c = 1:nCond
             
             % load
+            fprintf('Loading area %i/%i, loading data %2i/%i\n', a, 2, c, nCond)
             load(fullfile(p_data_dir, cat_name, p_data_type, p_loadnames((a-1)*nCond + c).name))
             
             if c==1
@@ -160,6 +162,9 @@ q = 0.05;
 for a = 1:2
     meansnrs{a}(allhs{a}==0)=NaN;
     
+    FOI = FOIs{a};
+    nFOI = numel(FOI);
+    
     for f = 1:nFOI
         % do FDR
         [pID, ~] = eeglab_fdr(allps{a}(:, f, :), q, 'parametric');
@@ -167,6 +172,8 @@ for a = 1:2
         tmp(allps{a}(:, f, :)>=pID)=NaN;
         
         meansnrs{a}(:, f, :) = tmp;
+        
+        fprintf('S%i f=%3i: %f\n', a, FOI(f), pID)
     end
     
 end
@@ -252,6 +259,7 @@ for a = 1:nAreas
         figure(fig)
         clf
         set(gcf, 'Name', ['f' num2str(FOI(f)) ' S' num2str(a)]) 
+        
         
         % frequency constants
         [~, f_i] = find_closest(data.freq{1}, FOI(f));
