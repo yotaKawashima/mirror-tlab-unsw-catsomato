@@ -67,13 +67,18 @@ for a = 1:2
     figure(a); clf;
     hold on
     ax_line(:, a) = plot(fs, fmean(:, :, 1), fs, fmean(:, :, 2), fs, fmean(:, :, 3));
-    ax_mark(:, a) = plot(fs(mark_ind), fmean(1, mark_ind, 1), fs(mark_ind), fmean(1, mark_ind, 2), fs(mark_ind), fmean(1, mark_ind, 3));
+    %ax_mark(:, a) = plot(fs(mark_ind), fmean(1, mark_ind, 1), fs(mark_ind), fmean(1, mark_ind, 2), fs(mark_ind), fmean(1, mark_ind, 3));
     hold off
     
     % formatting
     ylimits(:, a) = get(gca, 'YLim');
     xlabel('frequency (Hz)')
     ylabel('f-statistic')
+    
+    
+    tmp = (1-isnan(allf));
+    tmp = tmp(:, 1, 1);
+    fprintf('Number of channels in S%i: %i\n', a, sum(tmp))
     
 end 
 
@@ -104,7 +109,7 @@ for a = 1:2
     
     for k = 1:3
         set(ax_line(k, a), 'Color', c(k, :), 'Marker', 'none', 'LineWidth', 2)
-        set(ax_mark(k, a), 'LineStyle', 'none')
+        %set(ax_mark(k, a), 'Color', c(k, :), 'LineStyle', 'none', 'Marker', m(k))
     end
     
     print(gcf, img_fmt, ['Fig6' char(96+a) '_S' num2str(a) '_all'])
