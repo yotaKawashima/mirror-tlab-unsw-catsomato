@@ -125,19 +125,24 @@ for a = 1:2
     for k = 1:3
         h = errorbar(y(k, :), x(k, :),  xl(k, :), xu(k, :), mark(a));
         set(h, 'LineWidth', 2, 'Color', col(k))
+        if a == 1
+           set(h, 'MarkerFaceColor', col(k), 'MarkerSize', 10)
+        else
+           set(h, 'MarkerFaceColor', 'w', 'MarkerSize', 12)
+        end
     end
-    legend({'Main Effect 23', 'Main Effect 200', 'Interaction'}, ...
-        'Location', 'SouthOutside', 'Orientation', 'Horizontal')
+    %legend({'Main Effect 23', 'Main Effect 200', 'Interaction'}, ...
+    %    'Location', 'SouthOutside', 'Orientation', 'Horizontal')
     hold off
     
 %     ax(a) = gca;
 %     
 %     xlim_tmp(a, :) = get(gca, 'XLim');
     
-    set(gca, 'YDir', 'reverse');
+%    set(gca, 'YDir', 'reverse');
 end
 
-title('S1 = circle, S2 = square')
+%title('S1 = circle, S2 = square')
 
 ytl = {'1) f1-f2', '2) f1-harm' , '3) f1-IM', '4) f1-HGP', ...
     '5) f2-harm', '6) f2-IM', '7) f2-HGP', '8) harm-IM', '9) harm-HGP', ...
