@@ -1,5 +1,15 @@
 function [data, ttest_data] = f2p_loader(data_dir, save_dir, data_type, max_only, reload, ttest, fmax)
+% Figure 2 data creation
+%   data_dir: data directory
+%   save_dir: where the saved files would be
+%   data_type: the folder name/suffix of the required data
+%   max_only: true if only the max condition is needed
+%   reload: true if the data should be recalculated (usually this does not
+%       happen if the data already exists)
+%   ttest: true if a ttest should be conducted
+%   fmax: the maximum frequency to keep
 
+% get the filename
 if max_only
     fname = [data_type '_max.mat'];
 else
@@ -9,8 +19,7 @@ end
 % check if files already exist
 [data, ttest_data, r_d, r_t] = f2pl_check(save_dir, fname, reload);
 
-
-
+% if both files are found, then we can just return
 if r_d && r_t
     % both data and ttest_data have been found and loaded, so return
     return
@@ -19,6 +28,7 @@ end
 % find the names of the cats
 cat_names = dirsinside(data_dir);
 
+% which files need to be created?
 if r_d && ~r_t
     % just need to do the ttest
     
@@ -49,16 +59,17 @@ end
 
 
 function ttest_data = f2pl_ttest(data, trials, save_dir, fname)
-if nargin < 2
-    trials = true;
-end
+% function to conduct t-test
 
+% number of frequencies
 nF = size(data.trial, 2);
 
+% preallocate
 hs = zeros(1, nF);
 ps = zeros(1, nF);
 cis = zeros(2, nF);
 
+% fill the first item
 f = 1;
 
 if trials
@@ -79,7 +90,10 @@ ps(f) = p;
 cis(:, f) = ci;
 tstats(f) = stats.tstat;
 
+% finish filling everything
 for f = 2:nF
+    
+    % get data
     if trials
         tmp = data.trial(:, f, :);
         ttestdata = tmp(:);
@@ -88,9 +102,11 @@ for f = 2:nF
     end
     
     ttestdata = ttestdata(~isnan(ttestdata));
-
+    
+    % conduct t-test
     [h, p, ci, stats] = ttest(ttestdata, 0, 'Tail', 'right');
-
+    
+    % put into buckets
     hs(f) = h;
     ps(f) = p;
     cis(:, f) = ci;
@@ -98,6 +114,7 @@ for f = 2:nF
     tstats(f) = stats.tstat;
 end
 
+% arrange
 ttest_data.hs = hs;
 ttest_data.ps = ps;
 ttest_data.cis = cis;
@@ -111,10 +128,13 @@ save(fullfile(save_dir, [fname(1:end-4) '_ttest.mat']), 'ttest_data')
 
 
 function [data, data_full] = f2pl_load(cat_names, data_dir, data_type, full, max_only, save_dir, fname, fmax)
+
+% preallocate
 data_out = [];
 data_all = [];
 
 for c = 1:numel(cat_names)
+    
     % get filenames
     loadnames = dir(fullfile(data_dir, cat_names{c}, data_type, '*.mat'));
     
@@ -142,6 +162,8 @@ for c = 1:numel(cat_names)
         
         % smush
         data_out = [data_out;data_tmp];
+        
+        % if the full dataset needed, smush that too
         if full
             if k ~= 1 || k ~= (nfiles/2)+1
                 for m = size(data.trial, 3)
@@ -152,6 +174,7 @@ for c = 1:numel(cat_names)
     end
 end
 
+% clean data
 data_out(isinf(data_out)) = NaN;
 data.trial = nanmean(data_out, 1);
 data.custom.filename(2:13) = 'xxxxxxxx_Rxx';
@@ -159,6 +182,8 @@ data.freq{1} = data.freq{1}(1:f_ind);
 
 save(fullfile(save_dir, fname), 'data') 
 
+
+% clean data for full 
 if full
     data_all(isinf(data_all)) = NaN;
     data_full = data;
