@@ -5,3 +5,6 @@
 *.mat
 *.png
 *.eps
+
+# ignore IDE files
+.idea/*
