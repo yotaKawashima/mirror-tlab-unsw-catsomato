@@ -1,4 +1,4 @@
-function [data, ttest_data] = f2p_loader(data_dir, save_dir, data_type, max_only, reload, ttest, fmax)
+function [data, ttest_data] = f2p_loader(data_dir, save_dir, data_type, max_only, reload, ttest, fmax, cat_name, channel)
 % Figure 2 data creation
 %   data_dir: data directory
 %   save_dir: where the saved files would be
@@ -8,6 +8,8 @@ function [data, ttest_data] = f2p_loader(data_dir, save_dir, data_type, max_only
 %       happen if the data already exists)
 %   ttest: true if a ttest should be conducted
 %   fmax: the maximum frequency to keep
+%   cat_name: name of the cat files. set to false to use all cats
+%   channel: the channel of data to load. set to <= 0 to use all channels
 
 % get the filename
 if max_only
@@ -26,7 +28,10 @@ if r_d && r_t
 end
 
 % find the names of the cats
-cat_names = dirsinside(data_dir);
+if not cat_name
+    cat_names = dirsinside(data_dir);
+else 
+    cat_names = {cat_name};
 
 % which files need to be created?
 if r_d && ~r_t
@@ -34,7 +39,7 @@ if r_d && ~r_t
     
     % check if we need a ttest
     if ttest
-        [~, data_full] = f2pl_load(cat_names, data_dir, data_type, ttest, max_only, save_dir, fname, fmax);
+        [~, data_full] = f2pl_load(cat_names, data_dir, data_type, ttest, max_only, save_dir, fname, fmax, channel);
         ttest_data = f2pl_ttest(data_full, true, save_dir, fname);
         return
     else
@@ -43,15 +48,15 @@ if r_d && ~r_t
     
 elseif ~r_d && r_t
     % just need to load the data
-    [data, ~] = f2pl_load(cat_names, data_dir, data_type, ttest, max_only, save_dir, fname, fmax);
+    [data, ~] = f2pl_load(cat_names, data_dir, data_type, ttest, max_only, save_dir, fname, fmax, channel);
     return
 elseif ~r_d && ~r_t
     % need to do everything from fresh
     if ttest
-        [data, data_full] = f2pl_load(cat_names, data_dir, data_type, ttest, max_only, save_dir, fname, fmax);
+        [data, data_full] = f2pl_load(cat_names, data_dir, data_type, ttest, max_only, save_dir, fname, fmax, channel);
         ttest_data = f2pl_ttest(data_full, true, save_dir, fname);
     else
-        [data, ~] = f2pl_load(cat_names, data_dir, data_type, ttest, max_only, save_dir, fname, fmax);
+        [data, ~] = f2pl_load(cat_names, data_dir, data_type, ttest, max_only, save_dir, fname, fmax, channel);
     end
 else
     error('Broken logic')    
@@ -127,7 +132,7 @@ save(fullfile(save_dir, [fname(1:end-4) '_ttest.mat']), 'ttest_data')
 
 
 
-function [data, data_full] = f2pl_load(cat_names, data_dir, data_type, full, max_only, save_dir, fname, fmax)
+function [data, data_full] = f2pl_load(cat_names, data_dir, data_type, full, max_only, save_dir, fname, fmax, channel)
 
 % preallocate
 data_out = [];
@@ -154,10 +159,18 @@ for c = 1:numel(cat_names)
         
         if c==1 && k == 1
             [~, f_ind] = find_closest(data.freq{1}, fmax);
+
+            % finally deal with the channel
+            if channel > 0
+                c_ind = channel;% TODO
+            else
+                c_ind = 1:len(data.trial, 1)
+            end
+
         end
         
         % get it into the avtrcon format
-        data_tmp = data.trial(:, 1:f_ind, :);
+        data_tmp = data.trial(c_ind, 1:f_ind, :);
         data_tmp = mean(data_tmp, 3);
         
         % smush
@@ -166,8 +179,8 @@ for c = 1:numel(cat_names)
         % if the full dataset needed, smush that too
         if full
             if k ~= 1 || k ~= (nfiles/2)+1
-                for m = size(data.trial, 3)
-                    data_all = [data_all;data.trial(:, 1:f_ind, m)];
+                for m = 1:size(data.trial, 3)
+                    data_all = [data_all;data.trial(c_ind, 1:f_ind, m)];
                 end
             end
         end
@@ -179,6 +192,7 @@ data_out(isinf(data_out)) = NaN;
 data.trial = nanmean(data_out, 1);
 data.custom.filename(2:13) = 'xxxxxxxx_Rxx';
 data.freq{1} = data.freq{1}(1:f_ind);
+data.custom.channels_out = c_ind;
 
 save(fullfile(save_dir, fname), 'data') 
 

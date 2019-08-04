@@ -19,6 +19,8 @@ dt = datestr(now, 'yyyymmdd');
 max_only = true;
 fmax = 250;
 reload = false;
+cat_name = 'C20110808_R03_S1';
+channel = 256;
 
 if max_only
     m = 'max_';
@@ -28,7 +30,7 @@ end
 
 %% A: log power.
 
-[data, ~] = f2p_loader(data_dir, save_dir, 'epoched_rsampsl_biprref_evkresp_cmtspwr', max_only, reload, false, fmax);
+[data, ~] = f2p_loader(data_dir, save_dir, 'epoched_rsampsl_biprref_evkresp_cmtspwr', max_only, reload, false, fmax, cat_name, channel);
 
 figure(1); clf
 plot(data.freq{1}, nanmean(data.trial, 1))
@@ -38,7 +40,7 @@ print(gcf, imgtype, ['Fig2a_' m dt])
 
 %% B/D: SNR
 
-[data, ttest_data] = f2p_loader(data_dir, save_dir, 'epoched_rsampsl_biprref_evkresp_cmtspwr_snrsurr', max_only, reload, true, fmax);
+[data, ttest_data] = f2p_loader(data_dir, save_dir, 'epoched_rsampsl_biprref_evkresp_cmtspwr_snrsurr', max_only, reload, true, fmax, cat_name, channel);
 
 figure(2); clf
 plot(data.freq{1}, nanmean(data.trial, 1))
@@ -54,7 +56,7 @@ print(gcf, imgtype, ['Fig2c_' m dt])
 
 %% C/E: EP
 
-[data, ttest_data] = f2p_loader(data_dir, save_dir, 'epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr', max_only, reload, true, fmax);
+[data, ttest_data] = f2p_loader(data_dir, save_dir, 'epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr', max_only, reload, true, fmax, cat_name, channel);
 
 figure(4); clf
 plot(data.freq{1}, nanmean(data.trial, 1))
