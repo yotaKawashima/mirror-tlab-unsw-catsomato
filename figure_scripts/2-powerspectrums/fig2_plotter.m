@@ -22,6 +22,8 @@ reload = false;
 cat_name = 'C20110808_R03_S1';
 channel = 256;
 
+font_size = 16;
+
 if max_only
     m = 'max_';
 else
@@ -34,8 +36,8 @@ end
 
 figure(1); clf
 plot(data.freq{1}, nanmean(data.trial, 1))
-xlabel('frequency')
-ylabel('power')
+xlabel('frequency', 'FontSize', fsize)
+ylabel('power', 'FontSize', fsize)
 print(gcf, imgtype, ['Fig2a_' m dt])
 
 %% B/D: SNR
@@ -44,14 +46,14 @@ print(gcf, imgtype, ['Fig2a_' m dt])
 
 figure(2); clf
 plot(data.freq{1}, nanmean(data.trial, 1))
-xlabel('frequency')
-ylabel('SNR')
+xlabel('frequency', 'FontSize', fsize)
+ylabel('SNR', 'FontSize', fsize)
 print(gcf, imgtype, ['Fig2b_' m dt])
 
 figure(3); clf
 plot(ttest_data.freq{1}, ttest_data.tstats)
-xlabel('frequency')
-ylabel('t-statistic')
+xlabel('frequency', 'FontSize', fsize)
+ylabel('t-statistic', 'FontSize', fsize)
 print(gcf, imgtype, ['Fig2c_' m dt])
 
 %% C/E: EP
@@ -60,12 +62,12 @@ print(gcf, imgtype, ['Fig2c_' m dt])
 
 figure(4); clf
 plot(data.freq{1}, nanmean(data.trial, 1))
-xlabel('frequency')
-ylabel('evoked power')
+xlabel('frequency', 'FontSize', fsize)
+ylabel('evoked power', 'FontSize', fsize)
 print(gcf, imgtype, ['Fig2d_' m dt])
 
 figure(5); clf
 plot(ttest_data.freq{1}, ttest_data.tstats)
-xlabel('frequency')
-ylabel('t-statistic')
+xlabel('frequency', 'FontSize', fsize)
+ylabel('t-statistic', 'FontSize', fsize)
 print(gcf, imgtype, ['Fig2e_' m dt])
