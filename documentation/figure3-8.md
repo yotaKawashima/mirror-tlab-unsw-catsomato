@@ -1,7 +1,5 @@
 # Figure 3-8 #
 
-**Description** <br />
- 
  Show mean and standard deviation across 15 trials for each condition. <br />
  
  Fig 3 <br />
