@@ -1,20 +1,19 @@
 # Figure 9 #
 
-**Description** 
  Title: Nontagged frequencies between 50-150Hz in S2 are modulated by F2=200Hz vibratory amplitude.
 
  Show nontagged frequencies between 50Hz-150Hz were modulated by the vibration amplitude of F2=200Hz in only S2.
 
- Fig (A) --- F1 main effect f-statistis from ANOVA performed on logP in S1 and S2.
- Fig (B) --- F2 main effect f-statistis from ANOVA performed on logP in S1 and S2.Not in matlab.
- Fig (C) --- Interaction f-statistis from ANOVA performed on logP in S1 and S2.Time domain representatation of the bipolar-re-referenced LFP signal.
- Fig (D) --- Exemplar nontagged VELogP responses between 50Hz-150Hz at bipolar channel 102 in S2 from Session 2-1.
+ Fig (A) --- F1 main effect f-statistis from ANOVA performed on logP in S1 and S2. <br />
+ Fig (B) --- F2 main effect f-statistis from ANOVA performed on logP in S1 and S2.Not in matlab. <br />
+ Fig (C) --- Interaction f-statistis from ANOVA performed on logP in S1 and S2.Time domain representatation of the bipolar-re-referenced LFP signal. <br />
+ Fig (D) --- Exemplar nontagged VELogP responses between 50Hz-150Hz at bipolar channel 102 in S2 from Session 2-1. <br />
  Fig (E) --- Spatial mapping of HGP in S2. 
  
 
 ## File: plot_fstat_allfreq_yota_v4.m ##
 
-**File discription** 
+**File discription** <br />
  Plot Fig(A) - (C) i.e. f-statistics from ANOVA performed on logP in S1 and S2. Note that ANOVA results of logP are the same as ones of VELogP.  
 
 **Data dependencies**
@@ -25,7 +24,7 @@
 
 ## File: S2_hgp_powerbycond_yota.m ##
 
-**File discription** 
+**File discription** <br />
  Plot Fig (D) i.e. exemplar nontagged VELogP responses between 50Hz-150Hz at bipolar channel 102 in S2 from Session 2-1. Show mean and standard deviation accross 15 trials for each condition.
 
 **Data dependencies**
@@ -37,7 +36,7 @@
 
 ## File: plot_S2_hgpinspace_yota.m ##
 
-**File discription** 
+**File discription** <br />
   Plot Fig (E) i.e. spatial mapping of HGP in S2 from Session 2-1. Color encodes mean nontagged HGP across 15 trials for each condition.
 
 **Data dependencies**
