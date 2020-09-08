@@ -1,6 +1,5 @@
 # Figure 1 #
 
-**Description** <br />
  Title: Neural recording, vibratory stimulation and our analysis scheme. 
 
  For each process, show exemplar responses at bipolar channel 156 in S1 from Session 2-1 (C20110808_R03). Specifically, plot mean and standard deviation across 15 trials from the max amplitude condition in the session i.e. [F1, F2]=[159, 16].
