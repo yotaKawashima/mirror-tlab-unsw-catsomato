@@ -2,7 +2,6 @@ function hgp_anova(data, datain_dir)
 % load data before using
 
 
-
 % preallocate
 % the matrix is n23*nTrials x n200 x nChannels elements
 nTrials = data.custom.ntrials;
@@ -19,7 +18,6 @@ for k = 1:numel(data.trial)
     tmpmean = nanmean(data.trial{k}, 2); % mean across frequencies
     
     y(floor(k/nRow)*nTrials+1:(floor(k/nRow)+1)*nTrials, mod(k, nCol)+1, :) = permute(tmpmean, [3, 2, 1]);
-    
     
 end
 

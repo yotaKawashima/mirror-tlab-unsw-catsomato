@@ -19,7 +19,7 @@
 % Author: Arnaud Delorme, SCCN, 2008-
 %         Based on a function by Tom Nichols
 %
-% Reference: Bejamini & Yekutieli (2001) The Annals of Statistics
+% Reference: Bejamini & Yekutieli (2001) The Annals of Statistics&
 
 % Copyright (C) 2002 Arnaud Delorme, Salk Institute, arno@salk.edu
 %

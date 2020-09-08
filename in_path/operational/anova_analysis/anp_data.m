@@ -26,7 +26,7 @@ function data = anp_data(data_dir, filename_header, frange, polarity)
 %   2017 Nov 13: Fixed polarity input handling (again)
 
 %% set defaults
-if nargin < 4 || isempty(polarity)
+if nargin < 4 
     polarity = 2;
 end
 
@@ -39,6 +39,7 @@ if numel(fnameind)~=2
     warning('Unconventional naming, namematrix using defaults.')
     fnameind = 24:40;
 else
+    % Get stimulus condition
     lname = diff(fnameind)-2;
     fnameind  = fnameind(1):fnameind(2)+lname;
 end
@@ -54,13 +55,13 @@ nTrials = data.custom.ntrials; %#ok<NODEF> data is a loaded variable
 % find out which channels to select
 lastunipol = prod(data.custom.spatialconfig);
 switch polarity
-    case 0
+    case 0 % unipolar + bipolar
         chan = 1:numel(data.label);
         pollet = '0';
-    case 1
+    case 1 % unipolar 
         chan = 1:lastunipol;
         pollet = '1';
-    case 2
+    case 2 % bipolar 
         chan = lastunipol+1:data.custom.nsignals;
         pollet = '2';
     otherwise
@@ -82,10 +83,11 @@ else
 end
 
 % preallocate y, the output
+% Stimulus Amp x Amp
 subpcfg = data.custom.subplotconfig;
 
-dim1 = nTrials*subpcfg(1); % increasing 200 Hz, across trials
-dim2 = subpcfg(2); % increasing 23 Hz
+dim1 = nTrials*subpcfg(1); % increasing Ampl of 23 Hz, across trials
+dim2 = subpcfg(2); % increasing Ampl of 200 Hz
 dim3 = fmax_ind-fmin_ind+1; % frequencies 
 dim4 = nchan; % channels
 
@@ -95,8 +97,9 @@ namematrix = cell(subpcfg); % the order the data in organised in
 
 % put variables in places!
 k = 1;
-col = mod(k-1, subpcfg(2)) +1; % column and row where the data goes
-row = (floor((k-1)/subpcfg(1))*nTrials) +1; 
+% column and row where the data goes
+col = mod(k-1, subpcfg(2)) +1; % col - 200Hz ampl
+row = (floor((k-1)/subpcfg(1))*nTrials) +1; % row - 23Hz ample * trials
 
 dat = data.trial(chan, fmin_ind:fmax_ind, :);
 

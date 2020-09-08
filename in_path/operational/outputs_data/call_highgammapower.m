@@ -12,9 +12,14 @@ foi = foi(foi>50);
 % separate by S1 and S2
 for a = 1:2
     loadname = dir(fullfile(dir_sec, [cat_name '*S' num2str(a) '*.mat']));
-
-    data = highgammapower(dir_sec, loadname, [50 150], foi, 0.5);
-
+    
+    % Just extract VELogP data in 50Hz<f<150Hz. (Frequencies of interest
+    % are not included.)
+    %data = highgammapower(dir_sec, loadname, [50 150], foi, 0.5);
+    data = highgammapower_y(dir_sec, loadname, [50 150], foi, 0.5);
+    
+    % Save extracted data. (Mean is not taken across frequencies and trials
+    % at this point.)
     save(data.custom.filename, 'data')
 
 end

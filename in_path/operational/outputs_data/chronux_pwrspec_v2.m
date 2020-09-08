@@ -9,7 +9,7 @@ function data_out = chronux_pwrspec_v2(data, params)
 %   mtspectrumc instead
 %
 %   Version 2 uses mtspectrumc's ability to compute a number of trials
-%   together. 
+%   together for one channel. (Compute power for each trial.)
 
 % Modified from pwrspec by Rannee Li, Jul 2015
 % Last edited Jul 2016 by Rannee Li

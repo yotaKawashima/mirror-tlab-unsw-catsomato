@@ -10,25 +10,28 @@ function data_out = calc_evoked_power(data, baseline, flag)
 %   null/baseline condition, or set to 0 to run other conditions. Default
 %   is 0 (when there are only 2 arguments).
 %   baseline is ignored when flag == 1. Recommendation: set to [].
-
+   
 % Written by Rannee Li, Jun 2017.
+%   Change flag's default. 
+% Modified by Yota, Feb 2020.
 
 
 % set default flag behaviour
 if nargin<2
-    flag = 0;
+    %flag = 0;
+    flag = 1;
 end
 
 % select from the subfunctions
 
 if flag
-    data_out = cep_base(data);
+    data_out = cep_base(data); 
 else
     data_out = cep_nonbase(data, baseline);
+    
+    % update filename
+    data_out.custom.filename = [data.custom.filename '_evkdpwr'];
 end
-
-% update filename
-data_out.custom.filename = [data.custom.filename '_evkdpwr'];
 
 end
 % ----- SUBFUNCTIONS BELOW -----

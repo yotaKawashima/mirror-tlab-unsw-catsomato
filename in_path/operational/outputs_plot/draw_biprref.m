@@ -34,7 +34,9 @@ if nargin < 5
 end
 
 % call subfunctions
+% xy coordinate of vertices (including electrodes and supporting points)
 vertices = make_vertices(spatial_cfg(2), spatial_cfg(1));
+% a set of 4 vertex ids for a diamond representing a bipolar channel.
 faces = all_faces(ch_label, vertices);
 
 % place into structure as requested by patch
@@ -120,7 +122,7 @@ vertices = [vert_1; vert_2; vert_3; vert_4];
 %% ALL_FACES
 % maps all of the bipolar channels onto the vertices
 function face = all_faces(ch_label, vertices)
-% find the midpoints of all the channels
+% find the midpoints of all the electrodes (uni polar channel)
 midps = (vertices(ch_label(:, 1), :) + vertices(ch_label(:, 2), :)) /2;
 
 % find all the horizontally re-referenced channels

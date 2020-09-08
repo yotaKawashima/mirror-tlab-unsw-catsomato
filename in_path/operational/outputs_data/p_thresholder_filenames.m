@@ -20,16 +20,31 @@ pval_pool=[];
 
 n_files = numel(filenames);
 
-
+% Each file
 for f = 1:n_files
     fprintf('Processing file %2i of %2i\n', f, n_files)
+    % load anova result per session (load metavars)
+    load(fullfile(filenames{f}))    
+    % Extract only bipolar data if metavars include unipolar data.
+    % pvals dim = channels x frequencies x 3 (2main effect + 1interaction)
     
-    load(fullfile(filenames{f}))
-
+    % work out which channels to keep (the bipolar ones)
+    if metavars.custom.nsignals == 280 || metavars.custom.nsignals == 176
+        lastunipol = prod(metavars.custom.spatialconfig);
+        chan = lastunipol+1:metavars.custom.nsignals;
+    elseif metavars.custom.nsignals == 180 || metavars.custom.nsignals == 112
+        chan = 1:metavars.custom.nsignals;
+    else
+        error('Only unipolar?');
+    end
+       
+    pvals_bipolar = pvals(chan,:,:);
+    metavars.chanlabel = metavars.chanlabel(chan);
+    metavars.custom.nsignals = length(chan);
     
-    
+    % FDR for each file (per sessions)
     if ifperfile
-        [pID, ~] = eeglab_fdr(pvals, q, 'parametric');
+        [pID, ~] = eeglab_fdr(pvals_bipolar, q, 'parametric');
     
         % [pID,pN] = FDR(pvals,q);
         % % if pID is empty, there is no significant result
@@ -41,9 +56,13 @@ for f = 1:n_files
         end
         
         pt_classifychannels(pvals, pID, q, metavars)
+    % Store data for FDR all together (regardless sessions)
     else
-        all_pvals{f} = pvals;
-        pval_pool = [pval_pool;pvals(:)];
+        % Concatenate all sessions together.
+        % difference frequencies, different type of f-stats, and bipolar
+        % channels are all pooled together.
+        all_pvals{f} = pvals_bipolar;
+        pval_pool = [pval_pool;pvals_bipolar(:)];
         metas{f} = metavars;
     end
     
@@ -51,8 +70,9 @@ for f = 1:n_files
 end
 
 fprintf('Processing complete\n')
-
+% FDR all together (regardless sessions)
 if ~ifperfile
+    % pID is a p-threshold. (scaler not vector)
     [pID, ~] = eeglab_fdr(pval_pool, q, 'parametric');
     if isempty(pID)
         pID=0;
@@ -67,13 +87,16 @@ end
 function pt_classifychannels(pvals, pID, q, metavars)
 
 % first classify the channels
+% p_thresh dim = channels x frequencies x 3 (2main effect + 1interaction)
 p_thresh = zeros(size(pvals));
-p_thresh(pvals<pID) = 1;
+p_thresh(pvals<pID) = 1; 
 
 % convert binary to decimal - int/(:, :, 3) is LSB
+% 1=001(only interaction), 2=010(only F1), 3=011(F1 and interaction),
+% 4=100(only F2), 5=101(F2 and interaction), 6=110(F1 and F2), 7=111(all)
 p_class = p_thresh;
 p_class(:, :, 2) = p_class(:, :, 2)*2;
-p_class(:, :, 1) = p_class(:, :, 1)*4;
+p_class(:, :, 1) = p_class(:, :, 1)*(2^2);
 p_class = sum(p_class, 3);
 
 metavars.custom.filename = [metavars.custom.filename(1:end-4) '_pthresh'];

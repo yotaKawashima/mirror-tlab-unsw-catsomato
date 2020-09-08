@@ -7,6 +7,9 @@ function data_out = chronux_pwrspec(data, params)
 %
 %   data_out = chronux_pwrspec(data, params) uses params to configure
 %   mtspectrumc instead
+%   
+%   Compute power spectrum per channel per trial. (input signal as a
+%   vector).
 
 % Modified from pwrspec by Rannee Li, Jul 2015
 % Last edited Jul 2016 by Rannee Li
@@ -58,9 +61,7 @@ data_out.custom.time = data.time{1}; % this is needed for some of the anova anal
 
 % copy freqs
 data_out = rmfield(data_out, 'time');
-
-
-    data_out.freq{1} = freq;
+data_out.freq{1} = freq;
 
 
 

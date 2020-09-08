@@ -1,0 +1,15 @@
+Width of documment = 720pixel
+hieght of document = 
+
+
+Response at a channel
+-> Scale the whole plots to (w, h) = (479.7,387.8) 
+-> label font size 15
+
+Spatial map
+-> Release compound path.
+-> Scale the whole to its 125%.
+
+Colorbar
+-> (w,h)= (24.25, 321) including ticks.
+-> label font size 15

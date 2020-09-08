@@ -2,7 +2,9 @@
 
 %% Add paths to workspace
 % directory where the data is mounted. 
-disk_path = '/media/rannee/UNSW_Cat_Somatos/';
+% Specifpy path to your project directory.
+% e.g. disk_path = 'D:/yota/'
+disk_path = 'your project directory';
 
 % set figure path to be this temporary directory that is not on the main
 % script or figure paths (this is a directory where the old and broken
@@ -19,9 +21,12 @@ raw_path = [data_path 'raw/'];
 tool_path = [disk_path 'scripts/thirdparty_toolboxes/'];
 chron_dir = [tool_path 'chronux/'];
 
+% Add path to disk
+% addpath(genpath(disk_path));
 %% Add repository to path
-
-repo_path = fullfile(mfilename('fullpath'), '../../');
+%repo_path = fullfile(mfilename('fullpath'), '../../');
+[rpath, rname, rext] = fileparts(mfilename('fullpath'));
+repo_path = fullfile(fpath, '../../');
 
 % check if already on path
 path_list = regexp(path, pathsep, 'split');

@@ -23,7 +23,7 @@ cat_names = dirsinside(data_dir);
 for k = 1:numel(cat_names)
     
     % find data
-    dir_sec = fullfile(data_dir, cat_names{k}, datatype_in, '/');
+    dir_sec = fullfile(data_dir, cat_names{k}, datatype_in);
     loadname = dir(fullfile(dir_sec, '*adatout.mat'));
     
     % check if the file already exists

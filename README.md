@@ -1,7 +1,12 @@
 # tlab-unsw-catsomato
 
-For documentation see [Home.md](./documentation/Home.md) for documentation.
+This repository is for research article published at []. You can replicate the analysis with scripts here.
 
+Note that data to be analysed are not included in the data directory. Please download the data at [] and put them in data/raw/ directory.
 
-There is some documentation in the documentation folder; hopefully, there is enough in there to be helpful (although it is skeleton at best). You might want to check out the data pipeline file in documentation as it outlines the functions that each data file passes through.
+See [Home.md](./documentation/Home.md) for documentation.
+
+I will recommend you to follow the instruction and run script in order.
+ 
+
 

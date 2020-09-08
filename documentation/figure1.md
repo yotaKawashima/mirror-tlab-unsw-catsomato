@@ -1,26 +1,30 @@
 # Figure 1 #
 
-**Description:** Summary figure showing protocol
+**Description** 
+ Title: Neural recording, vibratory stimulation and our analysis scheme. 
 
+ For each process, show exemplar responses at bipolar channel 156 in S1 from Session 2-1 (C20110808_R03). Specifically, plot mean and standard deviation across 15 trials from the max amplitude condition in the session i.e. [F1, F2]=[159, 16].
+
+ Fig (A) --- Not in matlab.
+ Fig (B) --- Not in matlab.
+ Fig (C) --- Time domain representatation of the bipolar-re-referenced LFP signal.
+ Fig (D) --- Power spectrum of the LFP signal.
+ Fig (E) --- Frequency domain representation of the LFP as logSNR. 
+ Fig (F) --- Frequency domain representation of the LFP as vibration evoked logPower (VELogP).
+
+ 
 ## File: summaryfigure.m ##
 
-**File description:** plots C and D. (Other parts not in matlab)
+**File discription** 
+ Load data first. Then, compute mean and standard deviation. Finally, plot them.
+ 
+**Data dependencies**
++ data/included_datasets/C20110808_R03/epoched_rsampsl_biprref 
++ data/included_datasets/C20110808_R03/epoched_rsampsl_biprref_evkresp_cmtspwr
++ data/included_datasets/C20110808_R03/epoched_rsampsl_biprref_evkresp_cmtspwr_snrsurr
++ data/included_datasets/C20110808_R03/epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr
 
-**Data dependencies:**
-
-+ Raw data of C20110808_R03 (for the stimTimes data struct)
-+ epoched_rsampsl_biprref of C20110808_R03 (for part c)
-
-**Notes:** 
-
+**Notes** 
 + t=0 is the start of the *vibration* 
-+ Need to set directories in the heading before running.
-+ Last version before version control is /media/rannee/UNSW_Cat_Somatos/scripts/Nov17/figure1_producer_20171126.m
-
-**TODO:** 
-
-+ Automatic adding of the git repo to path at matlab startup
-+ Add description
-+ Figure directory needs to be set
-+ Figure name
-+ Add script dependencies to wiki
++ Run in_path/operational/anova_analysis/pip_full_allcat.m in order to get data to plot beforehand.
++ Need to set directories in the heading.

@@ -1,20 +1,19 @@
 # Wiki organisation
 
+## Data and pipeline documentation
+
+* [Data pipeline](./Data%20Pipeline.md)
+
 ## Figure files documentation
 
 * [Figure 1](./figure1.md)
 * [Figure 2](./figure2.md)
-* [Figure 3](./figure3.md)
-* [Figure 4/5 (not created)]()
-* [Figure 6](./figure6.md)
-* [Figure 7](./figure7.md)
-* [Figure 8](./figure8.md)
+* [Figure 3-8](./figure3-8.md)
+* [Figure 9](./figure9.md)
+* [Figure 10](./figure10.md)
+* [Figure 11-14](./figure11-14.md)
+* [Figure in Appendix A1-A2](./figureappendix.md)
 * [Figure documentation template](./Figure%20Scripts%20Template.md)
-
-## Data and pipeline documentation
-
-* [Data pipeline](./Data%20Pipeline.md)
-* [Helper scripts](./Helper%20Scripts.md)
 
 
 -----

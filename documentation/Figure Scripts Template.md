@@ -1,23 +1,36 @@
 # Figure [] #
 
-**Description:** []
+**Description** 
+ Title: [Use the same one as the paper.]
 
-## File: [] ##
+ []
 
-**File description:** []
+ Fig (A) --- []
+ Fig (B) --- []
+ Fig (C) --- []
+ 
 
-**Data dependencies:**
+## File: filename.m ##
 
+**File discription** 
+ []
+
+**Data dependencies**
 + []
+
+**Notes** 
 + []
 
-**Notes:** 
 
-+ []
-+ Last version before version control is /media/rannee/UNSW_Cat_Somatos/scripts/[]
+## File: filename.m ##
 
-**TODO:** 
+**File discription** 
+ []
 
+**Data dependencies**
 + []
+
+**Notes** 
 + []
-+ Add script dependencies to wiki
+
+

@@ -1,0 +1,5 @@
+Run call_p_thresholder_filenames.m first. Then, Run plot_anova_proportions.m for plotting. 
+
+I may modify pipe_full.m so that it automatically call call_p_thresholder_filenames.m, but for now this is not implemented.
+
+call_p_thresholder.m is not used here. (may be used somewhere else.)

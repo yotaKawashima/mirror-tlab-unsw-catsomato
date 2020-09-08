@@ -6,20 +6,26 @@
 
 %% options and selections - EDIT THIS SECTION
 % filename of the RAW data that is to be used. 
-filename_in = 'Cat20110808_UtahRight-3_LFPStimSegs';
+filename_in = 'Cat20110808_UtahRight-1_LFPStimSegs';
 
 % filename to be saved. 
-filename_out = 'C20110808_R03';
+filename_out = 'C20110808_R01';
 
 % add directories to path
-run(fullfile(mfilename('fullpath'), '../../../../figure_scripts/path_setup.m'))
-
+% run(fullfile(split(mfilename('fullpath'), '/'), '../../../figure_scripts/path_setup.m'));
+[fpath, fname, fext] = fileparts(mfilename('fullpath'));
+run(fullfile(fpath, '../../../figure_scripts/path_setup.m'));
 % do you wish to use chronux to calculate power spectrum?
 chronspec = true;
 
 % the directory where the data can be found
 % generally does not beed to be edited.
 data_dir = fullfile(data_path, 'included_datasets', filename_out, '/');
+
+% mkdir if not exist.
+if ~exist(data_dir, 'dir')
+    mkdir(data_dir)
+end
 
 % type of z-scoring
 % 1 = zscore, 2 = new_zscore, 0 = none
@@ -178,17 +184,17 @@ end
 
 afpc_filemover(filename_out, dir_sec, 'adatout')
 
-%% SNR: Find SNR
-data_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '/'];
-
-call_snrtosurrounds(data_path, data_sec, filename_out)
-
 %% anova: grab the fstats only
 % this calculates it for all known cats, skipping those that have already
 % been done.
 data_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '_adatain_adatout/'];
 
 extract_fstat(data_path, data_sec)
+
+%% SNR: Find SNR
+data_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '/'];
+
+call_snrtosurrounds(data_path, data_sec, filename_out)
 
 %% HGP: calculate the evoked power
 data_sec = ['epoched_rsampsl_biprref_evkresp' z_dir '_' p_dir '/'];

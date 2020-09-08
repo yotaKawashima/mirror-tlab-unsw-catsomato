@@ -38,11 +38,11 @@ end
 if exist(out_dir, 'dir')~=7
     % directory does not exist, so make it. 
     warning('Destination directory not found. Making directory %s.', out_dir)
-    system(['mkdir ' out_dir]);
+    mkdir(out_dir);
 end
 
 % move the files
-resp = system(['mv ' filename_out '* ' out_dir]);
+movefile([filename_out '*'], out_dir);
 
 if nargout < 1
     clear resp

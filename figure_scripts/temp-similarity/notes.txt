@@ -1,0 +1,2 @@
+Run fstat_corr.m first. 
+This will save correlation data in this folder. 

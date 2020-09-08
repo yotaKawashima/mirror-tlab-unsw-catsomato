@@ -17,10 +17,11 @@ function [pvals, tables, stats] = anp_analysis(data_dir, filename_header)
 %% load data
 fname = dir(fullfile(data_dir, [filename_header '*_P*anov*adatain.mat']));
 
+%{
 if numel(fname) < 1 % more general case
     fname = dir(fullfile(data_dir, [filename_header '*adatain.mat']));
 end
-
+%}
 load(fullfile(data_dir, fname.name))
 
 
@@ -38,11 +39,13 @@ stats(nchans, nfreqs).df = [];
 for m = 1:nfreqs
 for k = 1:nchans
     try
+        % y (23Hz Ampl * trials x 200Hz Ampl)
         [P,TABLE,STATS] = anova2(data.y(:, :, m, k),data.custom.ntrials,'off');
-
+        % P = (F2 main effect, F1 main effect, interaction)
+        
     catch
         %fprintf('Error for channel %i\n', k)
-        P = [NaN, NaN, NaN];
+        P = [NaN, NaN, NaN]; 
         TABLE = [];
         STATS = empt_s;
     end
@@ -52,7 +55,7 @@ for k = 1:nchans
 end
 end
 metavars = rmfield(data, 'y');
-metavars.custom.filename = [fname.name(1:end-11) 'adatout.mat'];
+metavars.custom.filename = [fname.name(1:end-4) '_adatout.mat'];
 
 clear data
 
