@@ -1,4 +1,4 @@
-# Figure appendix A1 and A 2#
+# Figure appendix A1 and A2 #
 
  Fig A1 <br />
  Title: Explanation of Golden-section search algorithm.
