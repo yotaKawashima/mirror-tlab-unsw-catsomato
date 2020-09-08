@@ -1,6 +1,5 @@
 # Figure 2 #
 
-**Description** <br />
  Title: Results of the statistical analysis (two-way ANOVA on logP, logSNR and VELogP).
 
  Show % of channels that were deemed as significant according to two-way ANOVA for each freqency.
