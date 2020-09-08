@@ -1,15 +1,14 @@
 # Figure 11 #
 
-**Description** 
  Title: Waveforms of modeled processes.
 
- Fig (A) --- Waveforms in the time domain.
- Fig (B) --- Waveforms in the frequency domain.
+ Fig (A) --- Waveforms in the time domain. <br />
+ Fig (B) --- Waveforms in the frequency domain. <br />
 
 
 ## File: simulation_v2.m ##
 
-**File discription** 
+**File discription** <br />
  Plot Fig (A) and (B). 
 
 **Data dependencies**
@@ -22,20 +21,19 @@
 
 # Figure 12 #
 
-**Description** 
  Title: Exemplar model responses with logSNR observed at a channel.  
 
  Show exemplar model fitting results when fitting models to bipolar channel 43 in S1 from Session 2-1.
 
- Fig (A) --- Responses from four rectirication models.
- Fig (B) --- Difference between rectification model logSNR and the observed logSNR.
- Fig (C) --- Responses from two square wave models.
- Fig (D) --- Difference between square wave model logSNR and the observed logSNR.
+ Fig (A) --- Responses from four rectirication models. <br />
+ Fig (B) --- Difference between rectification model logSNR and the observed logSNR. <br />
+ Fig (C) --- Responses from two square wave models. <br />
+ Fig (D) --- Difference between square wave model logSNR and the observed logSNR. <br />
 
 
 ## File: find_harmonics_IMs_channels_v3.m ##
 
-**File discription** 
+**File discription** <br />
  Get top 10% channels to which we fit models. 
 
 **Data dependencies**
@@ -48,7 +46,7 @@
 
 ## File: find_harmonics_IMs_channels_v3.m ##
 
-**File discription** 
+**File discription** <br />
  Get top 10% channels to which we fit models. 
 
 **Data dependencies**
@@ -62,7 +60,7 @@
 
 ## File: run_rect_batch.sh and run_sq_batch.sh ##
 
-**File discription** 
+**File discription** <br />
   Slurm script to run matlab functions to fit models to top 10% channels
 
 **Data dependencies**
@@ -76,7 +74,7 @@
 
 ## File: concatenate_fitting_results_from_massive.m ##
 
-**File discription** 
+**File discription** <br />
   Combine mat file containing model fitting results for each channel into one matlab structure. This script returns Resluts_Rect_top10_v2.m and Results_Sq_top10_v2.m, which are required for further analysis.
 
 **Data dependencies**
@@ -89,7 +87,7 @@
 
 ## File: plot_exemplar_responses_with_model_v4.m ##
 
-**File discription** 
+**File discription** <br />
  Plot Fig (A)-(D). 
 
 **Data dependencies**
@@ -103,20 +101,19 @@
 
 # Figure 13 #
 
-**Description** 
  Title: Comparison of fitting performances across rectification models and across square wave models.  
 
  Plot cumulative probability distribution of the minimum difference for comparision.
 
- Fig (A) --- Compare rectificatoin models in S1 and S2 separately.
- Fig (B) --- Compare S1 and S2 for each rectification model.
- Fig (C) --- Compare square wave models in S1 and S2 separately.
- Fig (D) --- Compare S1 and S2 for each square model.
+ Fig (A) --- Compare rectificatoin models in S1 and S2 separately. <br />
+ Fig (B) --- Compare S1 and S2 for each rectification model. <br />
+ Fig (C) --- Compare square wave models in S1 and S2 separately. <br />
+ Fig (D) --- Compare S1 and S2 for each square model. <br />
 
 
 ## File: plot_model_results_v5.m ##
 
-**File discription** 
+**File discription** <br />
  Plot Fig (A)-(D) with Kologorov-Smirnov test for Fig (B) and (D). 
 
 **Data dependencies**
@@ -130,7 +127,6 @@
 
 # Figure 14 #
 
-**Description** 
  Title: Akaike’s Information Criterion (AIC) for model comparison.  
 
  Compute AIC and plot for each somatosensory area.
@@ -138,7 +134,7 @@
 
 ## File: plot_AIC_v2.m ##
 
-**File discription** 
+**File discription** <br />
  Compute AIC and plot Fig 14. 
 
 **Data dependencies**
