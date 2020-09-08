@@ -3,7 +3,11 @@
 
 # ignore outputs from processing
 *.mat
+*.asv
+*.fig
+*.txt
 *.png
 *.eps
 *.ai
+*.ait
 *.svg
