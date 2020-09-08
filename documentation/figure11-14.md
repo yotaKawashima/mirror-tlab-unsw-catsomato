@@ -68,7 +68,7 @@
 
 **Notes** 
 + Use this slurm file if you have access to a supercomputer with slurm system.
-+ Replace ???? with your account, user name, and email address in the file and rect_top10_batch.sh and sq_top10_batch.sh.
++ Replace ???? with your account, user name, and email address in the file, rect_top10_batch.sh, and sq_top10_batch.sh.
 + Use run_rect_sq_with_matlab.m instead if you do not have access to a supercomputer. I have not tried this script, so I am not sure how long it would take. 
 + Run concatenate_fitting_results_from_massive.m after getting the results.
 
