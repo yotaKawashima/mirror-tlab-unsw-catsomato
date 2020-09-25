@@ -8,11 +8,10 @@
 
 * [Figure 1](./figure1.md)
 * [Figure 2](./figure2.md)
-* [Figure 3-8](./figure3-8.md)
-* [Figure 9](./figure9.md)
-* [Figure 10](./figure10.md)
-* [Figure 11-14](./figure11-14.md)
-* [Figure in Appendix A1-A2](./figureappendix.md)
+* [Figure 3-5](./figure3-5.md)
+* [Figure 6-7](./figure6-7.md)
+* [Figure 8](./figure8.md)
+* [Figure 9-12](./figure9-12.md)
 * [Figure documentation template](./Figure%20Scripts%20Template.md)
 
 

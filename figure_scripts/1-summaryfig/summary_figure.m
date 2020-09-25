@@ -27,13 +27,17 @@ run(fullfile(fpath, '../path_setup.m'));
 dt = datestr(now, 'yyyymmdd');
 
 % image format
-img_fmt = '-depsc';
+%img_fmt = '-dtiff';
+img_fmt = '-dpdf';
 
 % Figure 1 common variables
 fig1_catname = 'C20110808_R03';
 fig1_area = 'S1';
 
-fsize = 16; % font size
+fsize = 10; % font size
+ftype = 'Arial'; % font type
+x_width = 6.5; % fig width
+y_width = 4.5; % fig height
 
 % Frequencies of interest (Just for visualisatoin)
 foi_f1_and_harm = 23:23:250;
@@ -106,13 +110,23 @@ h=fill([plot_time fliplr(plot_time)], [plot_mean+plot_std fliplr(plot_mean-plot_
 set(h, 'FaceColor', col)
 set(h, 'EdgeColor', col)
 %errorbar(plot_time, plot_mean, plot_std, 'k', 'LineWidth', 1)
-plot(plot_time, plot_mean, 'k', 'LineWidth', 1)
+plot(plot_time, plot_mean, 'k', 'LineWidth', 0.5)
 hold off
 xlim(timeran);
-xlabel('time [s]', 'FontSize', fsize)
-ylabel('amplitude [mV]', 'FontSize', fsize)
-set(gca, 'FontSize', fsize)
-print(13, img_fmt, [fig_path 'Fig1c_20110808R03chan256_' dt])
+xlabel('time [s]', 'FontSize', fsize);
+ylabel('amplitude [mV]', 'FontSize', fsize);
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+%set(gcf,'color','w');
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(13, img_fmt, [fig_path 'figure1_c']);
+elseif img_fmt == "-dtiff"
+    print(13, img_fmt, [fig_path 'figure1_c'], '-r300');
+end
 
 % Zoom in
 %set(gca, 'Xlim', [0.5, 0.51]);
@@ -139,15 +153,16 @@ set(h2, 'FaceColor', col)
 set(h2, 'EdgeColor', col)
 %errorbar(freq_data, mean_logpower, std_logpower, 'k', 'LineWidth', 1)
 plot(freq_data, mean_logpower, 'k', 'LineWidth', 0.5)
-axis tight
+axis tight 
+
+
 ylim([0,inf])
 xlabel('frequency [Hz]', 'FontSize', fsize)
 ylabel('log power [\muV^2s]', 'FontSize', fsize)
-set(gca, 'FontSize', fsize)
 % plot vertical lines at frequencies of interest
 % grab axis variables
 ylims = get(gca, 'YLim');
-v_ylims = [0, max(mean_logpower)*0.1];
+v_ylims = [0, max(mean_logpower)*0.05];
 v1 = numel(foi_f1_and_harm);
 v2 = numel(foi_inter);
 v = zeros(1, numel(foi));
@@ -156,10 +171,24 @@ v(1:v1) = plot([foi_f1_and_harm', foi_f1_and_harm'], v_ylims, 'Color', [255, 47,
 v(v1+1) = plot([foi_f2, foi_f2], v_ylims, 'Color', [0, 205, 0]/256);%[83, 215, 81]/256); % 200
 v(v1+2:v1+v2+1) = plot([sort(foi_inter)', sort(foi_inter)'], v_ylims, 'Color', [0, 82, 255]/256); % intermodulation
 % format vertical lines
-set(v, 'LineWidth', 2, 'LineStyle', '--')
+set(v, 'LineWidth', 1)
+xax = gca;
+set(xax.XAxis, 'TickDir', 'out');
 hold off
 set(gca, 'XLim', [0,250]);
-print(14, img_fmt, [fig_path 'Fig1d_20110808R03chan256_' dt])
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+%set(gcf,'color','w');
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(14, img_fmt, [fig_path 'figure1_d']);
+elseif img_fmt == "-dtiff"
+    print(14, img_fmt, [fig_path 'figure1_d'], '-r300');
+end
+
 
 % Zoom in
 %set(gca, 'Xlim', [100,110]);
@@ -191,11 +220,10 @@ axis tight
 %ylim([0,inf])
 xlabel('frequency [Hz]', 'FontSize', fsize)
 ylabel('log SNR [dB]', 'FontSize', fsize)
-set(gca, 'FontSize', fsize)
 % plot vertical lines at frequencies of interest
 % grab axis variables
 ylims = get(gca, 'YLim');
-v_ylims = [ylims(1), (ylims(1)+(ylims(2)-ylims(1))*0.1)];
+v_ylims = [ylims(1), (ylims(1)+(ylims(2)-ylims(1))*0.05)];
 v1 = numel(foi_f1_and_harm);
 v2 = numel(foi_inter);
 v = zeros(1, numel(foi));
@@ -204,10 +232,23 @@ v(1:v1) = plot([foi_f1_and_harm', foi_f1_and_harm'], v_ylims, 'Color', [255, 47,
 v(v1+1) = plot([foi_f2, foi_f2], v_ylims, 'Color', [0, 205, 0]/256);%[83, 215, 81]/256); % 200
 v(v1+2:v1+v2+1) = plot([sort(foi_inter)', sort(foi_inter)'], v_ylims, 'Color', [0, 82, 255]/256); % intermodulation
 % format vertical lines
-set(v, 'LineWidth', 2, 'LineStyle', '--')
+set(v, 'LineWidth', 1)
+xax = gca;
+set(xax.XAxis, 'TickDir', 'out');
 hold off
 set(gca, 'XLim', [0,250]);
-print(15, img_fmt, [fig_path 'Fig1e_20110808R03chan256_' dt])
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+%set(gcf,'color','w');
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(15, img_fmt, [fig_path 'figure1_e']);
+elseif img_fmt == "-dtiff"
+    print(15, img_fmt, [fig_path 'figure1_e'], '-r300');
+end
 
 % Zoom in
 %set(gca, 'Xlim', [100,110]);
@@ -237,11 +278,10 @@ axis tight
 %ylim([0,inf])
 xlabel('frequency [Hz]', 'FontSize', fsize)
 ylabel('VELogP [dB]', 'FontSize', fsize)
-set(gca, 'FontSize', fsize)
 % plot vertical lines at frequencies of interest
 % grab axis variables
 ylims = get(gca, 'YLim');
-v_ylims = [ylims(1), (ylims(1)+(ylims(2)-ylims(1))*0.1)];
+v_ylims = [ylims(1), (ylims(1)+(ylims(2)-ylims(1))*0.05)];
 v1 = numel(foi_f1_and_harm);
 v2 = numel(foi_inter);
 v = zeros(1, numel(foi));
@@ -250,10 +290,23 @@ v(1:v1) = plot([foi_f1_and_harm', foi_f1_and_harm'], v_ylims, 'Color', [255, 47,
 v(v1+1) = plot([foi_f2, foi_f2], v_ylims, 'Color', [0, 205, 0]/256);%[83, 215, 81]/256); % 200
 v(v1+2:v1+v2+1) = plot([sort(foi_inter)', sort(foi_inter)'], v_ylims, 'Color', [0, 82, 255]/256); % intermodulation
 % format vertical lines
-set(v, 'LineWidth', 2, 'LineStyle', '--')
+set(v, 'LineWidth', 1)
+xax = gca;
+set(xax.XAxis, 'TickDir', 'out');
 hold off
 set(gca, 'XLim', [0,250]);
-print(16, img_fmt, [fig_path 'Fig1f_20110808R03chan256_' dt])
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+%set(gcf,'color','w');
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+if img_fmt == "-depsc"  || img_fmt == "-dpdf"   
+    print(16, img_fmt, [fig_path 'figure1_f']);
+elseif img_fmt == "-dtiff"
+    print(16, img_fmt, [fig_path 'figure1_f'], '-r300');
+end
 
 % Zoom in
 %set(gca, 'Xlim', [100,110]);

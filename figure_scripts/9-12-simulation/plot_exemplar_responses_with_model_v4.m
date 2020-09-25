@@ -7,6 +7,13 @@ load('Harmonics_IMs_top10.mat');
 % Bipolar channel (Note this ID is not actual bipolar channel ID.)
 bp_ch_id = 10;
 
+img_fmt = '-dpdf';
+fsize = 10; % font size
+ftype = 'Arial'; % font type
+x_width = 8; % fig width
+y_width = 8; % fig height
+
+
 foi_f1_harm = 23:23:250;
 foi_f2 = 200;
 foi_inter = sort([177:-23:0 200+23:23:250]);
@@ -56,27 +63,32 @@ figure();clf
 subplot(2,1,1)
 hold on
 %Recorded data
-plot(freqs, recorded_logSNR, 'color', 'k', 'linewidth', 3);
-%Rect(X)+Rect(Y)
-plot(freqs, model_1_logSNR, 'color', [250, 125, 89]/256, 'linewidth', 2); 
-%Rect(X)+Rect(Y)+Rect(XY)
-plot(freqs, model_3_logSNR, 'color', [89, 183, 250]/256, 'linewidth', 2);     
-%Rect(X)+Rect(Y)+Rect(X)Rect(Y)
-plot(freqs, model_2_logSNR, 'color', [189, 89, 250]/256, 'linewidth', 2); 
+plot(freqs, recorded_logSNR, 'color', 'k', 'linewidth', 1);
 %Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)
-plot(freqs, model_4_logSNR, 'color', [255, 195, 0]/256, 'linewidth', 2); 
-add_verticle_line(gca); 
+plot(freqs, model_4_logSNR, 'color', [255, 195, 0]/256, 'linewidth', 1); 
+%Rect(X)+Rect(Y)+Rect(X)Rect(Y)
+plot(freqs, model_2_logSNR, 'color', [189, 89, 250]/256, 'linewidth', 1); 
+%Rect(X)+Rect(Y)+Rect(XY)
+plot(freqs, model_3_logSNR, 'color', [250, 125, 89]/256, 'linewidth', 1);     
+%Rect(X)+Rect(Y)
+plot(freqs, model_1_logSNR, 'color', [89, 183, 250]/256, 'linewidth', 1); 
 xlim([0, 250]);
 ylim([-20, 35]);
+add_verticle_line(gca); 
+
 xlabel('frequency [Hz]');
 ylabel('logSNR [dB]');
+
 % Legend
-legend({'Observed'; 'Rect(X)+Rect(Y)';...
-        'Rect(X)+Rect(Y)+Rect(XY)';...
-        'Rect(X)+Rect(Y)+Rect(X)Rect(Y)';...
-        'Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)'});
+%legend({'Observed';...
+%        'Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)'...
+%        'Rect(X)+Rect(Y)+Rect(X)Rect(Y)';...
+%        'Rect(X)+Rect(Y)+Rect(XY)';...
+%        'Rect(X)+Rect(Y)';...
+%        );
 % title
-title('Observed logSNR and model logSNR');
+title('Observed logSNR and model logSNR', 'fontsize', fsize);
+
 hold off 
 
 % Get points at f1 harmonics and intermodulation
@@ -91,16 +103,19 @@ subplot(2,1,2)
 hold on 
 %Difference Recorded data
 %Rect(X)+Rect(Y)
-scatter(x_points-1.25, diff_1(harm_inter_inds), 100, [250, 125, 89]/256, 'filled'); 
+scatter(x_points-1.25, diff_1(harm_inter_inds), 30, [89, 183, 250]/256, 'filled'); 
 %Rect(X)+Rect(Y)+Rect(XY)
-scatter(x_points-0.625, diff_3(harm_inter_inds), 100, [89, 183, 250]/256, 'filled');     
+scatter(x_points-0.625, diff_3(harm_inter_inds), 30, [250, 125, 89]/256, 'filled');     
 %Rect(X)+Rect(Y)+Rect(X)Rect(Y)
-scatter(x_points+0.625, diff_2(harm_inter_inds), 100, [189, 89, 250]/256, 'filled'); 
+scatter(x_points+0.625, diff_2(harm_inter_inds), 30, [189, 89, 250]/256, 'filled'); 
 %Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)
-scatter(x_points+1.25, diff_4(harm_inter_inds), 100, [255, 195, 0]/256, 'filled'); 
+scatter(x_points+1.25, diff_4(harm_inter_inds), 30, [255, 195, 0]/256, 'filled'); 
+xlim([0,250]);
+ylim([-25, 25]);
 add_verticle_line(gca);
 xlabel('frequency [Hz]');
 ylabel('difference [dB]');
+
 % Legend
 legend({'Rect(X)+Rect(Y)';...
         'Rect(X)+Rect(Y)+Rect(XY)';...
@@ -108,10 +123,19 @@ legend({'Rect(X)+Rect(Y)';...
         'Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)'});
 % title
 title('Difference:(observed logSNR) - (model logSNR)');
-xlim([0,250]);
-ylim([-25, 25]);
 hold off
-
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+%set(gcf,'color','w');    
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, 'figure10');
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, 'figure10', '-r300');
+end
 
 %% Square
 % Load Sq data
@@ -152,19 +176,20 @@ figure();clf
 subplot(2,1,1)
 hold on
 %Recorded data
-plot(freqs, recorded_logSNR, 'color', 'k', 'linewidth', 3);
-%Sq(X)+Sq(Y)
-plot(freqs, model_1_logSNR, 'color', [250, 125, 89]/256, 'linewidth', 2); 
+plot(freqs, recorded_logSNR, 'color', 'k', 'linewidth', 1);
 %Sq(X)+Sq(Y)+Sq(XY)
-plot(freqs, model_2_logSNR, 'color', [89, 183, 250 ]/256, 'linewidth', 2);     
-add_verticle_line(gca); 
+plot(freqs, model_2_logSNR, 'color', [250, 125, 89]/256, 'linewidth', 1);     
+%Sq(X)+Sq(Y)
+plot(freqs, model_1_logSNR, 'color', [89, 183, 250]/256, 'linewidth', 1); 
 xlim([0,250]);
 ylim([-20, 35]);
+add_verticle_line(gca); 
 xlabel('frequency [Hz]');
 ylabel('logSNR [dB]');
+
 % Legend
-legend({'Observed'; 'Sq(X)+Sq(Y)'; 'Sq(X)+Sq(Y)+Sq(XY)'});
-axis tight;
+%legend({'Observed'; 'Sq(X)+Sq(Y)+Sq(XY)'; 'Sq(X)+Sq(Y)'});
+
 % title
 title('Observed logSNR and model logSNR');
 hold off 
@@ -178,21 +203,34 @@ diff_2 = recorded_logSNR - model_2_logSNR;
 subplot(2,1,2)    
 hold on
 %Sq(X)+Sq(Y)
-scatter(x_points-0.75, diff_1(harm_inter_inds), 100, [250, 125, 89]/256, 'filled'); 
+scatter(x_points-0.75, diff_1(harm_inter_inds), 30, [89, 183, 250]/256, 'filled'); 
 %Sq(X)+Sq(Y)+Sq(XY)
-scatter(x_points+0.75, diff_2(harm_inter_inds), 100, [89, 183, 250]/256, 'filled');     
+scatter(x_points+0.75, diff_2(harm_inter_inds), 30, [250, 125, 89]/256, 'filled');     
+xlim([0,250]);
+ylim([-25, 25]);
 add_verticle_line(gca); 
 xlabel('frequency [Hz]');
 ylabel('difference [dB]');
+
 % Legend
 legend({'Sq(X)+Sq(Y)'; 'Sq(X)+Sq(Y)+Sq(XY)'});
-axis tight;
+
 % title
 title('Difference:(observed logSNR) - (model logSNR)');
-xlim([0,250]);
-ylim([-25, 25]);
 hold off 
-   
+
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+%set(gcf,'color','w');    
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, 'Sup_figure4');
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, 'Sup_figure4', '-r300');
+end
 
 %% functions
 function add_verticle_line(gca)
@@ -210,7 +248,7 @@ function add_verticle_line(gca)
     % plot vertical lines at frequencies of interest
     % grab axis variables
     ylims = get(gca, 'YLim');
-    v_ylims = [-20, -15];
+    v_ylims = [ylims(1), (ylims(2)-ylims(1))*0.05 + ylims(1)];
     v1 = numel(foi_f1_and_harm);
     v2 = numel(foi_inter);
     v = zeros(1, numel(foi));
@@ -219,7 +257,7 @@ function add_verticle_line(gca)
     v(v1+1) = plot([foi_f2, foi_f2], v_ylims, 'Color', [0, 205, 0]/256);%[83, 215, 81]/256); % 200
     v(v1+2:v1+v2+1) = plot([sort(foi_inter)', sort(foi_inter)'], v_ylims, 'Color', [0, 82, 255]/256); % intermodulation
     % format vertical lines
-    set(v, 'LineWidth', 2, 'LineStyle', '--')
+    set(v, 'LineWidth', 1.5 )
     % Remove legend for these lines
     v_annotation = get(v, 'Annotation');
     for i_vline = 1:length(v)

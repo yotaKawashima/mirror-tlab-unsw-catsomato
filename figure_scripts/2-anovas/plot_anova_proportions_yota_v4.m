@@ -18,14 +18,18 @@ dir_sec = fullfile(data_path, 'collated_data', 'anova_props');
 %dir_sec = fullfile(data_path, 'collated_data', ...
 %    'anoved_rsampsl_biprref_cmtspwr')
 
-% output image type
-%imgtype = '-depsc';
-imgtype = '-dsvg';
-
 % Current date and time for output image
 dt = datestr(now, 'yyyymmdd');
 
-fsize = 16; % font size
+% output image type
+img_fmt = '-dpdf';
+%img_fmt = '-dsvg';
+%img_fmt = '-dtiff';
+
+fsize = 10; % font size
+ftype = 'Arial'; % font type
+x_width = 13; % fig width
+y_width = 14; % fig height
 
 %% Load data to create the matrix of channel proportions
 
@@ -124,9 +128,9 @@ for i_dtype = 1:length(dtypes)
         plot_val = prop_all(figid,:); 
         q = plot(metavars.freq{1}, plot_val);
         if i_dtype == 1 
-            set(q, 'color', 'k', 'LineWidth', 1.5, 'LineStyle', '-')
+            set(q, 'color', 'k', 'LineWidth', 1, 'LineStyle', '-')
         elseif i_dtype == 2
-            set(q, 'color', [205,133,63]/256 , 'LineWidth', 1.5, 'LineStyle', '-')       
+            set(q, 'color', [205,133,63]/256 , 'LineWidth', 1, 'LineStyle', '-')       
         end
         % plot propotion as a point only at frequencies of interest.
         %{
@@ -137,13 +141,14 @@ for i_dtype = 1:length(dtypes)
         
         % add legend and plot vertical lines at foi
         if i_dtype == length(dtypes)
-            % add legend 
-            legend('logP and VELogP', 'logSNR')
-            
+            if subplotid == 1
+                % add legend 
+                legend('logP and VELogP', 'logSNR')
+            end
             % plot vertical lines at foi
             %   grab axis variables    
             ylims = get(gca, 'YLim');
-            ylims = [0, ylims(2)*0.1];
+            ylims = [0, ylims(2)*0.05];
             v1 = numel(foi_f1_and_harm);
             v2 = numel(foi_inter);
             v = gobjects(numel(foi), 1);
@@ -158,7 +163,7 @@ for i_dtype = 1:length(dtypes)
             v(v1+2:v1+v2+1) = plot([foi_inter', foi_inter'], ylims, ...
                 'Color', [0, 82, 255]/256); 
             %   format vertical lines
-            set(v, 'LineWidth', 2, 'LineStyle', '--');
+            set(v, 'LineWidth', 1, 'LineStyle', '--');
             
             % Remove legend for these lines
             v_annotation = get(v, 'Annotation');
@@ -172,7 +177,10 @@ for i_dtype = 1:length(dtypes)
             ylabel('% of significant channels') 
             xlabel('frequency f [Hz]','interpret','none')
             title(title_list(figid));    
-            set(gca, 'FontSize', fsize)
+            set(gca, 'FontSize', 10);
+            xax = gca;
+            set(xax.XAxis, 'TickDir', 'out');
+            
   
         end % if i_dtype == length(dtypes)
         %hold off     
@@ -180,7 +188,20 @@ for i_dtype = 1:length(dtypes)
     %print(gcf,imgtype,['Fig3_subplot_', dtype_f ,dt])
 end % for i_dtype = 1:length(dtypes)
 hold off
-print(gcf,imgtype,['Fig2_subplot_all', dt])
+
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+%set(gcf,'color','w');
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [5, 5, x_width, y_width];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"
+    print(gcf, img_fmt, [fig_path 'figure2']);
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, [fig_path 'figure2'], '-r300');
+end
+
 
 
 %% Plot Proportion matrix 

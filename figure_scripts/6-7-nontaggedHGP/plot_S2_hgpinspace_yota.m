@@ -12,8 +12,14 @@ data_dir = [data_path 'included_datasets/' cat_name '/epoched_rsampsl_biprref_ev
 
 filename = [cat_name '_S2_FxxxAxxx_FxxxAxxx_epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp.mat'];
 
-img_fmt = '-depsc';
+%img_fmt = '-depsc';
 %img_fmt = '-dpng';
+%img_fmt = '-dtiff';
+img_fmt = '-dpdf';
+%fsize = 10; % font size
+%ftype = 'Arial'; % font type
+%x_width = 6.5; % fig width
+%y_width = 4.5; % fig height
 
 %% load data 
 load([data_dir, filename])
@@ -84,7 +90,7 @@ for condid = 1:nConds
     hold on
     % add patch to an exemplar bipolar channel
     p1 = patch(x1, y1, 12);
-    set(p1, 'EdgeColor', [0,0,125]/256, 'LineWidth', 2, 'FaceColor', 'none')
+    set(p1, 'EdgeColor', [0,0,125]/256, 'LineWidth', 0.75, 'FaceColor', 'none')
     hold off
 end
 
@@ -93,12 +99,36 @@ set(hAx, 'XTicklabel',[])
 set(hAx, 'YTicklabel',[])
 
 % save figure
-dt = datestr(now, 'yyyymmdd');
-print(gcf, img_fmt, ['Fig9_HGP_fXXX_S2_ch', num2str(ch), '_spatialmap', dt])
+filename = ['Fig7b_HGP_fXXX_S2_ch', num2str(ch), '_spatialmap'];
+set(findall(gcf,'-property','FontSize'), 'FontSize', 8);
+set(findall(gcf,'-property','FontName'), 'FontName', 'Arial');
+%set(gcf,'color','w');    
+set(gcf,'renderer','Painters');    
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, 8.1, 6.3];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, filename);
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, filename, '-r300');
+end
+
 
 % Save a color bar image.
 figure(); clf
 colorbar
 colormap(flipud(hot))
 caxis(clim)
-print(gcf, img_fmt, ['Fig9e_HGP_fXXX_S2_ch', num2str(ch), '_colorbar', dt])
+set(findall(gcf,'-property','FontSize'), 'FontSize', 8);
+set(findall(gcf,'-property','FontName'), 'FontName', 'Arial');
+set(gcf,'color','w');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, 5.4, 5.4];
+filename_color = ['Fig7b_HGP_fXXX_S2_ch', num2str(ch), '_colorbar'];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, filename_color);
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, filename_color, '-r300');
+end
+

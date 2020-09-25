@@ -5,6 +5,8 @@
 [fpath, fname, fext] = fileparts(mfilename('fullpath'));
 run(fullfile(fpath, '../path_setup.m'));
 
+img_fmt = '-dpdf';
+
 % frequency
 f1 = 23;
 f2 = 200;
@@ -43,7 +45,7 @@ Sq_comp2(sin(comp2) <=0) = -1;
 
 
 %% Plot 
-num_signals = 9;
+num_signals = 7;
 
 % Preallocate subplots.
 hAx1 = gobjects(num_signals,1);    
@@ -61,52 +63,42 @@ for i = 1:num_signals
             % Rec(X)
             p_y = Rect_comp1;
         case 3
-            % Non-linear processing of a single input. Negative values 
-            % replaced with 0.
-            % Rec(Y)
-            p_y = Rect_comp2;      
-        case 4 
             % The two inputs are first half-rectified and then summed. 
             % Rec(X) + Rec(Y)
             p_y = Rect_comp1 + Rect_comp2;  
-        case 5
-            % The two inputs are first half-rectified and then interact 
-            % via a multiplication term.
-            % Rec(X)*Rec(Y)
-            p_y = Rect_comp1 .* Rect_comp2;            
-        case 6 
+        case 4 
             % The two inputs first interact via a multiplication term and 
             % are then half rectified together. 
             % Rec(XY)
             p_y = comp1 .* comp2;
             p_y(p_y <= 0) = 0;
-        case 7 
+        case 5
+            % The two inputs are first half-rectified and then interact 
+            % via a multiplication term.
+            % Rec(X)*Rec(Y)
+            p_y = Rect_comp1 .* Rect_comp2;                        
+        case 6 
             % Sum of two square waves.
             % Sq(X)+Sq(Y)
             p_y = Sq_comp1 + Sq_comp2;
-        case 8
-            % Multiplication of two square waves.
-            % Sq(X)*Sq(Y)
-            p_y = Sq_comp1 .* Sq_comp2;
-        case 9 
+        case 7 
             % Multiplication of two square waves.
             % Sq(XY)
             p_y_tmp = comp1 .* comp2;
             p_y(sin(p_y_tmp) > 0) = 1;
             p_y(sin(p_y_tmp) <=0) = -1;
-
     end
     
-    figure(1);
+    fig1 = figure(1);
     hAx1(i) = subplot(num_signals, 1, i);%subtightplot(9,1,i);
-    p = plot(times, p_y, 'k', 'linewidth', 1);
+    p = plot(times, p_y, 'k', 'linewidth', 0.4);
     
     % Power spectrum and logSNR
     [logsnrs, powers, freqs]= compute_logsnrs_y(p_y, sampling_rate);
     
-    figure(2);
+    fig2 = figure(2);
     hAx2(i) = subplot(num_signals, 1, i);%subtightplot(9,1,i);
-    pp = plot(freqs, logsnrs,  'k', 'linewidth', 1);
+    pp = plot(freqs, logsnrs,  'k', 'linewidth', 0.4);
 
     foi_f1_and_harm = 23:23:250;
     foi_f2 = 200;
@@ -118,7 +110,7 @@ for i = 1:num_signals
     % plot vertical lines at foi
     %   grab axis variables    
     ylims = get(gca, 'YLim');
-    ylims = [-10, ylims(2)*0.1];
+    ylims = [-10, ylims(2)*0.05];
     v1 = numel(foi_f1_and_harm);
     v2 = numel(foi_inter);
     v = gobjects(numel(foi), 1);
@@ -133,7 +125,7 @@ for i = 1:num_signals
     v(v1+2:v1+v2+1) = plot([foi_inter', foi_inter'], ylims, ...
         'Color', [0, 82, 255]/256); 
     %   format vertical lines
-    set(v, 'LineWidth', 2, 'LineStyle', '--');
+    set(v, 'LineWidth', 1);
     hold off
 end
 
@@ -148,22 +140,37 @@ set(hAx1,'XtickLabel',[0 0.25 0.5])
 set(hAx1(1:end-1), 'XTicklabel',[]);
 xlabel(hAx1(end), 'time [s]');
 ylabel(hAx1(5), 'Amplitude [-]');
-set(hAx1, 'FontSize', 16);
-set(gcf,'renderer','Painters')
-print(gcf, '-depsc', 'Simulation_timecourse')
-%print(gcf, '-dpng', 'Simulation_timecourse')
+set(hAx1, 'FontSize', 8);
+set(hAx2, 'FontName', 'Arial');
+set(fig1,'renderer','Painters');
+f=fig1;
+f.Units = 'centimeters';
+f.Position = [10, 10, 8, 8.5];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(fig1, img_fmt, 'figure9_a');
+elseif img_fmt == "-dtiff"
+    print(fig1, img_fmt, 'figure9_a, '-r300');
+end
 
 % Figure 2 setting
 set(hAx2, 'ylim', [-10 30])
+set(hAx2, 'xlim', [0 250])
 set(hAx2,'Ytick',[0 20])
 %set(hAx2,'YTickLabel',[0]);
 set(hAx2(1:end-1), 'XTicklabel',[]);
 xlabel(hAx2(end), 'frequency [Hz]');
 ylabel(hAx2(5), 'logSNR [dB]');
-set(hAx2, 'FontSize', 16);
-set(gcf,'renderer','Painters')
-print(gcf, '-depsc', 'Simulation_logsnr')
-%print(gcf, '-dpng', 'Simulation_logsnr')
+set(hAx2, 'FontSize', 8);
+set(hAx2, 'FontName', 'Arial');
+set(fig2,'renderer','Painters')
+f=fig2;
+f.Units = 'centimeters';
+f.Position = [10, 10, 8, 8.5];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(fig2, img_fmt, 'figure9_b');
+elseif img_fmt == "-dtiff"
+    print(fig2, img_fmt, 'figure9_b, '-r300');
+end
 
 %% Function
 function [logsnrs, powers, freqs] = compute_logsnrs_y(data, sampling_rate)

@@ -1,3 +1,4 @@
+
 % Plots the distribution of f-statistic from ANOVA over 0-250 Hz
 % Correspond to figure 6 A.
 % Yota modified Rannee's code.
@@ -13,7 +14,15 @@ datatype = 'epoched_rsampsl_biprref_evkresp_cmtspwr_adatain_adatout_fstonly';
 %data_dir = fullfile(data_path, '/collated_data/anoved_rsampsl_biprref_evkresp_cmtspwr_adatout_fstonly');
 
 %img_fmt = '-dpng';
-img_fmt = '-depsc';
+%img_fmt = '-depsc';
+%img_fmt = '-dtiff';
+img_fmt = '-dpdf';
+
+fsize = 10; % font size
+ftype = 'Arial'; % font type
+x_width = 6.5; % fig width
+y_width = 4.5; % fig height
+
 %% by area
 ylimits = zeros(2, 2);
 % Store subplot axis for lim
@@ -26,9 +35,9 @@ fmeans = cell(2,1);
 % Plot S1 and S2 in the same figure
 %figure(1);clf
 colors = cell(2,1);
-colors{1,1} = [  0,   0,   0; ...
-               125, 125,  125; ...
-               220, 220, 220]/ 256;
+colors{1,1} = [  0,   0,   255; ...
+                 0, 128,   255; ...
+                 0, 220,   225]/ 256;
 colors{2,1} = [255,   0,   0; ...
                255,  90,  90; ...
                255, 180, 180]/ 256;
@@ -141,8 +150,8 @@ for a = 1:2
         hold off
         
         if a == 2
-            legend('S1:Top 5%', 'S1:Top 10%', 'S1:Top 50%', ...
-                   'S2:Top 5%', 'S2:Top 10%', 'S2:Top 50%');
+            %legend('S1:Top 5%', 'S1:Top 10%', 'S1:Top 50%', ...
+            %       'S2:Top 5%', 'S2:Top 10%', 'S2:Top 50%');
           
             title(titles{i_fs});
             xlabel('frequency [Hz]')
@@ -191,8 +200,18 @@ for i_fs = 1:3
     figure(i_fs);
     set(gca, 'YLim', ylimfinal);  %set(hAx, 'YLim', ylimfinal);  
     set(gca, 'Xlim', [0 250])     %set(hAx, 'Xlim', [0 250]);
-    set(gca,'FontSize',16);    %set(hAx,'FontSize',16);
-    print(gcf, img_fmt, ['Fig9_' titles{i_fs} '_all'])
+    set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+    set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+    %set(gcf,'color','w');    
+    set(gcf,'renderer','Painters');
+    f=gcf;
+    f.Units = 'centimeters';
+    f.Position = [10, 10, 6.5, 5.75];    
+    if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+        print(gcf, img_fmt, ['Fig6_' titles{i_fs} '_all']);    
+    elseif img_fmt == "-dtiff"        
+        print(gcf, img_fmt, ['Fig6_' titles{i_fs} '_all'], '-r300');
+    end
 end % i_fs = 1:3
 
 % Create color bar as legend.
@@ -206,6 +225,18 @@ for a=1:2
     c.Location = 'west';
     c.Ticks = [1/6, 0.5, 1-1/6];
     c.TickLabels = {'top 50%', 'top 10%', 'top 5%'};
-    set(gca,'FontSize',16);    %set(hAx,'FontSize',16);
-    print(gcf, img_fmt, ['Fig9_S' num2str(a) '_all_colorbar']) 
+    set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+    set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+    %set(gcf,'color','w');    
+    set(gcf,'renderer','Painters');    
+    f=gcf;
+    f.Units = 'centimeters';
+    f.Position = [10, 10, 3, 6];
+    if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+        print(gcf, img_fmt, ['Fig6_S' num2str(a) '_all_colorbar']);    
+    elseif img_fmt == "-dtiff"        
+        print(gcf, img_fmt, ['Fig6_S' num2str(a) '_all_colorbar'], '-r300');
+    end       
 end % a=1:2
+
+close all;

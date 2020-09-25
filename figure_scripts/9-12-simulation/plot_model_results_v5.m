@@ -9,6 +9,16 @@
 % aSq(X) + bSq(Y)
 % aSq(X) + bSq(Y) + cSq(X)Sq(Y)
 
+%img_fmt = '-depsc2';
+%img_fmt = '-dpng';
+%img_fmt = '-dtiff';
+img_fmt = '-dpdf';
+
+fsize = 8.5; % font size
+ftype = 'Arial'; % font type
+x_width = 13; % fig width
+y_width = 5; % fig height
+
 bonferroni_correction = 6; % number of models we tested.
 
 Rect_data = load('Results_Rect_top10_v2.mat');
@@ -60,7 +70,6 @@ end % for model_id =1:4
 ksstats_table = table(h, p, ks2stat);
 disp(ksstats_table);
 
-
 % Plot culmtive probability distribution
 figure(); clf
 for area_id = 1:2
@@ -86,13 +95,13 @@ for area_id = 1:2
         subplot(2, 2, order_id);
         % Plot cdf
         [h, stats] = cdfplot(error_now);
-        set(h, 'linewidth', 3);
+        set(h, 'linewidth', 1);
         set(h, 'color', line_col);
         if area_id ==2 % ADd line only after plotting S2 results
         % Add line showing ks stats (max distance)
         v = plot([x_ks(model_id), x_ks(model_id)],...
                  [cdf1_ks(model_id), cdf2_ks(model_id)],...
-                 'color', 'k', 'linewidth', 3);
+                 'color', 'k', 'linewidth', 1);
         % Ignore this line for legend 
         v_annotation = get(v, 'Annotation');
         set(get(v_annotation,'LegendInformation'),...
@@ -103,31 +112,40 @@ for area_id = 1:2
         hold off
         switch model_id
             case 1
-                title_now_1 = 'Rect(X)+Rect(Y)'; 
-                title_now_2 = '';
+                title_now = 'Rect(X)+Rect(Y)';
             case 2
-                title_now_1 = 'Rect(X)+Rect(Y)';
-                title_now_2 = '+Rect(X)Rect(Y)';
+                title_now = 'Rect(X)+Rect(Y)+Rect(X)Rect(Y)';
             case 3
-                title_now_1 = 'Rect(X)+Rect(Y)'; 
-                title_now_2 = '+Rect(XY)';
+                title_now = 'Rect(X)+Rect(Y)+Rect(XY)';
             case 4
-                title_now_1 = 'Rect(X)+Rect(Y)'; 
-                title_now_2 = '+Rect(XY)+Rect(X)Rect(Y)';
+                title_now = 'Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)';
         end % swithch model_id   
        
-        title_now_3 = ['p = ', ...
-            num2str(ksstats_table.p(model_id)*bonferroni_correction)];
+        %title_now_3 = ['p = ', ...
+        %    num2str(ksstats_table.p(model_id)*bonferroni_correction)];
 
-        title({title_now_1, title_now_2, title_now_3, title_now_4});
+        %title({title_now_1, title_now_2, title_now_3});
+        title(title_now);
         
         xlim([40, 120]);
-        set(gca, 'fontsize', 16);
         
     end % for model_id = 1:4
 end % area_id = 1:2
 
 legend({'S1', 'S2'});
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width*2];
+% Print
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, 'figure11_a');
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, 'figure11_a', '-r300');
+end
+
 %% Rect compare models for each area
 % Plot culmtive probability distribution
 colours = [[0, 0.4470, 0.7410];...
@@ -140,7 +158,7 @@ for area_id = 1:2
     % Get error data
     errors = error_each_area(area_id).errors;
     
-    subplot(2,1, area_id);
+    subplot(1,2, area_id);
     hold on 
     for order_id = 1:4
         model_id = model_orders(order_id); 
@@ -155,7 +173,7 @@ for area_id = 1:2
         end % if area_id == 1        
         
         [h, stats] = cdfplot(error_now);
-        set(h, 'linewidth', 3);
+        set(h, 'linewidth', 1);
         set(h, 'color', colours(model_id,:));         
         if area_id == 1
             title('S1');
@@ -167,12 +185,23 @@ for area_id = 1:2
     xlabel('minimum differences');
     ylabel('probability');
     hold off
-    legend({'Rect(X)+Rect(Y)', 'Rect(X)+Rect(Y)+Rect(XY)', ...
-            'Rect(X)+Rect(Y)+Rect(X)Rect(Y)', ...
-            'Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)'});
-    set(gca, 'fontsize', 16);
     
 end %area_id = 1:2
+legend({'Rect(X)+Rect(Y)', 'Rect(X)+Rect(Y)+Rect(XY)', ...
+        'Rect(X)+Rect(Y)+Rect(X)Rect(Y)', ...
+        'Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)'});
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+% Print
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, 'figure11_b');
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, 'figure11_b', '-r300');
+end
 
 %% Sq 
 % aSq(X) + bSq(Y)
@@ -238,17 +267,17 @@ for area_id = 1:2
     
     for model_id = 1:2
         hold on
-        subplot(2, 1, model_id);
+        subplot(1, 2, model_id);
         error_now = errors(:, model_id);
         % Plot cdf
         [h, stats] = cdfplot(error_now);
-        set(h, 'linewidth', 3);
+        set(h, 'linewidth', 1);
         set(h, 'color', line_col);
         if area_id ==2 % ADd line only after plotting S2 results
         % Add line showing ks stats (max distance)
         v = plot([x_ks(model_id), x_ks(model_id)],...
                  [cdf1_ks(model_id), cdf2_ks(model_id)],...
-                 'color', 'k', 'linewidth', 3);
+                 'color', 'k', 'linewidth', 1);
         % Ignore this line for legend 
         v_annotation = get(v, 'Annotation');
         set(get(v_annotation,'LegendInformation'),...
@@ -261,24 +290,35 @@ for area_id = 1:2
         
         switch model_id
             case 1
-                title_now_1 = 'Sq(X)+Sq(Y)'; 
-                title_now_2 = '';
+                title_now = 'Sq(X)+Sq(Y)'; 
             case 2
-                title_now_1 = 'Sq(X)+Sq(Y)';
-                title_now_2 = '+Sq(XY)';
+                title_now = 'Sq(X)+Sq(Y)+Sq(XY)';
         end % swithch model_id
-        title_now_3 = ['p = ', ...
-            num2str(ksstats_table.p(model_id)*bonferroni_correction)];
+        %title_now_3 = ['p = ', ...
+        %    num2str(ksstats_table.p(model_id)*bonferroni_correction)];
 
-        title({title_now_1, title_now_2, title_now_3, title_now_4});
+        %title({title_now_1, title_now_2, title_now_3});
+        title(title_now);
         
         xlim([60, 200]);
-        set(gca, 'fontsize', 16);
-
+        xticks([60, 100, 140, 180]);
+    
     end % for model_id = 1:4
 
 end % area_id = 1:2
 legend({'S1', 'S2'});
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+% Print
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, 'Sup_figure5_a');
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, 'Sup_figure5_a', '-r300');
+end
 
 %% Sq compare models for each area
 % Plot culmtive probability distribution
@@ -287,28 +327,38 @@ for area_id = 1:2
     % Get error data
     errors = error_each_area(area_id).errors;
     
-    subplot(2,1, area_id);
+    subplot(1,2, area_id);
     hold on 
     
     for model_id = 1:2
         error_now = errors(:, model_id);        
         [h, stats] = cdfplot(error_now);
-        set(h, 'linewidth', 3);
+        set(h, 'linewidth', 1);
         if area_id == 1
             title('S1');
         elseif area_id == 2
             title('S2');
         end % if area_id ==1
     end % for model_id = 1:2
-
+    xticks([60, 100, 140, 180]);
     xlim([60, 200]);
     xlabel('minimum differences');
     ylabel('probability');
     hold off
-    legend({'Sq(X)+Sq(Y)', 'Sq(X)+Sq(Y)+Sq(XY)'});
-    set(gca, 'fontsize', 16);
     
 end %area_id = 1:2
-
+legend({'Sq(X)+Sq(Y)', 'Sq(X)+Sq(Y)+Sq(XY)'});
+set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, x_width, y_width];
+% Print
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, 'Sup_figure5_b');
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, 'Sup_figure5_b', '-r300');
+end
 
 

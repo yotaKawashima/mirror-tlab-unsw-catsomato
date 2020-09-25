@@ -12,8 +12,14 @@ data_dir = [data_path 'included_datasets/' cat_name '/epoched_rsampsl_biprref_ev
 
 filename = [cat_name '_S2_FxxxAxxx_FxxxAxxx_epoched_rsampsl_biprref_evkresp_cmtspwr_evkdpwr_hgpcomp.mat'];
 
-img_fmt = '-depsc';
+%img_fmt = '-depsc';
 %img_fmt = '-dpng';
+%img_fmt = '-dtiff';
+img_fmt = '-dpdf';
+%fsize = 10; % font size
+%ftype = 'Arial'; % font type
+%x_width = 6.5; % fig width
+%y_width = 4.5; % fig height
 
 %% Load and pre-process
 
@@ -59,7 +65,7 @@ for condid = 1:nCond
     set(h, 'EdgeColor', [192,192,192]/256);
 
     % Show mean with a black line
-    plot(data.freq{1}, mean_, 'color', 'k', 'LineWidth', 1);
+    plot(data.freq{1}, mean_, 'color', 'k', 'LineWidth', 0.4);
     hold off
     yls(condid, :) = [min(lower), max(upper)];
 
@@ -80,7 +86,19 @@ catnames = cell(numel(data.trial)+1, 1);
 catnames{1} = 'F023A000_F200A000';
 catnames(2:numel(data.trial)+1) = data.datalabels;
 
-str = sprintf('Fig9d_%s_S2_Ch%03i_highgammapower', cat_name, ch);
-print(gcf, img_fmt, str);
+filename = sprintf('Fig7a_%s_S2_Ch%03i_highgammapower', cat_name, ch);
+% save figure
+set(findall(gcf,'-property','FontSize'), 'FontSize', 8);
+set(findall(gcf,'-property','FontName'), 'FontName', 'Arial');
+%set(gcf,'color','w');    
+set(gcf,'renderer','Painters');
+f=gcf;
+f.Units = 'centimeters';
+f.Position = [10, 10, 9, 6.3];
+if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+    print(gcf, img_fmt, filename);
+elseif img_fmt == "-dtiff"
+    print(gcf, img_fmt, filename, '-r300');
+end
 close gcf;
-%end % for ch = 1:size(plotdata{1}, 1)
+

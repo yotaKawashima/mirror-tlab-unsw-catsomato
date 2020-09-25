@@ -64,7 +64,7 @@ FV1.vertices = vertices;
 FV1.faces = faces_;
 p1 = patch(FV1);
 % Set color for NaN. 
-set(p1,'FaceColor',[200 200 200]/256,'Edgecolor', 'k')
+set(p1,'FaceColor',[200 200 200]/256, 'LineWidth', 0.25, 'Edgecolor', 'k')
 clear cdata1
 
 
@@ -76,7 +76,8 @@ if ~isempty(faces)
     
     % Set color accordingly.
     cdata2 = values; % NaNs are removed from values. 
-    set(p2,'FaceColor','flat','FaceVertexCData',cdata2,'CDataMapping','scaled')
+    set(p2,'FaceColor', 'flat', 'LineWidth', 0.25, ...
+        'FaceVertexCData', cdata2, 'CDataMapping', 'scaled')
     clear p2
 end
 

@@ -30,7 +30,13 @@ plotpair{6} = [1, 43,  23,  2]; %(0.000000, 0.000000, 0.000000)
 run(fullfile(fpath, '../path_setup.m'));
 %
 %img_fmt = '-depsc2';
-img_fmt = '-dpng';
+%img_fmt = '-dpng';
+%img_fmt = '-dtiff';
+img_fmt = '-dpdf';
+%fsize = 10; % font size
+%ftype = 'Arial'; % font type
+%x_width = 6.5; % fig width
+%y_width = 4.5; % fig height
 
 %% Set script specific variables
 %logpower_file = 'epoched_rsampsl_biprref_evkresp_cmtspwr';
@@ -252,8 +258,18 @@ function plotsinglechannels(x_data_array, means, stds, params_filename)
     % save figure
     filename = ['Fig3_8_' dattype '_f' num2str(foi) '_S' ...
                 num2str(area) '_ch' num2str(bipolar_channel)];
-    print(gcf, img_fmt, filename)
-
+    set(findall(gcf,'-property','FontSize'), 'FontSize', 8);
+    set(findall(gcf,'-property','FontName'), 'FontName', 'Arial');
+    %set(gcf,'color','w');    
+    set(gcf,'renderer','Painters');
+    f=gcf;
+    f.Units = 'centimeters';
+    f.Position = [10, 10, 9, 6.3];
+    if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+        print(gcf, img_fmt, filename);
+    elseif img_fmt == "-dtiff"
+        print(gcf, img_fmt, filename, '-r300');
+    end
 end
 
 
@@ -319,7 +335,7 @@ function plotspatialmap_v2(data, spatialconfig, labels, params_filename)
         hold on
         % add patch to foi
         p1 = patch(x1, y1, 12);
-        set(p1, 'EdgeColor', [0,0,125]/256, 'LineWidth', 2, 'FaceColor', 'none')
+        set(p1, 'EdgeColor', [0,0,125]/256, 'LineWidth', 0.75, 'FaceColor', 'none')
         hold off
     end
     
@@ -333,17 +349,39 @@ function plotspatialmap_v2(data, spatialconfig, labels, params_filename)
     % save figure
     filename = ['Fig4_5_' dattype '_f' num2str(foi) '_S' ...
                 num2str(area) '_ch' num2str(bipolar_channel) '_spatialmap'];
-    
-    print(gcf, img_fmt, filename)
+    set(findall(gcf,'-property','FontSize'), 'FontSize', 8);
+    set(findall(gcf,'-property','FontName'), 'FontName', 'Arial');
+    %set(gcf,'color','w');    
+    set(gcf,'renderer','Painters');    
+    f=gcf;
+    f.Units = 'centimeters';
+    f.Position = [10, 10, 8.1, 6.3];
+    if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+        print(gcf, img_fmt, filename);
+    elseif img_fmt == "-dtiff"
+        print(gcf, img_fmt, filename, '-r300');
+    end
+
     
     % Save a color bar image.
     figure(); clf
     colorbar
     colormap(flipud(hot))
     caxis(clim)
-    print(gcf, img_fmt, ...
-        ['Fig3_8_' dattype '_f' num2str(foi) '_S' num2str(area) ...
-        '_ch' num2str(bipolar_channel) '_colorbar'])
+    set(findall(gcf,'-property','FontSize'), 'FontSize', 8);
+    set(findall(gcf,'-property','FontName'), 'FontName', 'Arial');
+    set(gcf,'color','w');
+    f=gcf;
+    f.Units = 'centimeters';
+    f.Position = [10, 10, 5.4, 5.4];
+    filename_color = ['Fig3_8_' dattype '_f' num2str(foi) ...
+                      '_S' num2str(area) '_ch' num2str(bipolar_channel) ...
+                      '_colorbar'];
+    if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+        print(gcf, img_fmt, filename_color);
+    elseif img_fmt == "-dtiff"
+        print(gcf, img_fmt, filename_color, '-r300');
+    end
 
 end
 

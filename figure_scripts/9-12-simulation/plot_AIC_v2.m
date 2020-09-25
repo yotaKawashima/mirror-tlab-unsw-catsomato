@@ -8,6 +8,14 @@
 % aRect(X) + bRect(Y) + cSRect(XY)                      model_id = 3
 % aRect(X) + bRect(Y) + cRect(X)Rect(Y) + dRect(XY)     model_id = 4
 
+img_fmt = '-dpdf';
+
+fsize = 8.5; % font size
+ftype = 'Arial'; % font type
+x_width = 13; % fig width
+y_width = 5; % fig height
+
+
 Rect_data = load('Results_Rect_top10_v2.mat');
 % Get error from each area
 error_each_area = struct();
@@ -140,7 +148,6 @@ for area_id = 1:2
     xlabel('AIC');
     yticks(flip(xs));
     yticklabels(flip(y_labels));
-    set(gca, 'fontsize', 16);
     if area_id == 1
         xlim([1200, 1500]);
         title('S1');
@@ -148,5 +155,26 @@ for area_id = 1:2
         xlim([700, 1000]);      
         title('S2');        
     end
+    
+    set(findall(gcf,'-property','FontSize'), 'FontSize', fsize);
+    set(findall(gcf,'-property','FontName'), 'FontName', ftype);
+    set(gcf,'renderer','Painters');
+    f=gcf;
+    f.Units = 'centimeters';
+    f.Position = [10, 10, x_width, y_width];
+    % Print
+    switch area_id 
+        case 1
+            filename = 'figure12_a';
+        case 2             
+            filename = 'figure12_b';
+    end
+    if img_fmt == "-depsc" || img_fmt == "-dpdf"   
+        print(gcf, img_fmt, filename);
+    elseif img_fmt == "-dtiff"
+        print(gcf, img_fmt, filename, '-r300');
+    end
+
 end
+
 
