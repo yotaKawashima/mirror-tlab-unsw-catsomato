@@ -51,24 +51,24 @@
 
 
 
-# Sup Figure 1-3 #
+# Sup Figure 4-6 #
 
 **Description** 
- Sup Fig 1
+ Sup Fig 4
  Title: Exemplar VELogP at f1=23Hz depend on the vibration amplitude of F1=23Hz.
 
  (A) --- Exemplar responses at f1=23Hz at bipolar channel 176 in S1 from Session 2-2.
  (B) --- Spatial mapping of VELogP at f1=23Hz across all bipolar channels in S1.
 
 
- Sup Fig 2
+ Sup Fig 5
  Title: Exemplar VELogP at f2=200Hz depend on the vibration amplitude of F2=200Hz.
 
  (A) --- Exemplar responses at f2=200Hz at bipolar channel 122 in S1 from Session 2-2.
  (B) --- Spatial mapping of VELogP at f2=200Hz across all bipolar channels in S1.
 
 
- Sup Fig 3
+ Sup Fig 6
  Title: Exemplar VELogP at f1=23Hz depend on the vibration amplitude of F1=23Hz, F2=200Hz, and their interaction.
 
  (A) --- Exemplar responses at f1=23Hz at bipolar channel 43 in S1 from Session 2-2.

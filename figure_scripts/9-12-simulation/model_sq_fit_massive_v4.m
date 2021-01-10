@@ -1,5 +1,6 @@
 function model_sq_fit_massive_v4(channel_id, area_id)
 %%Fit all Sq models to a channel data. 
+% This is code for square wave not for half squaring.
 % Error = Sum across all frequencies.
 % Input:    channel_id = bipolar channel id. (each area)
 %           area_id = 1 or 2 (i.e. S1 or S2)

@@ -167,7 +167,7 @@ for model_id = 1:4
                 end % order_id = 1:num_order
                 
         end % switch model_id 
-
+    
         for signal_id = 1:size(model_signal_matrix, 1)
             model_signal_now = model_signal_matrix(signal_id, :);
             % Compute logSNR for the best model

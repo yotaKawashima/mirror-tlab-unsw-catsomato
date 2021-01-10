@@ -315,9 +315,9 @@ f.Units = 'centimeters';
 f.Position = [10, 10, x_width, y_width];
 % Print
 if img_fmt == "-depsc" || img_fmt == "-dpdf"   
-    print(gcf, img_fmt, 'Sup_figure5_a');
+    print(gcf, img_fmt, 'Sup_figure5_ap');
 elseif img_fmt == "-dtiff"
-    print(gcf, img_fmt, 'Sup_figure5_a', '-r300');
+    print(gcf, img_fmt, 'Sup_figure5_ap', '-r300');
 end
 
 %% Sq compare models for each area
@@ -356,9 +356,9 @@ f.Units = 'centimeters';
 f.Position = [10, 10, x_width, y_width];
 % Print
 if img_fmt == "-depsc" || img_fmt == "-dpdf"   
-    print(gcf, img_fmt, 'Sup_figure5_b');
+    print(gcf, img_fmt, 'Sup_figure5_bp');
 elseif img_fmt == "-dtiff"
-    print(gcf, img_fmt, 'Sup_figure5_b', '-r300');
+    print(gcf, img_fmt, 'Sup_figure5_bp', '-r300');
 end
 
 

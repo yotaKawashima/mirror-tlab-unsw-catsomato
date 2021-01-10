@@ -41,16 +41,16 @@ end
 
 save(['Results_Rect_top10_', func_version, '.mat'], 'each_area');
 
-%% Sq
+%% HSq
 % data directory
 % only the best setting
-dir_name_best_setting = ['./sq_top10_results_best_setting_', func_version, '/'];
+dir_name_best_setting = ['./hsq_top10_results_best_setting_', func_version, '/'];
 
 addpath(genpath(dir_name_best_setting));
 
 for area_id = 1:2
     % File name     
-    file_name_best_setting = ['best_setting_sq_S', num2str(area_id)];
+    file_name_best_setting = ['best_setting_hsq_S', num2str(area_id)];
     
     full_name = fullfile([dir_name_best_setting, file_name_best_setting, ...
                          '*.mat']);
@@ -59,7 +59,7 @@ for area_id = 1:2
     
     for channel_id = 1:size(files, 1)
         
-        file_name = ['best_setting_sq_S', num2str(area_id), '_id_', ...
+        file_name = ['best_setting_hsq_S', num2str(area_id), '_id_', ...
                     num2str(channel_id), '.mat'];
         
         % Load the data
@@ -78,7 +78,7 @@ for area_id = 1:2
     clear each_channel
 end
 
-save(['Results_Sq_top10_', func_version, '.mat'], 'each_area');
+save(['Results_HSq_top10_', func_version, '.mat'], 'each_area');
 
 %{
 % Save data 

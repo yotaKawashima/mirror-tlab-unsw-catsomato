@@ -95,7 +95,7 @@ for exampleid=1:length(plotpair)
                 warning(['Frequency indicies inconsistent.', ... 
                     ' Recalculating. (a=%i, c=%i)'], area, condid)
     
-                [foiid, foival] = find_closest(data.freq{1}, foi);
+                [foival, foiid] = find_closest(data.freq{1}, foi);
             end
         end % if c=1
         
@@ -132,30 +132,8 @@ for exampleid=1:length(plotpair)
         % For all channels at foi
         means_forspatialmap(:, condid) = data_bipolar_mean(:,foiid);
         
-        % t-test per channel. Variance: trials within a stimulus condition. 
-        %{
-        for ch = 1:nChan % channel
-            [allhs(ch,condid) , allps(ch,condid)] = ...
-                ttest(logsnrs_atfoi(ch, :), 0, 'Tail', 'right');
-        end %ch=1:nChan
-        %}
     end % condid=1:nCond
 
-    % Threshold SNR
-    q = 0.05;
-
-    %means(allhs==0)=NaN;
-
-    % pID is a threshold for p-val. (scalar not vector)
-    %[pID, ~] = eeglab_fdr(allps(:, :), q, 'parametric');
-
-    % Overwrite mean data: set NaN for not significant channels.
-    %{
-    tmp = means_forspatialmap; % channel x conditions.
-    tmp(allps(:, :)>=pID)=NaN; 
-    means_forspatialmap = tmp;
-    fprintf('S%i f=%3i: %f\n', area, foiid, pID)
-    %}
     labels = data.label(bipolarchid:end); % label of bipolar channels
     spatialconfig = data.custom.spatialconfig; % channel config
     condfig = data.custom.subplotconfig; % condition config

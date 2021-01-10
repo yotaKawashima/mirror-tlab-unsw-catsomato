@@ -12,6 +12,7 @@
 * [Figure 6-7](./figure6-7.md)
 * [Figure 8](./figure8.md)
 * [Figure 9-12](./figure9-12.md)
+* [Supporting Figure](./supfig.md)
 * [Figure documentation template](./Figure%20Scripts%20Template.md)
 
 

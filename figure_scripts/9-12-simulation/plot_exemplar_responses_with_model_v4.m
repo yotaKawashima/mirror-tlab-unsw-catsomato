@@ -60,24 +60,45 @@ params_4 = S1_channel_data_this_cat(bp_ch_id).each_model(4).parameters;
 
 % plot logSNR
 figure();clf
-subplot(2,1,1)
+subplot(5,1,1:3)
 hold on
+offset_val = 30;
+% horizontal line
+for i_hline = -2:2
+    % plot horizontal line
+    h = plot([0, 250], [i_hline, i_hline]*offset_val, 'k');
+    % format vertical lines
+    set(h, 'LineWidth', 0.5)
+    % Remove legend for these lines
+    h_annotation = get(h, 'Annotation');     
+    set(get(h_annotation,'LegendInformation'),...
+        'IconDisplayStyle','off');
+    uistack(h,'bottom')
+end % i_hline = -2:2
 %Recorded data
-plot(freqs, recorded_logSNR, 'color', 'k', 'linewidth', 1);
-%Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)
-plot(freqs, model_4_logSNR, 'color', [255, 195, 0]/256, 'linewidth', 1); 
-%Rect(X)+Rect(Y)+Rect(X)Rect(Y)
-plot(freqs, model_2_logSNR, 'color', [189, 89, 250]/256, 'linewidth', 1); 
-%Rect(X)+Rect(Y)+Rect(XY)
-plot(freqs, model_3_logSNR, 'color', [250, 125, 89]/256, 'linewidth', 1);     
+plot(freqs, recorded_logSNR+offset_val*2, 'color', 'k', 'linewidth', 1);
 %Rect(X)+Rect(Y)
-plot(freqs, model_1_logSNR, 'color', [89, 183, 250]/256, 'linewidth', 1); 
+plot(freqs, model_1_logSNR+offset_val, 'color', [89, 183, 250]/256, 'linewidth', 1); 
+%Rect(X)+Rect(Y)+Rect(X)Rect(Y)
+plot(freqs, model_2_logSNR-offset_val, 'color', [189, 89, 250]/256, 'linewidth', 1); 
+%Rect(X)+Rect(Y)+Rect(XY)
+plot(freqs, model_3_logSNR+0, 'color', [250, 125, 89]/256, 'linewidth', 1);     
+%Rect(X)+Rect(Y)+Rect(XY)+Rect(X)Rect(Y)
+plot(freqs, model_4_logSNR-offset_val*2, 'color', [255, 195, 0]/256, 'linewidth', 1); 
+% Add a line showing 20 
+ind_line = plot([240, 240], [5, 25],'k', 'LineWidth', 1.5);
+iline_annotation = get(ind_line, 'Annotation');     
+set(get(iline_annotation,'LegendInformation'),...
+    'IconDisplayStyle','off');
+text(240, 15,'20');
 xlim([0, 250]);
-ylim([-20, 35]);
+ylim([-20-2*offset_val, 20+2*offset_val]);
+set(gca, 'YTick', offset_val*[-2 , -1, 0, 1, 2])
+set(gca,'YTickLabel',[0, 0, 0, 0, 0]);
 add_verticle_line(gca); 
-
 xlabel('frequency [Hz]');
-ylabel('logSNR [dB]');
+ylabel('logSNR [-]');
+
 
 % Legend
 %legend({'Observed';...
@@ -99,7 +120,7 @@ diff_3 = recorded_logSNR - model_3_logSNR;
 diff_2 = recorded_logSNR - model_2_logSNR;
 diff_4 = recorded_logSNR - model_4_logSNR;
 
-subplot(2,1,2)    
+subplot(5,1,5)    
 hold on 
 %Difference Recorded data
 %Rect(X)+Rect(Y)
@@ -114,7 +135,7 @@ xlim([0,250]);
 ylim([-25, 25]);
 add_verticle_line(gca);
 xlabel('frequency [Hz]');
-ylabel('difference [dB]');
+ylabel('difference [-]');
 
 % Legend
 legend({'Rect(X)+Rect(Y)';...
@@ -130,7 +151,7 @@ set(findall(gcf,'-property','FontName'), 'FontName', ftype);
 set(gcf,'renderer','Painters');
 f=gcf;
 f.Units = 'centimeters';
-f.Position = [10, 10, x_width, y_width];
+f.Position = [5, 5, x_width, y_width*2.5];
 if img_fmt == "-depsc" || img_fmt == "-dpdf"   
     print(gcf, img_fmt, 'figure10');
 elseif img_fmt == "-dtiff"
@@ -173,19 +194,40 @@ params_2 = S1_channel_data_this_cat(bp_ch_id).each_model(2).parameters;
 % plot logSNR
 figure();clf
 
-subplot(2,1,1)
+subplot(4,1,1:2)  
 hold on
+offset_val = 30;
+% horizontal line
+for i_hline = -1:1
+    % plot horizontal line
+    h = plot([0, 250], [i_hline, i_hline]*offset_val, 'k');
+    % format vertical lines
+    set(h, 'LineWidth', 0.5)
+    % Remove legend for these lines
+    h_annotation = get(h, 'Annotation');     
+    set(get(h_annotation,'LegendInformation'),...
+        'IconDisplayStyle','off');
+    uistack(h,'bottom')
+end % i_hline = -1:1
 %Recorded data
-plot(freqs, recorded_logSNR, 'color', 'k', 'linewidth', 1);
-%Sq(X)+Sq(Y)+Sq(XY)
-plot(freqs, model_2_logSNR, 'color', [250, 125, 89]/256, 'linewidth', 1);     
+plot(freqs, recorded_logSNR+offset_val, 'color', 'k', 'linewidth', 1);
 %Sq(X)+Sq(Y)
-plot(freqs, model_1_logSNR, 'color', [89, 183, 250]/256, 'linewidth', 1); 
-xlim([0,250]);
-ylim([-20, 35]);
+plot(freqs, model_1_logSNR+0, 'color', [89, 183, 250]/256, 'linewidth', 1); 
+%Sq(X)+Sq(Y)+Sq(XY)
+plot(freqs, model_2_logSNR-offset_val, 'color', [250, 125, 89]/256, 'linewidth', 1);     
+% Add a line showing 20 
+ind_line = plot([230, 230], [5, 25],'k', 'LineWidth', 1.5);
+iline_annotation = get(ind_line, 'Annotation');     
+set(get(iline_annotation,'LegendInformation'),...
+    'IconDisplayStyle','off');
+text(235, 15,'20');
+xlim([0, 250]);
+ylim([-20-offset_val, 20+offset_val]);
+set(gca, 'YTick', offset_val*[ -1, 0, 1])
+set(gca,'YTickLabel',[0, 0, 0]);
 add_verticle_line(gca); 
 xlabel('frequency [Hz]');
-ylabel('logSNR [dB]');
+ylabel('logSNR [-]');
 
 % Legend
 %legend({'Observed'; 'Sq(X)+Sq(Y)+Sq(XY)'; 'Sq(X)+Sq(Y)'});
@@ -200,7 +242,7 @@ x_points = freqs(harm_inter_inds);
 diff_1 = recorded_logSNR - model_1_logSNR;
 diff_2 = recorded_logSNR - model_2_logSNR;
 
-subplot(2,1,2)    
+subplot(4,1,4)  
 hold on
 %Sq(X)+Sq(Y)
 scatter(x_points-0.75, diff_1(harm_inter_inds), 30, [89, 183, 250]/256, 'filled'); 
@@ -210,7 +252,7 @@ xlim([0,250]);
 ylim([-25, 25]);
 add_verticle_line(gca); 
 xlabel('frequency [Hz]');
-ylabel('difference [dB]');
+ylabel('difference [-]');
 
 % Legend
 legend({'Sq(X)+Sq(Y)'; 'Sq(X)+Sq(Y)+Sq(XY)'});
@@ -225,7 +267,7 @@ set(findall(gcf,'-property','FontName'), 'FontName', ftype);
 set(gcf,'renderer','Painters');
 f=gcf;
 f.Units = 'centimeters';
-f.Position = [10, 10, x_width, y_width];
+f.Position = [10, 10, x_width, y_width*2];
 if img_fmt == "-depsc" || img_fmt == "-dpdf"   
     print(gcf, img_fmt, 'Sup_figure4');
 elseif img_fmt == "-dtiff"
